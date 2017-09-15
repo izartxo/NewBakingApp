@@ -2,6 +2,7 @@ package newbaking.code.develop.bizartxo.newbakingapp.data;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         //recipeViewHolder.ting.setText(stepList.get(i).getShortDescription());
 
 
-
+        if (!mStepDataCursor.isClosed()){
         mStepDataCursor.moveToPosition(i);
 
         String stepId = String.valueOf(mStepDataCursor.getString(0));
@@ -73,6 +74,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         mStep.setThumbnailURL(stepIThumb);
 
         recipeViewHolder.bind(mStep, i);
+        }
     }
 
     @Override
@@ -95,6 +97,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView ting,tnum;
+        String url;
 
         StepViewHolder(View v){
             super(v);
@@ -107,7 +110,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         @Override
         public void onClick(View view) {
             int pos = getAdapterPosition();
-            String recipeid = stepList.get(pos).getRid();
+            Log.d("PPPPPPPPPPPPPPPPPPPPPPPPP", "Position: " + pos);
+            String recipeid = mStepDataCursor.getString(0);   //stepList.get(pos).getRid();
             mStepListener.onStepClick(pos, recipeid);
         }
 
@@ -115,8 +119,12 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
             tnum.setText(String.valueOf(pos));
             ting.setText(step.getShortDescription());
+            url = step.getVideoURL();
 
+        }
 
+        public String getUrl(){
+            return url;
         }
 
     }
@@ -165,9 +173,14 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
         mStepDataCursor.moveToPosition(position);
         /// FILL DATA
-        md.set_id(1);
-        md.setShortDescription("froga");
-
+       // md.set_id(1);
+        //md.setShortDescription("froga");
+        md.set_id(mStepDataCursor.getInt(1));
+        md.setRid(mStepDataCursor.getString(0));
+        md.setShortDescription(mStepDataCursor.getString(2));
+        md.setDescription(mStepDataCursor.getString(3));
+        md.setVideoURL(mStepDataCursor.getString(4));
+        md.setThumbnailURL(mStepDataCursor.getString(5));
         return md;
     }
 }

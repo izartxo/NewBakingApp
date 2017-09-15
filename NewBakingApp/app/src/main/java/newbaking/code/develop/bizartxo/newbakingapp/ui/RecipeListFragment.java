@@ -24,6 +24,7 @@ import newbaking.code.develop.bizartxo.newbakingapp.data.IngredientAdapter;
 import newbaking.code.develop.bizartxo.newbakingapp.data.RecipeProvider;
 import newbaking.code.develop.bizartxo.newbakingapp.data.StepAdapter;
 import newbaking.code.develop.bizartxo.newbakingapp.model.Recipe;
+import newbaking.code.develop.bizartxo.newbakingapp.model.Step;
 
 /**
  * Created by izartxo on 9/13/17.
@@ -54,7 +55,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
         intent = getActivity().getIntent();
 
-        sadapter = new StepAdapter(this);
+
 
     }
 
@@ -71,11 +72,17 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         rving.setLayoutManager(new LinearLayoutManager(view.getContext()));
         rvstep.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
+        iadapter = new IngredientAdapter();
+        rving.setAdapter(iadapter);
+        rving.setHasFixedSize(true);
+        sadapter = new StepAdapter(this);
+        rvstep.setAdapter(sadapter);
+        rvstep.setHasFixedSize(true);
 
         recipe = new Recipe();
 
 
-        getData();
+        getData2();
         return view;
 
     }
@@ -117,7 +124,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         cursor.close();
 
 
-        getLoaderManager().restartLoader(ID_INGREDIENT_LOADER, null, this);
+        getLoaderManager().restartLoader(ID_INGREDIENT_LOADER, bundle, this);
 
         Cursor cursor2 = contentResolver.query(RecipeProvider.Ingredients.INGREDIENTS, null, "_id = ?", sa, null);
 
@@ -207,10 +214,14 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     @Override
     public void onStepClick(int position, String recipeid) {
         Log.d("----------------------------", "------" + recipeid + " // " + position);
-        //String url = recipe.getStepList().get(position).getVideoURL();
-        //String sdesc = recipe.getStepList().get(position).getShortDescription();
-        //String desc = recipe.getStepList().get(position).getDescription();
-        //updateVideo(sdesc, desc, url);
+        Step step = sadapter.getItem(position);
+        if (step==null)
+            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxx null","nulllllll");
+        String url = sadapter.getItem(position).getVideoURL();
+        String sdesc = sadapter.getItem(position).getShortDescription();
+        String desc = sadapter.getItem(position).getDescription();
+
+        updateVideo(sdesc, desc, url);
     }
 
     private void updateVideo(String sd, String d, String v) {
@@ -305,7 +316,9 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String column = "_id = ?";
-        String[] values = new String[]{"1"};
+        String[] values = new String[]{args.getString("RID")};
+
+
         switch (id) {
 
 
@@ -346,6 +359,26 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                 case ID_BAKING_LOADER:
                     break;
                 case ID_INGREDIENT_LOADER:
+                    if (iadapter != null)
+                        iadapter.swapDataIngredient(data);
+                    else {
+                        iadapter = new IngredientAdapter();
+                        rving.setAdapter(iadapter);
+                        rving.setHasFixedSize(true);
+                    }
+                    iadapter.notifyDataSetChanged();
+
+                    break;
+                case ID_STEP_LOADER:
+                    if (sadapter != null)
+                        sadapter.swapDataStep(data);
+                    else {
+                        sadapter = new StepAdapter(this);
+                        rving.setAdapter(sadapter);
+                        rving.setHasFixedSize(true);
+                    }
+                    sadapter.notifyDataSetChanged();
+
                     break;
             }
         }
@@ -357,5 +390,25 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     }
 
     ///////////////////////// LOADER LOGIC END //////////////////////////
+
+    private void getData2(){
+
+        String rid = intent.getStringExtra("RID");
+
+        Bundle bundle = new Bundle();
+        bundle.putString("RID", rid);
+        bundle.putInt("LIST", ID_INGREDIENT_LOADER);
+
+        getLoaderManager().restartLoader(ID_INGREDIENT_LOADER, bundle, this);
+
+        bundle.putString("RID", rid);
+        bundle.putInt("LIST", ID_STEP_LOADER);
+
+        getLoaderManager().restartLoader(ID_STEP_LOADER, bundle, this);
+
+        Log.d("----------------------------", "Recipe: " + recipe.getTitle());
+        // Log.d("----------------------------", "Num Ingredients: " + recipe.getIngredientCount());
+        // Log.d("----------------------------", "Num Steps: " + recipe.getStepCount());
+    }
 }
 
