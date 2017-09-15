@@ -1,14 +1,17 @@
 package newbaking.code.develop.bizartxo.newbakingapp.ui;
 
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -311,19 +314,19 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
 
 
-                return new CursorLoader(_context, MyContentProvider.Recipes.RECIPES, null, column, values, null);
+                return new CursorLoader(_context, RecipeProvider.Recipes.RECIPES, null, column, values, null);
 
             case ID_INGREDIENT_LOADER:
 
 
 
 
-                return new CursorLoader(_context, MyContentProvider.Ingredients.INGREDIENTS, null, column, values, null);
+                return new CursorLoader(_context, RecipeProvider.Ingredients.INGREDIENTS, null, column, values, null);
 
             case ID_STEP_LOADER:
 
 
-                return new CursorLoader(_context, MyContentProvider.Steps.STEPS, null, column, values, null);
+                return new CursorLoader(_context, RecipeProvider.Steps.STEPS, null, column, values, null);
 
             default:
                 throw new RuntimeException("Loader Not Implemented: " + id);

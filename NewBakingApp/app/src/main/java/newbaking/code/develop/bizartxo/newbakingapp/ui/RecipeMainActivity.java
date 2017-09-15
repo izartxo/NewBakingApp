@@ -93,9 +93,9 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
     @Override
     public void onGorkaClick(int position, String recipeid) {
         Toast.makeText(this, "GORKA: " + position, Toast.LENGTH_SHORT).show();
-       /* Intent intent = new Intent(this, RecipeDetailActivity.class);
+        Intent intent = new Intent(this, RecipeDetailActivity.class);
         intent.putExtra("RID", recipeid);
-        startActivity(intent);*/
+        startActivity(intent);
 
     }
 
