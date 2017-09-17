@@ -163,6 +163,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         mStepDataCursor =
         */
 
+
+
         mStepDataCursor = cursor;
 
         notifyDataSetChanged();

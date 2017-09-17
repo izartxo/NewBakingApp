@@ -66,7 +66,8 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
         View view = inflater.inflate(R.layout.main_recipe_fragment, container, false);
 
-        rving = (RecyclerView) view.findViewById(R.id.rving);
+        if (rving==null)
+            rving = (RecyclerView) view.findViewById(R.id.rving);
         rvstep = (RecyclerView) view.findViewById(R.id.rvsteps);
 
         rving.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -74,12 +75,13 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
         iadapter = new IngredientAdapter();
         rving.setAdapter(iadapter);
-        rving.setHasFixedSize(true);
+        //rving.setHasFixedSize(true);
         sadapter = new StepAdapter(this);
         rvstep.setAdapter(sadapter);
-        rvstep.setHasFixedSize(true);
+        //rvstep.setHasFixedSize(true);
 
         recipe = new Recipe();
+
 
 
         getData2();
@@ -90,6 +92,9 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     @Override
     public void onPause() {
         super.onPause();
+        Log.d("LISTFRAGMEEEEEEEEEEEEEENT" ,  "PAUSE....");
+        sadapter = null;
+        rvstep = null;
     }
 
 
@@ -308,6 +313,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     public void onResume() {
         super.onResume();
 
+        Log.d("resume","resume");
 
     }
 
@@ -354,7 +360,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
         }
         else {
-            Log.d("---------", "Zenbat: " + data.getCount());
+            Log.d("---------", "Zenbat: " + data.getCount() + "ID: " + loader.getId());
             switch (loader.getId()){
                 case ID_BAKING_LOADER:
                     break;

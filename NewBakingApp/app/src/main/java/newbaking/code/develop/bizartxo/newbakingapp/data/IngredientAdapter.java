@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import newbaking.code.develop.bizartxo.newbakingapp.R;
 import newbaking.code.develop.bizartxo.newbakingapp.model.Ingredient;
+import newbaking.code.develop.bizartxo.newbakingapp.model.Step;
 
 /**
  * Created by izartxo on 9/13/17.
@@ -43,7 +44,25 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     @Override
     public void onBindViewHolder(IngredientAdapter.IngredientViewHolder recipeViewHolder, int i) {
-        recipeViewHolder.ting.setText("\u2022  " + ingredientList.get(i).getIngredient());
+        //recipeViewHolder.ting.setText("\u2022  " + ingredientList.get(i).getIngredient());
+
+        if (!mIngredientCursor.isClosed()){
+            mIngredientCursor.moveToPosition(i);
+
+
+
+            String ingredientId = String.valueOf(mIngredientCursor.getString(0));
+            String quantity = String.valueOf(mIngredientCursor.getString(2));
+            String ingredient = String.valueOf(mIngredientCursor.getString(1));
+
+            Ingredient mIng = new Ingredient();
+
+            mIng.setRid(ingredientId);
+            mIng.setIngredient(ingredient);
+            mIng.setQuantity(quantity);
+
+            recipeViewHolder.ting.setText("\u2022  " + mIng.getIngredient());
+        }
     }
 
     @Override
@@ -53,10 +72,14 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     @Override
     public int getItemCount() {
-        if (ingredientList==null)
+        /*if (ingredientList==null)
             return 0;
         else
-            return ingredientList.size();
+            return ingredientList.size();*/
+        if (mIngredientCursor==null)
+            return 0;
+        else
+            return mIngredientCursor.getCount();
     }
 
     class IngredientViewHolder extends RecyclerView.ViewHolder{
