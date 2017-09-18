@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 import newbaking.code.develop.bizartxo.newbakingapp.R;
+import newbaking.code.develop.bizartxo.newbakingapp.model.Recipe;
 
 /**
  * Created by izartxo on 9/13/17.
@@ -96,6 +98,13 @@ public class RecipeDetailFragment extends Fragment {
                     getActivity().finish();
                 }
             });
+            Button next = (Button) view.findViewById(R.id.nextButton);
+            next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view){
+                    //RecipeListFragment
+                }
+            });
 
         }
 
@@ -114,7 +123,7 @@ public class RecipeDetailFragment extends Fragment {
 // 2. Create the player
         SimpleExoPlayer player =
                 ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
-
+        
         simpleExoPlayerView.setPlayer(player);
 
 

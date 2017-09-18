@@ -66,8 +66,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
         View view = inflater.inflate(R.layout.main_recipe_fragment, container, false);
 
-        if (rving==null)
-            rving = (RecyclerView) view.findViewById(R.id.rving);
+        rving = (RecyclerView) view.findViewById(R.id.rving);
         rvstep = (RecyclerView) view.findViewById(R.id.rvsteps);
 
         rving.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -93,8 +92,9 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     public void onPause() {
         super.onPause();
         Log.d("LISTFRAGMEEEEEEEEEEEEEENT" ,  "PAUSE....");
-        sadapter = null;
-        rvstep = null;
+        //Fix static draw doubling data, i think another approach is better.
+        rvstep.setAdapter(null);
+        rvstep.setLayoutManager(null);
     }
 
 
@@ -229,7 +229,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         updateVideo(sdesc, desc, url);
     }
 
-    private void updateVideo(String sd, String d, String v) {
+    public void updateVideo(String sd, String d, String v) {
         Log.d("VIIIIIIIIIIIIIIIIIIIDEO", "sdesc " + sd + "desc " + d +"video " + v);
 
         boolean novideo = true;
