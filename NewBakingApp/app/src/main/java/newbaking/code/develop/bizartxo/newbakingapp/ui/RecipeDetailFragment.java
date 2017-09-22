@@ -149,6 +149,7 @@ public class RecipeDetailFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+		player.setPlayerWhenReady(false);
         if (player!=null)
             player.release();
     }
