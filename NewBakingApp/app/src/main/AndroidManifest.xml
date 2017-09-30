@@ -25,7 +25,7 @@
             android:name="newbaking.code.develop.bizartxo.newbakingapp.data.generated.RecipeProvider"
             />
 			
-		<receiver android:name="BakingAppWidgetProvider" >
+		<receiver android:name=".widget.BakingAppWidgetProvider" >
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>

@@ -79,6 +79,10 @@ public class AuxActivity extends AppCompatActivity {
     protected void onPause(){
         RecipeDetailFragment.stopPlayer();
         super.onPause();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 88db635bd675abfd25ba60666e9972fa1df11f13
     }
 }
 

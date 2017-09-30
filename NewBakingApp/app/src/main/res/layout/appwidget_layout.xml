@@ -1,14 +1,20 @@
 <FrameLayout
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:padding="@dimen/widget_margin">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
 
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:background="@drawable/my_widget_background">
-    …
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="EOOEOEOEOEOE"/>
   </LinearLayout>
 
 </FrameLayout>

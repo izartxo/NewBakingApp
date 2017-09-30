@@ -121,7 +121,7 @@ public class RecipeDetailFragment extends Fragment {
 
 
 // 2. Create the player
-        SimpleExoPlayer player =
+        player =
                 ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
         
         simpleExoPlayerView.setPlayer(player);
@@ -148,10 +148,18 @@ public class RecipeDetailFragment extends Fragment {
 
     @Override
     public void onPause() {
+<<<<<<< HEAD
         super.onPause();
 
     }
+=======
+>>>>>>> 88db635bd675abfd25ba60666e9972fa1df11f13
 
+            super.onPause();
+
+
+
+    }
     @Override
 
     public void onResume() {
@@ -164,9 +172,15 @@ public class RecipeDetailFragment extends Fragment {
 
     public static void stopPlayer(){
         player.setPlayWhenReady(false);
+<<<<<<< HEAD
         if (player!=null)
             player.release();
     }
 
+=======
+        if(player!=null)
+            player.release();
+    }
+>>>>>>> 88db635bd675abfd25ba60666e9972fa1df11f13
 }
 
