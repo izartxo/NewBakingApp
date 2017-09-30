@@ -47,7 +47,7 @@ public class RecipeDetailFragment extends Fragment {
     Intent intent;
     //TextView tv;
     SimpleExoPlayerView simpleExoPlayerView;
-    SimpleExoPlayer player;
+    static SimpleExoPlayer player;
     //Button back;
 
 
@@ -121,7 +121,7 @@ public class RecipeDetailFragment extends Fragment {
 
 
 // 2. Create the player
-        SimpleExoPlayer player =
+        player =
                 ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
         
         simpleExoPlayerView.setPlayer(player);
@@ -148,12 +148,12 @@ public class RecipeDetailFragment extends Fragment {
 
     @Override
     public void onPause() {
-        super.onPause();
-		player.setPlayerWhenReady(false);
-        if (player!=null)
-            player.release();
-    }
 
+            super.onPause();
+
+
+
+    }
     @Override
 
     public void onResume() {
@@ -164,5 +164,10 @@ public class RecipeDetailFragment extends Fragment {
 
     }
 
+    public static void stopPlayer(){
+        player.setPlayWhenReady(false);
+        if(player!=null)
+            player.release();
+    }
 }
 

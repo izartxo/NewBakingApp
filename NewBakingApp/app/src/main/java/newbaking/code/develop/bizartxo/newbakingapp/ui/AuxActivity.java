@@ -73,5 +73,12 @@ public class AuxActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
+
+    @Override
+    protected void onPause(){
+        RecipeDetailFragment.stopPlayer();
+        super.onPause();
+
+    }
 }
 
