@@ -45,7 +45,7 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
 
         context = getApplicationContext();
 
-        boolean isLarge = false; //getString(R.string.size).equals("small")?false:true;
+        boolean isLarge = getString(R.string.size).equals("small")?false:true;
         //Log.d("-------------",":::---> " + getString(R.string.size) + "#" + isLarge);
         rv = (RecyclerView)findViewById(R.id.rv);
 

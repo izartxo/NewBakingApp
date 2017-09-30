@@ -2,6 +2,7 @@ package newbaking.code.develop.bizartxo.newbakingapp.ui;
 
 
 import android.content.Intent;
+import android.content.ReceiverCallNotAllowedException;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -72,6 +73,12 @@ public class AuxActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    protected void onPause(){
+        RecipeDetailFragment.stopPlayer();
+        super.onPause();
     }
 }
 

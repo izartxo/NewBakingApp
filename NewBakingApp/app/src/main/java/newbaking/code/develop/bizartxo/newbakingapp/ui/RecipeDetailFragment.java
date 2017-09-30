@@ -47,7 +47,7 @@ public class RecipeDetailFragment extends Fragment {
     Intent intent;
     //TextView tv;
     SimpleExoPlayerView simpleExoPlayerView;
-    SimpleExoPlayer player;
+    static SimpleExoPlayer player;
     //Button back;
 
 
@@ -86,7 +86,7 @@ public class RecipeDetailFragment extends Fragment {
 
 
 
-        if (view.findViewById(R.id.land) == null){
+        if (view.findViewById(R.id.land) == null || view.findViewById(R.id.portrait) == null){
             TextView tv = (TextView) view.findViewById(R.id.stei);
             tv.setText(stepText);
             TextView tvd = (TextView) view.findViewById(R.id.sted);
@@ -149,9 +149,7 @@ public class RecipeDetailFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-		player.setPlayerWhenReady(false);
-        if (player!=null)
-            player.release();
+
     }
 
     @Override
@@ -162,6 +160,12 @@ public class RecipeDetailFragment extends Fragment {
         /*tv = (TextView) getActivity().findViewById(R.id.textView);
         tv.setText(intent.getExtras().getString("RID"));*/
 
+    }
+
+    public static void stopPlayer(){
+        player.setPlayWhenReady(false);
+        if (player!=null)
+            player.release();
     }
 
 }
