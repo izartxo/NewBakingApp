@@ -34,6 +34,8 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.ArrayList;
+
 import newbaking.code.develop.bizartxo.newbakingapp.R;
 import newbaking.code.develop.bizartxo.newbakingapp.model.Recipe;
 
@@ -49,6 +51,8 @@ public class RecipeDetailFragment extends Fragment {
     SimpleExoPlayerView simpleExoPlayerView;
     static SimpleExoPlayer player;
     //Button back;
+    ArrayList<String> sl;
+    String value="";
 
 
     @Override
@@ -63,13 +67,15 @@ public class RecipeDetailFragment extends Fragment {
 
         intent = getActivity().getIntent();
 
+
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //return super.onCreateView(inflater, container, savedInstanceState);
-        String value = "";
+        //String value = "";
         String stepText = "";
         String stepTextD = "";
         if (!(getArguments()==null)) {
@@ -77,8 +83,10 @@ public class RecipeDetailFragment extends Fragment {
             value = getArguments().getString("video");
             stepText = getArguments().getString("sdesc");
             stepTextD = getArguments().getString("desc");
+            sl = getArguments().getStringArrayList("videos");
             Log.d("vaaaaaaaaaaaa","luuuuuuuuuuuue: " + value);
         }
+
 
 
 
@@ -102,7 +110,23 @@ public class RecipeDetailFragment extends Fragment {
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view){
-                    //RecipeListFragment
+                    Intent nextIntent = new Intent(getContext(), AuxActivity.class);
+                    Bundle bundle = new Bundle();
+
+
+                    for (int y = 0; y < sl.size(); y++){
+                        boolean flag = sl.get(y).equalsIgnoreCase(value);
+                        if (flag){
+                            bundle.putString("video", sl.get(y+1));
+                            nextIntent.putExtra("data", bundle);
+                        }
+                        else {
+                            return;
+                        }
+                    }
+
+                    getActivity().finish();
+                    startActivity(nextIntent);
                 }
             });
 
@@ -148,18 +172,17 @@ public class RecipeDetailFragment extends Fragment {
 
     @Override
     public void onPause() {
-<<<<<<< HEAD
+
         super.onPause();
 
     }
-=======
->>>>>>> 88db635bd675abfd25ba60666e9972fa1df11f13
-
-            super.onPause();
 
 
 
-    }
+
+
+
+
     @Override
 
     public void onResume() {
@@ -172,15 +195,27 @@ public class RecipeDetailFragment extends Fragment {
 
     public static void stopPlayer(){
         player.setPlayWhenReady(false);
-<<<<<<< HEAD
+
         if (player!=null)
             player.release();
     }
 
-=======
-        if(player!=null)
-            player.release();
+
+    private void updateNextVideo(String u){
+
+        DefaultBandwidthMeter dbandwidthMeter = new DefaultBandwidthMeter();
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(),
+        Util.getUserAgent(getContext(), "yourApplicationName"), dbandwidthMeter);
+// Produces Extractor instances for parsing the media data.
+        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+        Uri uri = Uri.parse(u); //"https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4");
+        MediaSource videoSource = new ExtractorMediaSource(uri,
+                dataSourceFactory, extractorsFactory, null, null);
+// Prepare the player with the source.
+        player.prepare(videoSource);
+
     }
->>>>>>> 88db635bd675abfd25ba60666e9972fa1df11f13
+
+
 }
 

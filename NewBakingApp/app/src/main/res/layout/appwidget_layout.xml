@@ -9,12 +9,21 @@
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     >
+
+
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="EOOEOEOEOEOE"/>
+        android:layout_height="48dp"
+        android:text="EOOEOEOEOEOE" />
+
+    <ListView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
   </LinearLayout>
 
 </FrameLayout>

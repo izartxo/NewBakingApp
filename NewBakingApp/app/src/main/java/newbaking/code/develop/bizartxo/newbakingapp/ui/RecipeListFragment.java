@@ -19,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import newbaking.code.develop.bizartxo.newbakingapp.R;
 import newbaking.code.develop.bizartxo.newbakingapp.data.IngredientAdapter;
 import newbaking.code.develop.bizartxo.newbakingapp.data.RecipeProvider;
@@ -42,6 +44,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     RecyclerView rving, rvstep;
     IngredientAdapter iadapter;
     StepAdapter sadapter;
+    ArrayList<String> stepList = new ArrayList<>();
 
     @Override
     public void onAttach(Context context) {
@@ -245,6 +248,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         args.putString("sdesc", sd);
         Log.d("---------","novideo " + args.getString("sdesc") + "-" + sd);
         args.putString("desc", d);
+        args.putStringArrayList("videos", stepList);
 
         if (RecipeDetailActivity.getTwoPane()) {
 
@@ -314,6 +318,10 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         super.onResume();
 
         Log.d("resume","resume");
+
+        for (int u = 0; u < sadapter.getItemCount(); u++){
+            stepList.add(sadapter.getItem(u).getVideoURL());
+        }
 
     }
 
@@ -416,5 +424,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         // Log.d("----------------------------", "Num Ingredients: " + recipe.getIngredientCount());
         // Log.d("----------------------------", "Num Steps: " + recipe.getStepCount());
     }
+
+
 }
 
