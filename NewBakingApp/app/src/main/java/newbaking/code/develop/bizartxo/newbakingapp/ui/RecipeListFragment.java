@@ -228,11 +228,11 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         String url = sadapter.getItem(position).getVideoURL();
         String sdesc = sadapter.getItem(position).getShortDescription();
         String desc = sadapter.getItem(position).getDescription();
-
-        updateVideo(sdesc, desc, url);
+        int s = position;
+        updateVideo(s, sdesc, desc, url);
     }
 
-    public void updateVideo(String sd, String d, String v) {
+    public void updateVideo(int step, String sd, String d, String v) {
         Log.d("VIIIIIIIIIIIIIIIIIIIDEO", "sdesc " + sd + "desc " + d +"video " + v);
 
         boolean novideo = true;
@@ -246,6 +246,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         Bundle args = new Bundle();
         args.putString("video", v);
         args.putString("sdesc", sd);
+        args.putInt("step", step);
         Log.d("---------","novideo " + args.getString("sdesc") + "-" + sd);
         args.putString("desc", d);
         args.putStringArrayList("videos", stepList);
@@ -319,9 +320,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
         Log.d("resume","resume");
 
-        for (int u = 0; u < sadapter.getItemCount(); u++){
-            stepList.add(sadapter.getItem(u).getVideoURL());
-        }
+
 
     }
 
@@ -392,6 +391,9 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                         rving.setHasFixedSize(true);
                     }
                     sadapter.notifyDataSetChanged();
+                    for (int u = 0; u < sadapter.getItemCount(); u++){
+                        stepList.add(sadapter.getItem(u).getVideoURL());
+                    }
 
                     break;
             }

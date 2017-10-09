@@ -53,6 +53,7 @@ public class RecipeDetailFragment extends Fragment {
     //Button back;
     ArrayList<String> sl;
     String value="";
+    int step=0;
 
 
     @Override
@@ -79,7 +80,7 @@ public class RecipeDetailFragment extends Fragment {
         String stepText = "";
         String stepTextD = "";
         if (!(getArguments()==null)) {
-
+            step = getArguments().getInt("step");
             value = getArguments().getString("video");
             stepText = getArguments().getString("sdesc");
             stepTextD = getArguments().getString("desc");
@@ -120,9 +121,7 @@ public class RecipeDetailFragment extends Fragment {
                             bundle.putString("video", sl.get(y+1));
                             nextIntent.putExtra("data", bundle);
                         }
-                        else {
-                            return;
-                        }
+
                     }
 
                     getActivity().finish();
@@ -194,10 +193,13 @@ public class RecipeDetailFragment extends Fragment {
     }
 
     public static void stopPlayer(){
-        player.setPlayWhenReady(false);
 
-        if (player!=null)
+
+        if (player!=null) {
+            player.setPlayWhenReady(false);
             player.release();
+
+        }
     }
 
 

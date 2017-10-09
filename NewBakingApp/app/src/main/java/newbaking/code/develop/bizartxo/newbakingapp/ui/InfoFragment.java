@@ -1,5 +1,6 @@
 package newbaking.code.develop.bizartxo.newbakingapp.ui;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import newbaking.code.develop.bizartxo.newbakingapp.R;
 
 /**
@@ -18,7 +21,8 @@ import newbaking.code.develop.bizartxo.newbakingapp.R;
 
 public class InfoFragment extends Fragment {
 
-
+    ArrayList<String> sl;
+    int step=0;
 
 
     @Override
@@ -45,15 +49,36 @@ public class InfoFragment extends Fragment {
         TextView tvsDesc = (TextView) view.findViewById(R.id.info_sdescription);
         TextView tvDesc = (TextView) view.findViewById(R.id.info_description);
         Button back = (Button) view.findViewById(R.id.backButton);
+        sl = getArguments().getStringArrayList("videos");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().finish();
             }
         });
+        Button next = (Button) view.findViewById(R.id.nextButton);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                Intent nextIntent = new Intent(getContext(), AuxActivity.class);
+                Bundle bundle = new Bundle();
+
+
+
+                bundle.putString("video", sl.get(step+1));
+                nextIntent.putExtra("data", bundle);
+
+
+
+
+                getActivity().finish();
+                startActivity(nextIntent);
+            }
+        });
         if (!(getArguments()==null)) {
             String sd = getArguments().getString("sdesc");
             String d = getArguments().getString("desc");
+            step = getArguments().getInt("step");
             tvsDesc.setText(sd);
             tvDesc.setText(d);
 

@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import newbaking.code.develop.bizartxo.newbakingapp.R;
 
 /**
@@ -19,6 +21,7 @@ public class AuxActivity extends AppCompatActivity {
 
     Intent intent;
     boolean novideo = false;
+    ArrayList<String> ss = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class AuxActivity extends AppCompatActivity {
         String link = bundle.getString("video");
         String sd = bundle.getString("sdesc");
         String d = bundle.getString("desc");
+        ss = bundle.getStringArrayList("videos");
 
         Log.d("aaaaaaaaaaaaaaaa","lllll: " + link + "-" + sd + "-" + d);
 
@@ -44,6 +48,7 @@ public class AuxActivity extends AppCompatActivity {
             Bundle video = new Bundle();
             video.putString("sdesc", sd);
             video.putString("desc", d);
+            video.putStringArrayList("videos",ss);
             InfoFragment fragment = new InfoFragment();
 
             fragment.setArguments(video);
@@ -58,6 +63,7 @@ public class AuxActivity extends AppCompatActivity {
             video.putString("video", link);
             video.putString("sdesc", sd);
             video.putString("desc", d);
+            video.putStringArrayList("videos",ss);
             RecipeDetailFragment fragment = new RecipeDetailFragment();
             fragment.setArguments(video);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
