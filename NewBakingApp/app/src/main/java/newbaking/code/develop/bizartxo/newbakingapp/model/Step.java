@@ -1,10 +1,13 @@
 package newbaking.code.develop.bizartxo.newbakingapp.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by izartxo on 9/12/17.
  */
 
-public class Step {
+public class Step implements Parcelable {
 
     private String rid;
     private int step;
@@ -12,6 +15,12 @@ public class Step {
     private String description;
     private String videoURL;
     private String thumbnailURL;
+
+    public Step(Parcel in){
+        readFromParcel(in);
+    }
+
+    public Step(){}
 
     public String getRid() {
         return rid;
@@ -60,5 +69,42 @@ public class Step {
     public void setThumbnailURL(String thumbnailURL) {
         this.thumbnailURL = thumbnailURL;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(getRid());
+        parcel.writeInt(get_id());
+        parcel.writeString(getShortDescription());
+        parcel.writeString(getDescription());
+        parcel.writeString(getVideoURL());
+        parcel.writeString(getThumbnailURL());
+
+    }
+
+
+    private void readFromParcel(Parcel in) {
+        rid = in.readString();
+        step = in.readInt();
+        shortDescription = in.readString();
+        description = in.readString();
+        videoURL = in.readString();
+        thumbnailURL = in.readString();
+    }
+
+    public static final Parcelable.Creator<Step> CREATOR
+            = new Parcelable.Creator<Step>() {
+        public Step createFromParcel(Parcel in) {
+            return new Step(in);
+        }
+
+        public Step[] newArray(int size) {
+            return new Step[size];
+        }
+    };
 }
 

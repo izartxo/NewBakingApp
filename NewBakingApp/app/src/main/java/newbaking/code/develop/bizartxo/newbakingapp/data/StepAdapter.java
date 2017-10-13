@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -97,12 +98,14 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView ting,tnum;
+        ImageView cam;
         String url;
 
         StepViewHolder(View v){
             super(v);
             ting = (TextView) v.findViewById(R.id.step);
             tnum = (TextView) v.findViewById(R.id.step_number);
+            cam = (ImageView) v.findViewById(R.id.camerapic);
 
             v.setOnClickListener(this);
         }
@@ -120,6 +123,10 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
             tnum.setText(String.valueOf(pos));
             ting.setText(step.getShortDescription());
             url = step.getVideoURL();
+            if (url.equals(""))
+                cam.setVisibility(View.GONE);
+            else
+                cam.setVisibility(View.VISIBLE);
 
         }
 

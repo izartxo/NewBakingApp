@@ -6,11 +6,13 @@ import android.content.ReceiverCallNotAllowedException;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import java.util.ArrayList;
 
 import newbaking.code.develop.bizartxo.newbakingapp.R;
+import newbaking.code.develop.bizartxo.newbakingapp.model.Step;
 
 /**
  * Created by izartxo on 9/15/17.
@@ -22,20 +24,28 @@ public class AuxActivity extends AppCompatActivity {
     Intent intent;
     boolean novideo = false;
     ArrayList<String> ss = new ArrayList<>();
+    static ArrayList<Step> actualStep;
+    int step = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+        //setSupportActionBar(toolbar);
 
 
         intent = getIntent();
 
-        Bundle bundle = intent.getBundleExtra("data");
+        actualStep = intent.getParcelableArrayListExtra("stepO");
 
-        String link = bundle.getString("video");
-        String sd = bundle.getString("sdesc");
-        String d = bundle.getString("desc");
+        Bundle bundle = intent.getBundleExtra("data");
+        step = bundle.getInt("step");
+
+        String link = actualStep.get(step).getVideoURL(); //bundle.getString("video");
+        String sd = actualStep.get(step).getShortDescription(); //bundle.getString("sdesc");
+        String d = actualStep.get(step).getDescription(); //bundle.getString("desc");
+
         ss = bundle.getStringArrayList("videos");
 
         Log.d("aaaaaaaaaaaaaaaa","lllll: " + link + "-" + sd + "-" + d);
@@ -49,6 +59,7 @@ public class AuxActivity extends AppCompatActivity {
             video.putString("sdesc", sd);
             video.putString("desc", d);
             video.putStringArrayList("videos",ss);
+            video.putInt("step",step);
             InfoFragment fragment = new InfoFragment();
 
             fragment.setArguments(video);
@@ -63,6 +74,7 @@ public class AuxActivity extends AppCompatActivity {
             video.putString("video", link);
             video.putString("sdesc", sd);
             video.putString("desc", d);
+            video.putInt("step",step);
             video.putStringArrayList("videos",ss);
             RecipeDetailFragment fragment = new RecipeDetailFragment();
             fragment.setArguments(video);

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ public class InfoFragment extends Fragment {
 
     ArrayList<String> sl;
     int step=0;
-
+    Intent intent;
 
     @Override
     public void onAttach(Context context) {
@@ -35,7 +36,7 @@ public class InfoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        intent = getActivity().getIntent();
 
 
     }
@@ -50,6 +51,11 @@ public class InfoFragment extends Fragment {
         TextView tvDesc = (TextView) view.findViewById(R.id.info_description);
         Button back = (Button) view.findViewById(R.id.backButton);
         sl = getArguments().getStringArrayList("videos");
+
+
+
+
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +72,11 @@ public class InfoFragment extends Fragment {
 
 
                 bundle.putString("video", sl.get(step+1));
+
+                bundle.putInt("step", step+1);
+                bundle.putStringArrayList("videos",sl);
                 nextIntent.putExtra("data", bundle);
+                nextIntent.putParcelableArrayListExtra("stepO", intent.getParcelableArrayListExtra("stepO"));
 
 
 
@@ -75,6 +85,9 @@ public class InfoFragment extends Fragment {
                 startActivity(nextIntent);
             }
         });
+
+        checkNextStep(next);
+
         if (!(getArguments()==null)) {
             String sd = getArguments().getString("sdesc");
             String d = getArguments().getString("desc");
@@ -83,6 +96,8 @@ public class InfoFragment extends Fragment {
             tvDesc.setText(d);
 
         }
+
+        //Toast.makeText(getContext(),"STEP: " + step, Toast.LENGTH_SHORT).show();
         return view;
 
     }
@@ -100,6 +115,13 @@ public class InfoFragment extends Fragment {
 
 
 
+    }
+
+    public void checkNextStep(Button next){
+        if (sl.size()-1==step)
+            next.setEnabled(false);
+        else
+            next.setEnabled(true);
     }
 
 }

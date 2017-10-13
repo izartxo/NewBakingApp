@@ -1,5 +1,10 @@
 package newbaking.code.develop.bizartxo.newbakingapp.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.graphics.Canvas;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,7 +23,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import newbaking.code.develop.bizartxo.newbakingapp.R;
@@ -45,6 +59,11 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     IngredientAdapter iadapter;
     StepAdapter sadapter;
     ArrayList<String> stepList = new ArrayList<>();
+    ArrayList<Step> stepArray;
+    TextView tIngredients;
+    LinearLayout ingframe, stepframe;
+    ImageView arrow;
+
 
     @Override
     public void onAttach(Context context) {
@@ -71,6 +90,10 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
         rving = (RecyclerView) view.findViewById(R.id.rving);
         rvstep = (RecyclerView) view.findViewById(R.id.rvsteps);
+        tIngredients = (TextView) view.findViewById(R.id.ting);
+        ingframe = (LinearLayout) view.findViewById(R.id.ingframe);
+        stepframe = (LinearLayout) view.findViewById(R.id.stepframe);
+        arrow = (ImageView) view.findViewById(R.id.arrow);
 
         rving.setLayoutManager(new LinearLayoutManager(view.getContext()));
         rvstep.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -82,6 +105,38 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         rvstep.setAdapter(sadapter);
         //rvstep.setHasFixedSize(true);
 
+
+        // Prepare the View for the animation
+        rving.setVisibility(View.VISIBLE);
+        //rving.setAlpha(0.0f);
+
+        tIngredients.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateList();
+            }
+        });
+
+// Start the animation
+       /* rving.animate()
+                .setDuration(3000)
+                .translationY(view.getHeight())
+                .alpha(1.0f)
+                .setListener(null);
+
+        rving.animate()
+                .setDuration(3000)
+                .translationY(0)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        rving.setVisibility(View.VISIBLE);
+                    }
+                });
+*/
+
+
         recipe = new Recipe();
 
 
@@ -89,6 +144,56 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         getData2();
         return view;
 
+    }
+
+    private void animateList(){
+        if (rving.getVisibility()==View.INVISIBLE || rving.getVisibility()==View.GONE){
+            //rving.setVisibility(View.INVISIBLE);
+            arrow.animate()
+                    .setDuration(1000)
+                    .rotation(90.0f)
+                    .setListener(null);
+            stepframe.animate()
+                    .setDuration(1000)
+                    .translationYBy(rving.getHeight())
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+
+
+                        }
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            rving.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+        }else{
+            arrow.animate()
+                    .setDuration(1000)
+                    .rotation(0.f)
+                    .setListener(null);
+            stepframe.animate()
+                    .setDuration(1000)
+                    //.translationY(-rving.getHeight())
+                    .translationYBy(-rving.getHeight())
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            rving.setVisibility(View.INVISIBLE);
+
+                        }
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+
+                        }
+                    });
+
+        }
     }
 
     @Override
@@ -229,7 +334,8 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         String sdesc = sadapter.getItem(position).getShortDescription();
         String desc = sadapter.getItem(position).getDescription();
         int s = position;
-        updateVideo(s, sdesc, desc, url);
+        //updateVideo(s, sdesc, desc, url);
+        updateVideo(s, stepArray);
     }
 
     public void updateVideo(int step, String sd, String d, String v) {
@@ -242,7 +348,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
 
 
-
+        Toast.makeText(getContext(),"MAIN STEP: " + step, Toast.LENGTH_SHORT).show();
         Bundle args = new Bundle();
         args.putString("video", v);
         args.putString("sdesc", sd);
@@ -291,12 +397,12 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
             if (novideo){
                 Log.d("---------","novideo " + args.getString("sdesc"));
                 intent.putExtra("data", args);
-                startActivity(intent);
+
             }else{
 
                 Log.d("TEST value", "value: " + args.getString("video"));
                 intent.putExtra("data", args);
-                startActivity(intent);
+
             /*RecipeDetailActivity ra = (RecipeDetailActivity) getActivity();
             ra.setContentView(R.layout.detail_recipe_fragment);
 
@@ -311,6 +417,94 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
             transaction.commit();*/
             }
+            startActivity(intent);
+        }
+    }
+
+    public void updateVideo(int step, ArrayList<Step> stepO) {
+
+
+        boolean novideo = true;
+
+
+
+        if (!stepO.get(step).getVideoURL().equals(""))
+            novideo = false;
+
+
+
+        Toast.makeText(getContext(),"MAIN STEP: " + step, Toast.LENGTH_SHORT).show();
+        Bundle args = new Bundle();
+        args.putString("video", stepO.get(step).getVideoURL());
+        args.putString("sdesc", stepO.get(step).getShortDescription());
+        args.putInt("step", step);
+
+        args.putString("desc", stepO.get(step).getDescription());
+        args.putStringArrayList("videos", stepList);
+
+
+        if (RecipeDetailActivity.getTwoPane()) {
+
+            if (novideo){
+                InfoFragment idf = new InfoFragment();
+
+                idf.setArguments(args);
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack so the user can navigate back
+                transaction.replace(R.id.video_frame, idf);
+                transaction.addToBackStack(null);
+
+// Commit the transaction
+                transaction.commit();
+
+            }else {
+
+
+                RecipeDetailFragment rdf = new RecipeDetailFragment();
+
+                rdf.setArguments(args);
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack so the user can navigate back
+                transaction.replace(R.id.video_frame, rdf);
+                transaction.addToBackStack(null);
+
+// Commit the transaction
+                transaction.commit();
+            }
+            //getFragmentManager().beginTransaction().add(R.id.detailf_fragment, rdf).commit();
+        }else{
+            Intent intent = new Intent(_context, AuxActivity.class);
+            intent.putExtra("stepO",stepO);
+            if (novideo){
+                Log.d("---------","novideo " + args.getString("sdesc"));
+                intent.putExtra("data", args);
+
+            }else{
+
+                Log.d("TEST value", "value: " + args.getString("video"));
+                intent.putExtra("data", args);
+
+            /*RecipeDetailActivity ra = (RecipeDetailActivity) getActivity();
+            ra.setContentView(R.layout.detail_recipe_fragment);
+
+            RecipeDetailFragment rdf = new RecipeDetailFragment();
+
+            rdf.setArguments(args);
+
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+            transaction.replace(R.id.video_frame, rdf);
+            transaction.addToBackStack(null);
+
+            transaction.commit();*/
+            }
+            startActivity(intent);
         }
     }
 
@@ -391,8 +585,10 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                         rving.setHasFixedSize(true);
                     }
                     sadapter.notifyDataSetChanged();
+                    stepArray = new ArrayList<Step>();
                     for (int u = 0; u < sadapter.getItemCount(); u++){
                         stepList.add(sadapter.getItem(u).getVideoURL());
+                        stepArray.add(sadapter.getItem(u));
                     }
 
                     break;

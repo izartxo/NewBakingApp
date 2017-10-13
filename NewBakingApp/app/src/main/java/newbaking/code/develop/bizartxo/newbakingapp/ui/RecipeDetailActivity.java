@@ -1,6 +1,8 @@
 package newbaking.code.develop.bizartxo.newbakingapp.ui;
 
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
@@ -22,11 +24,15 @@ public class RecipeDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_recipe_detail);
 
 
         if (findViewById(R.id.port) != null){
             twoPane = true;
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
         else{
             twoPane = false;

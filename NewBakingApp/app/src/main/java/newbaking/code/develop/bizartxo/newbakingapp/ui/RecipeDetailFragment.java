@@ -1,5 +1,6 @@
 package newbaking.code.develop.bizartxo.newbakingapp.ui;
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -88,6 +90,8 @@ public class RecipeDetailFragment extends Fragment {
             Log.d("vaaaaaaaaaaaa","luuuuuuuuuuuue: " + value);
         }
 
+        Toast.makeText(getContext(),"STEP: " + step, Toast.LENGTH_SHORT).show();
+
 
 
 
@@ -95,7 +99,7 @@ public class RecipeDetailFragment extends Fragment {
 
 
 
-        if (view.findViewById(R.id.land) == null || view.findViewById(R.id.portrait) == null){
+        if (view.findViewById(R.id.land) == null && view.findViewById(R.id.portrait) == null){
             TextView tv = (TextView) view.findViewById(R.id.stei);
             tv.setText(stepText);
             TextView tvd = (TextView) view.findViewById(R.id.sted);
@@ -115,19 +119,25 @@ public class RecipeDetailFragment extends Fragment {
                     Bundle bundle = new Bundle();
 
 
-                    for (int y = 0; y < sl.size(); y++){
+                  /*  for (int y = 0; y < sl.size(); y++){
                         boolean flag = sl.get(y).equalsIgnoreCase(value);
                         if (flag){
-                            bundle.putString("video", sl.get(y+1));
+                  */          bundle.putString("video", sl.get(step+1));
+                            bundle.putInt("step", step+1);
+                            bundle.putStringArrayList("videos",sl);
+                            nextIntent.putParcelableArrayListExtra("stepO", intent.getParcelableArrayListExtra("stepO"));
                             nextIntent.putExtra("data", bundle);
-                        }
+                   /*     }
 
-                    }
+                    }*/
 
                     getActivity().finish();
                     startActivity(nextIntent);
                 }
             });
+
+            checkNextStep(next);
+
 
         }
 
@@ -218,6 +228,13 @@ public class RecipeDetailFragment extends Fragment {
 
     }
 
+
+    public void checkNextStep(Button next){
+        if (sl.size()-1==step)
+            next.setEnabled(false);
+        else
+            next.setEnabled(true);
+    }
 
 }
 
