@@ -8,12 +8,19 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
+
+import newbaking.code.develop.bizartxo.newbakingapp.R;
+import newbaking.code.develop.bizartxo.newbakingapp.ui.RecipeMainActivity;
 
 /**
  * Created by izartxo on 9/12/17.
@@ -51,6 +58,8 @@ public class NetworksUtils {
     }
 
     public static void showMessage(Context context, String msg){
+
+
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
         alertDialog.setTitle("BakingApp");
         alertDialog.setMessage(msg);

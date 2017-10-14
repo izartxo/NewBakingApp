@@ -2,6 +2,7 @@ package newbaking.code.develop.bizartxo.newbakingapp.ui;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -35,7 +36,13 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         ActionBar toolbar = getSupportActionBar();
 
-        toolbar.setHomeButtonEnabled(true);
+        toolbar.setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+
+        Bundle bundle = intent.getExtras().getBundle("data");
+
+        toolbar.setTitle("- ");
 
         if (findViewById(R.id.port) != null){
             twoPane = true;

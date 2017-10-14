@@ -15,6 +15,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -44,6 +45,8 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         super.onCreate(savedInstanceState);
 
 
@@ -72,10 +75,6 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
         adapter.notifyDataSetChanged();
 
         // Cursor recipes = getContentResolver().query(MyContentProvider.Recipes.RECIPES, null, null, null, null);
-
-
-
-        getSupportLoaderManager().initLoader(ID_BAKING_LOADER, null, this);
 
 
     }
@@ -155,6 +154,7 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
                 }
             }else{
                 NetworksUtils.showMessage(RecipeMainActivity.this, "Internet not available.");
+
             }
         }
         else {
@@ -169,4 +169,10 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
     }
 
     ///////////////////////// LOADER LOGIC END //////////////////////////
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        getSupportLoaderManager().initLoader(ID_BAKING_LOADER, null, this);
+    }
 }
