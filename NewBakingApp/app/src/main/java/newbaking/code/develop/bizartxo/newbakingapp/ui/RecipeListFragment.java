@@ -52,6 +52,8 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     private static final int ID_INGREDIENT_LOADER = 55;
     private static final int ID_STEP_LOADER = 66;
 
+    static boolean terminatedAnimation = true;
+
     Context _context;
     Intent intent;
     Recipe recipe;
@@ -110,10 +112,12 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         rving.setVisibility(View.VISIBLE);
         //rving.setAlpha(0.0f);
 
+
         tIngredients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                animateList();
+                if (terminatedAnimation)
+                    animateList();
             }
         });
 
@@ -151,7 +155,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
             //rving.setVisibility(View.INVISIBLE);
             arrow.animate()
                     .setDuration(1000)
-                    .rotation(90.0f)
+                    .rotation(0.0f)
                     .setListener(null);
             stepframe.animate()
                     .setDuration(1000)
@@ -160,12 +164,14 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                         @Override
                         public void onAnimationStart(Animator animation) {
                             super.onAnimationStart(animation);
+                            terminatedAnimation = false;
 
 
                         }
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
+                            terminatedAnimation = true;
                             rving.setVisibility(View.VISIBLE);
                         }
                     });
@@ -173,7 +179,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         }else{
             arrow.animate()
                     .setDuration(1000)
-                    .rotation(0.f)
+                    .rotation(90.f)
                     .setListener(null);
             stepframe.animate()
                     .setDuration(1000)
@@ -183,12 +189,15 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                         @Override
                         public void onAnimationStart(Animator animation) {
                             super.onAnimationStart(animation);
+                            terminatedAnimation = false;
                             rving.setVisibility(View.INVISIBLE);
+
 
                         }
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
+                            terminatedAnimation = true;
 
                         }
                     });

@@ -26,6 +26,7 @@ import newbaking.code.develop.bizartxo.newbakingapp.data.RecipeAdapter;
 import newbaking.code.develop.bizartxo.newbakingapp.data.RecipeProvider;
 import newbaking.code.develop.bizartxo.newbakingapp.model.Recipe;
 import newbaking.code.develop.bizartxo.newbakingapp.network.HttpAsyncTask;
+import newbaking.code.develop.bizartxo.newbakingapp.network.NetworksUtils;
 
 public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapter.OnGorkaClick, LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -39,6 +40,7 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
     List<Recipe> recipes;
     static RecipeAdapter adapter;
     Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,12 +145,16 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data==null || data.getCount()==0){
             Log.d("---------","Cargar datos...");
-            try {
-                HttpAsyncTask asyncMovieData = new HttpAsyncTask(getApplicationContext());
-                asyncMovieData.execute(new URL("https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json"));
-            }
-            catch(IOException ioe){
-                Log.d(TAG, "ERROOOOOOOR");
+            if (NetworksUtils.isConnected(context)){
+                try {
+                    HttpAsyncTask asyncMovieData = new HttpAsyncTask(getApplicationContext());
+                    asyncMovieData.execute(new URL("https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json"));
+                }
+                catch(IOException ioe){
+                    Log.d(TAG, "ERROOOOOOOR");
+                }
+            }else{
+                NetworksUtils.showMessage(RecipeMainActivity.this, "Internet not available.");
             }
         }
         else {

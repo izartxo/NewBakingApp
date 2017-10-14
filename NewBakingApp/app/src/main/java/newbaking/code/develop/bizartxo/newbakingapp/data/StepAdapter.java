@@ -1,12 +1,14 @@
 package newbaking.code.develop.bizartxo.newbakingapp.data;
 
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     String[] datos = new String[3];
     ArrayList<Step> stepList;
     final private OnStepClick mStepListener;
+
+    LinearLayout lrow;
 
     Cursor mStepDataCursor;
 
@@ -95,6 +99,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
             return mStepDataCursor.getCount();
     }
 
+
+
     class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView ting,tnum;
@@ -106,6 +112,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
             ting = (TextView) v.findViewById(R.id.step);
             tnum = (TextView) v.findViewById(R.id.step_number);
             cam = (ImageView) v.findViewById(R.id.camerapic);
+            lrow = (LinearLayout) v.findViewById(R.id.lrow);
 
             v.setOnClickListener(this);
         }
@@ -123,6 +130,19 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
             tnum.setText(String.valueOf(pos));
             ting.setText(step.getShortDescription());
             url = step.getVideoURL();
+
+            if ((pos % 2) != 0) {
+                lrow.setBackgroundColor(Color.argb(255, 255, 153, 255));
+                /*ting.setBackgroundColor(Color.argb(255, 255, 153, 255));
+                tnum.setBackgroundColor(Color.argb(255, 255, 153, 255));
+                cam.setBackgroundColor(Color.argb(255, 255, 153, 255));*/
+            }else {
+                lrow.setBackgroundColor(Color.argb(255, 204, 153, 255));
+                /*ting.setBackgroundColor(Color.argb(255, 204, 153, 255));
+                tnum.setBackgroundColor(Color.argb(255, 204, 153, 255));
+                cam.setBackgroundColor(Color.argb(255, 204, 153, 255));*/
+            }
+
             if (url.equals(""))
                 cam.setVisibility(View.GONE);
             else

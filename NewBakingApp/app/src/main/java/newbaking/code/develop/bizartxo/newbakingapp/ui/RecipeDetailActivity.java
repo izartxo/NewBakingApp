@@ -9,7 +9,11 @@ import android.os.Bundle;
 
 
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+
+import android.view.MenuItem;
+import android.widget.Toolbar;
 
 import newbaking.code.develop.bizartxo.newbakingapp.R;
 
@@ -29,6 +33,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_recipe_detail);
 
+        ActionBar toolbar = getSupportActionBar();
+
+        toolbar.setHomeButtonEnabled(true);
 
         if (findViewById(R.id.port) != null){
             twoPane = true;
@@ -41,6 +48,17 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; goto parent activity.
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     protected void onResume() {

@@ -99,7 +99,7 @@ public class RecipeDetailFragment extends Fragment {
 
 
 
-        if (view.findViewById(R.id.land) == null && view.findViewById(R.id.portrait) == null){
+        if (view.findViewById(R.id.land) == null || view.findViewById(R.id.portrait) == null){
             TextView tv = (TextView) view.findViewById(R.id.stei);
             tv.setText(stepText);
             TextView tvd = (TextView) view.findViewById(R.id.sted);
