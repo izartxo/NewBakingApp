@@ -49,19 +49,19 @@ public class InfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.info_fragment, container, false);
         TextView tvsDesc = (TextView) view.findViewById(R.id.info_sdescription);
         TextView tvDesc = (TextView) view.findViewById(R.id.info_description);
-        Button back = (Button) view.findViewById(R.id.backButton);
+        //Button back = (Button) view.findViewById(R.id.backButton);
         sl = getArguments().getStringArrayList("videos");
 
 
 
 
 
-        back.setOnClickListener(new View.OnClickListener() {
+        /*back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().finish();
             }
-        });
+        });*/
         Button next = (Button) view.findViewById(R.id.nextButton);
         next.setOnClickListener(new View.OnClickListener() {
             @Override

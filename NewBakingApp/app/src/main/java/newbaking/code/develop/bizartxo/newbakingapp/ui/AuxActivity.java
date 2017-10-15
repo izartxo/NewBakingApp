@@ -38,7 +38,6 @@ public class AuxActivity extends AppCompatActivity {
 
         toolbar.setDisplayHomeAsUpEnabled(true);
 
-
         intent = getIntent();
 
         actualStep = intent.getParcelableArrayListExtra("stepO");
@@ -51,6 +50,8 @@ public class AuxActivity extends AppCompatActivity {
         String d = actualStep.get(step).getDescription(); //bundle.getString("desc");
 
         ss = bundle.getStringArrayList("videos");
+
+        toolbar.setTitle(sd);
 
         Log.d("aaaaaaaaaaaaaaaa","lllll: " + link + "-" + sd + "-" + d);
 

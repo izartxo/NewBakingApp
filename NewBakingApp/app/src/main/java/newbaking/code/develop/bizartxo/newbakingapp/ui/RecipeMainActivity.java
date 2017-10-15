@@ -1,10 +1,12 @@
 package newbaking.code.develop.bizartxo.newbakingapp.ui;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -49,6 +51,8 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
 
         super.onCreate(savedInstanceState);
 
+        //ActionBar toolbar = getActionBar();
+        //toolbar.setBackgroundDrawable(getResources().getDrawable());
 
 
         setContentView(R.layout.activity_recipe_main);

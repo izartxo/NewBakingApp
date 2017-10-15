@@ -38,11 +38,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         toolbar.setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
-
-        Bundle bundle = intent.getExtras().getBundle("data");
-
-        toolbar.setTitle("- ");
 
         if (findViewById(R.id.port) != null){
             twoPane = true;

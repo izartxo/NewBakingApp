@@ -56,11 +56,13 @@ public class RecipeDetailFragment extends Fragment {
     ArrayList<String> sl;
     String value="";
     int step=0;
+    static Context _context;
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        _context = context;
 
     }
 
@@ -104,13 +106,13 @@ public class RecipeDetailFragment extends Fragment {
             tv.setText(stepText);
             TextView tvd = (TextView) view.findViewById(R.id.sted);
             tvd.setText(stepTextD);
-            Button back = (Button) view.findViewById(R.id.backButton);
+            /*Button back = (Button) view.findViewById(R.id.backButton);
             back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     getActivity().finish();
                 }
-            });
+            });*/
             Button next = (Button) view.findViewById(R.id.nextButton);
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -186,12 +188,6 @@ public class RecipeDetailFragment extends Fragment {
 
     }
 
-
-
-
-
-
-
     @Override
 
     public void onResume() {
@@ -206,8 +202,10 @@ public class RecipeDetailFragment extends Fragment {
 
 
         if (player!=null) {
+            Toast.makeText(_context, "Releasing video...", Toast.LENGTH_SHORT).show();
             player.setPlayWhenReady(false);
             player.release();
+            player = null;
 
         }
     }
