@@ -8,16 +8,43 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import java.util.Random;
+
 import newbaking.code.develop.bizartxo.newbakingapp.R;
 import newbaking.code.develop.bizartxo.newbakingapp.ui.AuxActivity;
 
 public class BakingAppWidgetProvider extends AppWidgetProvider {
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        final int N = appWidgetIds.length;
+        final int count = appWidgetIds.length;
+
+
+        for (int i = 0; i < count; i++) {
+            int widgetId = appWidgetIds[i];
+
+
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
+                    R.layout.appwidget_layout);
+            remoteViews.setTextViewText(R.id.headerW, "xxxxxxx");
+
+
+            Intent intent = new Intent(context, AppWidgetProvider.class);
+            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+
+            remoteViews.setRemoteAdapter(R.id.rvW, intent);
+
+            remoteViews.setEmptyView(R.id.rvW, R.id.empty);
+
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                    0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            //remoteViews.setOnClickPendingIntent(R.id.actionButton, pendingIntent);
+            appWidgetManager.updateAppWidget(widgetId, remoteViews);
+        }
 
         // Perform this loop procedure for each App Widget that belongs to this provider
-        for (int i=0; i<N; i++) {
+        /*for (int i=0; i<N; i++) {
             int appWidgetId = appWidgetIds[i];
 
             // Create an Intent to launch ExampleActivity
@@ -31,6 +58,6 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
             // Tell the AppWidgetManager to perform an update on the current app widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
-        }
+        }*/
     }
 }

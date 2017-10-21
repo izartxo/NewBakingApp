@@ -14,15 +14,21 @@
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/headerW"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:text="EOOEOEOEOEOE" />
 
     <ListView
-        android:id="@+id/rv"
+        android:id="@+id/rvW"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
+    <TextView android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FF0000"
+        android:text="No data"/>
 
   </LinearLayout>
 
