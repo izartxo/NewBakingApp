@@ -12,4 +12,8 @@
         android:textSize="15dp"
         android:layout_margin="3dp"
         />
+<<<<<<< HEAD
 </LinearLayout>
+=======
+</LinearLayout>
+>>>>>>> 3734eee5759c0973a8d224835fc8b539da9ee0dc
