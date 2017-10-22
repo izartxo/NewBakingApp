@@ -4,13 +4,18 @@ package newbaking.code.develop.bizartxo.newbakingapp.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.widget.RemoteViews;
 
 import java.util.Random;
 
 import newbaking.code.develop.bizartxo.newbakingapp.R;
+import newbaking.code.develop.bizartxo.newbakingapp.data.IngredientAdapter;
+import newbaking.code.develop.bizartxo.newbakingapp.data.RecipeProvider;
+import newbaking.code.develop.bizartxo.newbakingapp.model.IngredientColumns;
 import newbaking.code.develop.bizartxo.newbakingapp.ui.AuxActivity;
 
 public class BakingAppWidgetProvider extends AppWidgetProvider {
@@ -27,21 +32,42 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
                     R.layout.appwidget_layout);
             remoteViews.setTextViewText(R.id.headerW, "xxxxxxx");
 
+           // remoteViews = new RemoteViews(context.getPackageName(), R.layout.appwidget_layout);
 
-            Intent intent = new Intent(context, AppWidgetProvider.class);
+            // Update the header to reflect the weather for "today"
+            Cursor c = context.getContentResolver().query(RecipeProvider.Ingredients.INGREDIENTS, null,
+                    null, null, null);
+            if (c.moveToPosition(0)) {
+                int ingredientIndex = c.getColumnIndex(IngredientColumns.INGREDIENT);
+
+                String ingredient = c.getString(ingredientIndex);
+
+                remoteViews.setTextViewText(R.id.ingredient, ingredient);
+
+            }
+            c.close();
+
+
+            Intent intent = new Intent(context, BakingAppWidgetService.class);
             intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
 
-            remoteViews.setRemoteAdapter(R.id.rvW, intent);
+            remoteViews.setRemoteAdapter(appWidgetIds[i], R.id.rvW, intent);
 
             remoteViews.setEmptyView(R.id.rvW, R.id.empty);
 
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
-                    0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            final AppWidgetManager mgr = AppWidgetManager.getInstance(context);
+            final ComponentName cn = new ComponentName(context, BakingAppWidgetProvider.class);
+            mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn), R.id.ingredient);
+
+       /*     PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                    0, intent, PendingIntent.FLAG_UPDATE_CURRENT);*/
             //remoteViews.setOnClickPendingIntent(R.id.actionButton, pendingIntent);
-            appWidgetManager.updateAppWidget(widgetId, remoteViews);
+            appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);//widgetId, remoteViews);
         }
+
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
 
         // Perform this loop procedure for each App Widget that belongs to this provider
         /*for (int i=0; i<N; i++) {

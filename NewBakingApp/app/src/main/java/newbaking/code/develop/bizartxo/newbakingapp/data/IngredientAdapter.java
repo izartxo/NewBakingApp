@@ -24,7 +24,7 @@ import newbaking.code.develop.bizartxo.newbakingapp.model.Step;
  * Created by izartxo on 9/13/17.
  */
 
-public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> implements RemoteViewsService.RemoteViewsFactory {
+public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
 
     String[] datos = new String[3];
     ArrayList<Ingredient> ingredientList;
@@ -91,55 +91,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             return mIngredientCursor.getCount();
     }
 
-    @Override
-    public void onCreate() {
 
-    }
-
-    @Override
-    public void onDataSetChanged() {
-
-    }
-
-    @Override
-    public void onDestroy() {
-
-    }
-
-    @Override
-    public int getCount() {
-        return ingredientList.size();
-    }
-
-    @Override
-    public RemoteViews getViewAt(int i) {
-        RemoteViews row=new RemoteViews(ctx.getPackageName(),
-                R.layout.ingredient_item);
-
-        mIngredientCursor.moveToPosition(i);
-
-        String ing = mIngredientCursor.getString(mIngredientCursor.getColumnIndex(IngredientColumns.INGREDIENT));
-        row.setTextViewText(R.id.ingredient, "hhhhhhhhh");
-
-        Intent intent = new Intent();
-        Bundle extras=new Bundle();
-
-        extras.putString("gorka", ingredientList.get(i).getIngredient());
-        intent.putExtras(extras);
-
-
-        return(row);
-    }
-
-    @Override
-    public RemoteViews getLoadingView() {
-        return null;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 0;
-    }
 
     class IngredientViewHolder extends RecyclerView.ViewHolder{
 

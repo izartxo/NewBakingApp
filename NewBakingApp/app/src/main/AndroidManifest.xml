@@ -33,6 +33,7 @@
 			<meta-data android:name="android.appwidget.provider"
                android:resource="@xml/appwidget_info" />
 		</receiver>
+        <service android:name=".widget.BakingAppWidgetService" />
     </application>
 
 </manifest>
