@@ -39,6 +39,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         toolbar.setDisplayHomeAsUpEnabled(true);
 
 
+
         if (findViewById(R.id.port) != null){
             twoPane = true;
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);

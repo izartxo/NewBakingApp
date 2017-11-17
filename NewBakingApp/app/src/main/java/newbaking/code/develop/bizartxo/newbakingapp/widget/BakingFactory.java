@@ -10,11 +10,10 @@ import android.widget.RemoteViewsService;
 import newbaking.code.develop.bizartxo.newbakingapp.R;
 
 /**
- * Created by bizartxo on 21/10/17.
+ * Created by izartxo on 10/29/17.
  */
 
-public class LoremViewsFactory implements RemoteViewsService.RemoteViewsFactory {
-
+public class BakingFactory implements RemoteViewsService.RemoteViewsFactory {
     private static final String[] items={"lorem", "ipsum", "dolor",
             "sit", "amet", "consectetuer",
             "adipiscing", "elit", "morbi",
@@ -28,7 +27,8 @@ public class LoremViewsFactory implements RemoteViewsService.RemoteViewsFactory 
     private Context ctxt=null;
     private int appWidgetId;
 
-    public LoremViewsFactory(Context ctxt, Intent intent) {
+
+    public BakingFactory(Context ctxt, Intent intent) {
         this.ctxt=ctxt;
         appWidgetId=intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -36,58 +36,58 @@ public class LoremViewsFactory implements RemoteViewsService.RemoteViewsFactory 
 
     @Override
     public void onCreate() {
-
-    }
-
-    @Override
-    public void onDataSetChanged() {
-
+        // no-op
     }
 
     @Override
     public void onDestroy() {
-
+        // no-op
     }
 
     @Override
     public int getCount() {
-        return items.length;
+        return(items.length);
     }
 
     @Override
-    public RemoteViews getViewAt(int i) {
+    public RemoteViews getViewAt(int position) {
         RemoteViews row=new RemoteViews(ctxt.getPackageName(),
-                R.layout.ingredient_item);
+                R.layout.row);
 
-        row.setTextViewText(R.id.ingredient, items[i]);
+        row.setTextViewText(android.R.id.text1, items[position]);
 
-        Intent intent=new Intent();
+        Intent i=new Intent();
         Bundle extras=new Bundle();
 
-        extras.putString("extra", items[i]);
-        intent.putExtras(extras);
-        row.setOnClickFillInIntent(android.R.id.text1, intent);
+        extras.putString("positioning", items[position]);
+        i.putExtras(extras);
+        row.setOnClickFillInIntent(android.R.id.text1, i);
 
         return(row);
     }
 
     @Override
     public RemoteViews getLoadingView() {
-        return null;
+        return(null);
     }
 
     @Override
     public int getViewTypeCount() {
-        return 1;
+        return(1);
     }
 
     @Override
-    public long getItemId(int i) {
-        return i;
+    public long getItemId(int position) {
+        return(position);
     }
 
     @Override
     public boolean hasStableIds() {
-        return true;
+        return(true);
+    }
+
+    @Override
+    public void onDataSetChanged() {
+        // no-op
     }
 }

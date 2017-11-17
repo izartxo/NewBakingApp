@@ -1,11 +1,17 @@
 package newbaking.code.develop.bizartxo.newbakingapp.widget;
 
+import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -16,6 +22,7 @@ import newbaking.code.develop.bizartxo.newbakingapp.data.IngredientAdapter;
 import newbaking.code.develop.bizartxo.newbakingapp.data.RecipeProvider;
 import newbaking.code.develop.bizartxo.newbakingapp.model.Ingredient;
 import newbaking.code.develop.bizartxo.newbakingapp.model.IngredientColumns;
+import newbaking.code.develop.bizartxo.newbakingapp.model.RecipeColumns;
 
 /**
  * Created by bizartxo on 17/10/17.
@@ -23,57 +30,102 @@ import newbaking.code.develop.bizartxo.newbakingapp.model.IngredientColumns;
 
 public class BakingAppWidgetService extends RemoteViewsService {
 
-    @Override
-    public RemoteViewsFactory onGetViewFactory(Intent intent){
-        return new RemoteViewsFactory() {
+    //String[] STOCK_COLUMNS = {RecipeColumns._ID,RecipeColumns.TITLE, RecipeColumns.IMAGE};
 
-            private Cursor cursor = null;
+    @Override
+    public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        return new WidgetFactory(getApplicationContext(), intent);
+    }
+
+    class WidgetFactory implements RemoteViewsService.RemoteViewsFactory{
+
+            private Cursor data = null;
+            private Context mContext;
+            private int mAppWidgetId;
+
+            public WidgetFactory(Context context, Intent intent){
+                mContext = context;
+                mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            }
 
             @Override
             public void onCreate() {
-
+                // Nothing to do
             }
 
             @Override
             public void onDataSetChanged() {
-                if (cursor != null){
-                    cursor.close();
-                }
 
-                Uri bakingWidgetUri = RecipeProvider.Ingredients.INGREDIENTS;
-                cursor = getContentResolver().query(bakingWidgetUri,
-                        null,
+
+                data = BakingAppWidgetProvider.getData();
+
+                if (data == null) {
+                    return;
+                }
+                // This method is called by the app hosting the widget (e.g., the launcher)
+                // However, our ContentProvider is not exported so it doesn't have access to the
+                // data. Therefore we need to clear (and finally restore) the calling identity so
+                // that calls use our process and permission
+                //final long identityToken = Binder.clearCallingIdentity();
+
+                //Uri weatherForLocationUri = RecipeProvider.Recipes.RECIPES;
+                /*data = getContentResolver().query(weatherForLocationUri,
+                        STOCK_COLUMNS,
                         null,
                         null,
                         null);
+                Binder.restoreCallingIdentity(identityToken);*/
+
             }
 
             @Override
             public void onDestroy() {
-                if (cursor != null){
-                    cursor.close();
-                    cursor = null;
+                if (data != null) {
+                    data.close();
+                    data = null;
                 }
             }
 
             @Override
             public int getCount() {
-                return cursor == null ? 0 : cursor.getCount();
+                return data == null ? 0 : data.getCount();
             }
 
             @Override
-            public RemoteViews getViewAt(int i) {
-                if (i == AdapterView.INVALID_POSITION || cursor == null || !cursor.moveToPosition(i)){
+            public RemoteViews getViewAt(int position) {
+                if (position == AdapterView.INVALID_POSITION ||
+                        data == null || !data.moveToPosition(position)) {
                     return null;
                 }
-                RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_item);
+                RemoteViews views = new RemoteViews(getPackageName(),
+                        R.layout.widget_item);
 
-                String ingredient = cursor.getString(1);
+                for (int u = 0; u < data.getColumnCount(); u++){
+                    Log.d("##################", "-->> " + data.getString(u));
+                    String title = data.getString(data.getColumnIndex(IngredientColumns.INGREDIENT));
 
-                views.setTextViewText(R.id.ingredientW, ingredient);
+                    views.setTextViewText(R.id.ingredientW, title);
+                }
 
+
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                    // setRemoteContentDescription(views, description);
+                }
+
+
+
+                final Intent fillInIntent = new Intent();
+
+                Uri weatherUri = RecipeProvider.Recipes.RECIPES;
+                fillInIntent.setData(weatherUri);
+                views.setOnClickFillInIntent(R.id.ingredientW, fillInIntent);
                 return views;
+            }
 
+            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+            private void setRemoteContentDescription(RemoteViews views, String description) {
+                //      views.setContentDescription(R.id.widget_icon, description);
             }
 
             @Override
@@ -87,8 +139,10 @@ public class BakingAppWidgetService extends RemoteViewsService {
             }
 
             @Override
-            public long getItemId(int i) {
-                return i;
+            public long getItemId(int position) {
+                if (data.moveToPosition(position))
+                    return data.getLong(0);
+                return position;
             }
 
             @Override
@@ -96,109 +150,4 @@ public class BakingAppWidgetService extends RemoteViewsService {
                 return true;
             }
         };
-    }
-
-    /*@Override
-    public RemoteViewsService.RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new BakingWidgetFactory(this.getApplicationContext(), intent);
-    }
-
-    class BakingWidgetFactory implements RemoteViewsFactory{
-
-        private Context mContext;
-        private Cursor mCursor;
-        private int mAppWidgetId;
-
-        BakingWidgetFactory(Context context, Intent intent){
-            mContext = context;
-            mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    AppWidgetManager.INVALID_APPWIDGET_ID);
-        }
-
-        @Override
-        public void onCreate() {
-            onDataSetChanged();
-        }
-
-        @Override
-        public void onDestroy() {
-            if (mCursor != null) {
-                mCursor.close();
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return mCursor.getCount();
-        }
-
-        @Override
-        public RemoteViews getViewAt(int i) {
-            // Get the data for this position from the content provider
-            String ingredient = "----";
-
-            if (mCursor.moveToPosition(i)) {
-                final int ingredientIndex = mCursor.getColumnIndex(IngredientColumns.INGREDIENT);
-
-                ingredient = mCursor.getString(ingredientIndex);
-            }
-
-            // Return a proper item with the proper day and temperature
-
-            final int itemId = R.layout.ingredient_item;
-            RemoteViews rv = new RemoteViews(mContext.getPackageName(), itemId);
-            rv.setTextViewText(R.id.ingredient, ingredient);
-            //rv.setScrollPosition(R.id.weather_list, 5);
-
-            // Set the click intent so that we can handle it and show a toast message
-
-
-            return rv;
-            //--
-            *//*RemoteViews row=new RemoteViews(ctx.getPackageName(),
-                    R.layout.ingredient_item);
-
-            mIngredientCursor.moveToPosition(i);
-
-            String ing = mIngredientCursor.getString(mIngredientCursor.getColumnIndex(IngredientColumns.INGREDIENT));
-            row.setTextViewText(R.id.ingredient, "hhhhhhhhh");
-
-            Intent intent = new Intent();
-            Bundle extras=new Bundle();
-
-            extras.putString("gorka", ingredientList.get(i).getIngredient());
-            intent.putExtras(extras);
-
-
-            return(row);*//*
-        }
-
-        @Override
-        public RemoteViews getLoadingView() {
-            return null;
-        }
-
-        @Override
-        public int getViewTypeCount() {
-            return 1;
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public boolean hasStableIds() {
-            return true;
-        }
-
-        public void onDataSetChanged() {
-            // Refresh the cursor
-            if (mCursor != null) {
-                mCursor.close();
-            }
-            mCursor = mContext.getContentResolver().query(RecipeProvider.Ingredients.INGREDIENTS, null, null,
-                    null, null);
-        }
-    }*/
-
-}
+ }

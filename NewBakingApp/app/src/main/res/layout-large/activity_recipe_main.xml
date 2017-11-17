@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/grid_large"
+    android:background="#FF44AAFF"
     tools:context="newbaking.code.develop.bizartxo.newbakingapp.ui.RecipeMainActivity">
 
     <!-- <android.support.v7.widget.Toolbar

@@ -30,6 +30,7 @@ import newbaking.code.develop.bizartxo.newbakingapp.data.RecipeProvider;
 import newbaking.code.develop.bizartxo.newbakingapp.model.Recipe;
 import newbaking.code.develop.bizartxo.newbakingapp.network.HttpAsyncTask;
 import newbaking.code.develop.bizartxo.newbakingapp.network.NetworksUtils;
+import newbaking.code.develop.bizartxo.newbakingapp.widget.TestIntent;
 
 public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapter.OnGorkaClick, LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -177,6 +178,10 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
     @Override
     public void onResume(){
         super.onResume();
+        Intent intent = new Intent(getApplicationContext(), TestIntent.class);
+        startService(intent);
         getSupportLoaderManager().initLoader(ID_BAKING_LOADER, null, this);
+
+
     }
 }

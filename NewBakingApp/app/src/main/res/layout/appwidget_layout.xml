@@ -13,11 +13,11 @@
     >
 
 
-    <TextView
+  <!--  <TextView
         android:id="@+id/headerW"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:text="EOOEOEOEOEOE" />
+        android:text="EOOEOEOEOEOE" />-->
 
     <ListView
         android:id="@+id/rvW"
@@ -28,7 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FF0000"
-        android:text="No data"/>
+        android:text="No data"
+        />
 
   </LinearLayout>
 

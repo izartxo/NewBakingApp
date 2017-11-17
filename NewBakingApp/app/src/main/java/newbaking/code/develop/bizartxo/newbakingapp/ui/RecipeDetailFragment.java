@@ -100,8 +100,8 @@ public class RecipeDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.detail_recipe_fragment, container, false);
 
 
-
-        if (view.findViewById(R.id.land) == null || view.findViewById(R.id.portrait) == null){
+        // Begiratu IF hau ez dabilelako
+        if (view.findViewById(R.id.land) == null && view.findViewById(R.id.portrait) == null){
             TextView tv = (TextView) view.findViewById(R.id.stei);
             tv.setText(stepText);
             TextView tvd = (TextView) view.findViewById(R.id.sted);

@@ -33,7 +33,11 @@
 			<meta-data android:name="android.appwidget.provider"
                android:resource="@xml/appwidget_info" />
 		</receiver>
-        <service android:name=".widget.BakingAppWidgetService" />
+        <service android:name=".widget.BakingAppWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false"/>
+        <service android:name="newbaking.code.develop.bizartxo.newbakingapp.widget.TestIntent"
+            android:enabled="true"/>
     </application>
 
 </manifest>
