@@ -101,7 +101,7 @@ public class RecipeDetailFragment extends Fragment {
 
 
         // Begiratu IF hau ez dabilelako
-        if (view.findViewById(R.id.land) == null && view.findViewById(R.id.portrait) == null){
+        if (getString(R.string.size).equals("small")){
             TextView tv = (TextView) view.findViewById(R.id.stei);
             tv.setText(stepText);
             TextView tvd = (TextView) view.findViewById(R.id.sted);
