@@ -118,10 +118,16 @@ public class InfoFragment extends Fragment {
     }
 
     public void checkNextStep(Button next){
-        if (sl.size()-1==step)
-            next.setEnabled(false);
-        else
-            next.setEnabled(true);
+
+          if (getString(R.string.size).equals("large")){
+              next.setVisibility(View.INVISIBLE);
+          }else{
+              next.setVisibility(View.VISIBLE);
+          }
+//        if (sl.size()-1==step)
+//            next.setEnabled(false);
+//        else
+//            next.setEnabled(true);
     }
 
 }

@@ -131,7 +131,9 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
             ting.setText(step.getShortDescription());
             url = step.getVideoURL();
 
-            if ((pos % 2) != 0) {
+            Log.d("ADAPTER----------------------", "------POS: " + pos + " // " + (pos % 2));
+
+            if (((pos+1) % 2) != 0) {
                 lrow.setBackgroundColor(Color.argb(255, 255, 153, 255));
                 /*ting.setBackgroundColor(Color.argb(255, 255, 153, 255));
                 tnum.setBackgroundColor(Color.argb(255, 255, 153, 255));

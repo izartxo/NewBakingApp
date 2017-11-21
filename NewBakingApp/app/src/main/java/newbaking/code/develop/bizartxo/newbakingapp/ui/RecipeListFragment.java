@@ -182,7 +182,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                     .rotation(90.f)
                     .setListener(null);
             stepframe.animate()
-                    .setDuration(1000)
+                    .setDuration(300)
                     //.translationY(-rving.getHeight())
                     .translationYBy(-rving.getHeight())
                     .setListener(new AnimatorListenerAdapter() {
@@ -523,7 +523,8 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
         Log.d("resume","resume");
 
-
+//        if (getString(R.string.size).equals("large"))
+ //           onStepClick(0, "0");
 
     }
 

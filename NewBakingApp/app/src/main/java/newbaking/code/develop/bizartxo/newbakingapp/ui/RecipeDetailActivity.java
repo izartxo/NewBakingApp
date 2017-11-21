@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toolbar;
 
@@ -38,9 +39,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         toolbar.setDisplayHomeAsUpEnabled(true);
 
+        Log.d("--------------SIZE-------", "Size: " + getString(R.string.size));
 
-
-        if (findViewById(R.id.port) != null){
+        if (getString(R.string.size).equals("large")){
             twoPane = true;
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
