@@ -1,5 +1,6 @@
 package newbaking.code.develop.bizartxo.newbakingapp.ui;
 
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -57,7 +58,7 @@ public class RecipeDetailFragment extends Fragment {
     String value="";
     int step=0;
     static Context _context;
-
+    static boolean landscape = false;
 
     @Override
     public void onAttach(Context context) {
@@ -72,7 +73,15 @@ public class RecipeDetailFragment extends Fragment {
 
         intent = getActivity().getIntent();
 
-
+        int currentOrientation = getResources().getConfiguration().orientation;
+        if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // Landscape
+            landscape = true;
+        }
+        else {
+            // Portrait
+            landscape = false;
+        }
 
     }
 
@@ -101,7 +110,8 @@ public class RecipeDetailFragment extends Fragment {
 
 
         // Begiratu IF hau ez dabilelako
-        if (getString(R.string.size).equals("small")){
+        if (getString(R.string.size).equals("small") && !landscape){
+
             TextView tv = (TextView) view.findViewById(R.id.stei);
             tv.setText(stepText);
             TextView tvd = (TextView) view.findViewById(R.id.sted);
@@ -228,10 +238,12 @@ public class RecipeDetailFragment extends Fragment {
 
 
     public void checkNextStep(Button next){
+        Log.d(">>>>>>>>>>>>>>>>","size: " + (sl.size()-1) + " - " + step);
         if (sl.size()-1==step)
-            next.setEnabled(false);
+
+            next.setVisibility(View.INVISIBLE);
         else
-            next.setEnabled(true);
+            next.setVisibility(View.VISIBLE);
     }
 
 }
