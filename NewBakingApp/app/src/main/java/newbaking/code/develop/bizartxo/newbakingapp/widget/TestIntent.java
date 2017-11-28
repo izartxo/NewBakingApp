@@ -16,13 +16,17 @@ import newbaking.code.develop.bizartxo.newbakingapp.data.RecipeProvider;
 
 public class TestIntent extends IntentService {
 
+    String _ing;
+
     public TestIntent(String name) {
         super(name);
     }
 
-    public TestIntent(){
+    public TestIntent() {
         super("test");
     }
+
+
 
     @Override
     public void setIntentRedelivery(boolean enabled) {
@@ -58,13 +62,28 @@ public class TestIntent extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.d("------------------------",">>>>>>>>>>>>onHandleIntent");
-        Uri weatherForLocationUri = RecipeProvider.Ingredients.INGREDIENTS;
-        Cursor cursor = getContentResolver().query(weatherForLocationUri,
-                null,
-                null,
-                null,
-                null);
 
+
+
+        Uri weatherForLocationUri = RecipeProvider.Ingredients.INGREDIENTS;
+        Cursor cursor = null;
+        if (_ing==null){
+            String column = "_id = ?";
+            String[] values = new String[]{"1"};
+             cursor = getContentResolver().query(weatherForLocationUri,
+                    null,
+                    column,
+                    values,
+                    null);
+        }
+
+        else {
+             cursor = getContentResolver().query(weatherForLocationUri,
+                    null,
+                    null,
+                    null,
+                    null);
+        }
         BakingAppWidgetProvider.updateWidget(cursor, getApplicationContext());
     }
 }

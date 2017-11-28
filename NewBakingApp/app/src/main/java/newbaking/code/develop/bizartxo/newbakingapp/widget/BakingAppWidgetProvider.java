@@ -32,6 +32,7 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
     private static Context mContext;
     private static Cursor mData=null;
+    private static int recipenum = 0;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -54,9 +55,11 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
             intentSync.setAction((AppWidgetManager.ACTION_APPWIDGET_UPDATE));
 
+            intentSync.putExtra("recipenum", recipenum);
+
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intentSync, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            views.setOnClickPendingIntent(R.id.empty, pendingIntent);
+            views.setOnClickPendingIntent(R.id.rvW, pendingIntent);
 
 
             // Tell the AppWidgetManager to perform an update on the current app widget

@@ -1,11 +1,14 @@
 package newbaking.code.develop.bizartxo.newbakingapp.data;
 
+import android.graphics.Path;
 import android.net.Uri;
 
 import net.simonvt.schematic.annotation.ContentProvider;
 import net.simonvt.schematic.annotation.ContentUri;
+import net.simonvt.schematic.annotation.InexactContentUri;
 import net.simonvt.schematic.annotation.TableEndpoint;
 
+import newbaking.code.develop.bizartxo.newbakingapp.model.IngredientColumns;
 import newbaking.code.develop.bizartxo.newbakingapp.model.RecipeColumns;
 import newbaking.code.develop.bizartxo.newbakingapp.model.StepColumns;
 
@@ -14,7 +17,7 @@ import newbaking.code.develop.bizartxo.newbakingapp.model.StepColumns;
  */
 
 @ContentProvider(authority = RecipeProvider.AUTHORITY, database = RecipeDataBase.class)
-public final class RecipeProvider {
+public final class  RecipeProvider {
 
     public static final String AUTHORITY = "newbaking.code.develop.bizartxo.newbakingapp";
 
@@ -35,6 +38,8 @@ public final class RecipeProvider {
                 type = "vnd.android.cursor.dir/ingredient")
 
         public static final Uri INGREDIENTS = Uri.parse("content://" + AUTHORITY + "/ingredients");
+
+
 
     }
 
