@@ -63,9 +63,14 @@ public class TestIntent extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.d("------------------------",">>>>>>>>>>>>onHandleIntent");
 
-<<<<<<< HEAD
+        String ing = "1";
+
+        if (intent.hasExtra("ing"))
+            ing = intent.getStringExtra("ing");
+
+
         String columns = "_id = ?";
-        String[] values = new String[]{"3"};
+        String[] values = new String[]{ing};
 
         Uri weatherForLocationUri = RecipeProvider.Ingredients.INGREDIENTS;
         Cursor cursor = getContentResolver().query(weatherForLocationUri,
@@ -73,11 +78,11 @@ public class TestIntent extends IntentService {
                 columns,
                 values,
                 null);
-=======
 
 
-        Uri weatherForLocationUri = RecipeProvider.Ingredients.INGREDIENTS;
-        Cursor cursor = null;
+
+
+      /*  Cursor cursor = null;
         if (_ing==null){
             String column = "_id = ?";
             String[] values = new String[]{"1"};
@@ -87,7 +92,7 @@ public class TestIntent extends IntentService {
                     values,
                     null);
         }
->>>>>>> cd696a525cd1dcab9ead7c7be60cdda06de74e4c
+
 
         else {
              cursor = getContentResolver().query(weatherForLocationUri,
@@ -95,7 +100,7 @@ public class TestIntent extends IntentService {
                     null,
                     null,
                     null);
-        }
+        }*/
         BakingAppWidgetProvider.updateWidget(cursor, getApplicationContext());
     }
 }

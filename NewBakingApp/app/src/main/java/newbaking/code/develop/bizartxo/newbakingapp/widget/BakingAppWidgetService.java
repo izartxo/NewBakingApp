@@ -1,6 +1,7 @@
 package newbaking.code.develop.bizartxo.newbakingapp.widget;
 
 import android.annotation.TargetApi;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -99,6 +100,7 @@ public class BakingAppWidgetService extends RemoteViewsService {
                 }
                 RemoteViews views = new RemoteViews(getPackageName(),
                         R.layout.widget_item);
+
 
                 for (int u = 0; u < data.getColumnCount(); u++){
                     Log.d("##################", "-->> " + data.getString(u));

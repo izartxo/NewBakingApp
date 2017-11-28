@@ -51,15 +51,26 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
             views.setEmptyView(R.id.rvW, R.id.empty);
 
-            Intent intentSync = new Intent (context, BakingAppWidgetService.class);
+            /*Intent intentSync = new Intent (context, BakingAppWidgetService.class);
 
             intentSync.setAction((AppWidgetManager.ACTION_APPWIDGET_UPDATE));
 
-            intentSync.putExtra("recipenum", recipenum);
+            //intentSync.putExtra("recipenum", recipenum);
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intentSync, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            views.setOnClickPendingIntent(R.id.rvW, pendingIntent);
+            views.setOnClickPendingIntent(R.id.empty, pendingIntent);*/
+
+
+            Intent intentSync = new Intent (mContext, TestIntent.class);
+
+            intentSync.putExtra("ing", "2");
+
+            //intentSync.putExtra("recipenum", recipenum);
+
+            PendingIntent pI = PendingIntent.getService(mContext, 0, intentSync, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            views.setOnClickPendingIntent(R.id.header, pI);
 
 
             // Tell the AppWidgetManager to perform an update on the current app widget
