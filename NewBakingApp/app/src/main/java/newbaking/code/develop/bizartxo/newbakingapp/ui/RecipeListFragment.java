@@ -534,7 +534,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String column = "_id = ?";
         String[] values = new String[]{args.getString("RID")};
-
+        Log.d("LOADER..............", "RID: " + args.getString("RID"));
 
         switch (id) {
 

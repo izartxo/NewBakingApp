@@ -104,7 +104,8 @@ public class BakingAppWidgetService extends RemoteViewsService {
                     Log.d("##################", "-->> " + data.getString(u));
                     String title = data.getString(data.getColumnIndex(IngredientColumns.INGREDIENT));
 
-                    views.setTextViewText(R.id.ingredientW, title);
+
+                    views.setTextViewText(R.id.ingredientW, title.toUpperCase());
                 }
 
 

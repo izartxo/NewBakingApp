@@ -58,11 +58,15 @@ public class TestIntent extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.d("------------------------",">>>>>>>>>>>>onHandleIntent");
+
+        String columns = "_id = ?";
+        String[] values = new String[]{"3"};
+
         Uri weatherForLocationUri = RecipeProvider.Ingredients.INGREDIENTS;
         Cursor cursor = getContentResolver().query(weatherForLocationUri,
                 null,
-                null,
-                null,
+                columns,
+                values,
                 null);
 
         BakingAppWidgetProvider.updateWidget(cursor, getApplicationContext());

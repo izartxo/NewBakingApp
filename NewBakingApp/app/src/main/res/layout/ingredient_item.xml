@@ -9,7 +9,9 @@
         android:id="@+id/ingredient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:textSize="11dp"
         android:layout_margin="3dp"
+        android:textStyle="bold"
+
         />
 </LinearLayout>
