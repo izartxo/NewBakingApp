@@ -32,7 +32,7 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
     private static Context mContext;
     private static Cursor mData=null;
-    private static int recipenum = 0;
+    private static int recipenum = 1;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -64,7 +64,9 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
             Intent intentSync = new Intent (mContext, TestIntent.class);
 
-            intentSync.putExtra("ing", "2");
+
+
+            intentSync.putExtra("ing", String.valueOf(recipenum));
 
             //intentSync.putExtra("recipenum", recipenum);
 
@@ -89,7 +91,7 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
                     new ComponentName(context, getClass()));
             appWidgetManager.notifyAppWidgetViewDataChanged(intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID), R.id.rvW);
-
+            onUpdate(context,appWidgetManager,appWidgetIds);
         }
         super.onReceive(context, intent);
     }
@@ -129,4 +131,11 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
         public static Cursor getData(){
             return mData;
         }
+
+    public static void setRecipenum(){
+        if (recipenum>=4)
+            recipenum = 1;
+        else
+            recipenum += 1;
+    }
 }

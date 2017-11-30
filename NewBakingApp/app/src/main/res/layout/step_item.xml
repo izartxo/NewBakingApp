@@ -36,5 +36,7 @@
         android:layout_gravity="right"
         android:src="@drawable/video"
         android:paddingRight="5dp"
-        android:padding="5dp"/>
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"/>
 </LinearLayout>

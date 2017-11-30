@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import newbaking.code.develop.bizartxo.newbakingapp.data.RecipeProvider;
 
@@ -65,9 +66,13 @@ public class TestIntent extends IntentService {
 
         String ing = "1";
 
+        BakingAppWidgetProvider.setRecipenum();
+
         if (intent.hasExtra("ing"))
             ing = intent.getStringExtra("ing");
 
+
+        Log.d("ooooooooooooooooooo>>>>>>", "ING: " + ing);
 
         String columns = "_id = ?";
         String[] values = new String[]{ing};
