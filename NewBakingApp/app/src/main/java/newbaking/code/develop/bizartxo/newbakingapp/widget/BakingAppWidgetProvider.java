@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import newbaking.code.develop.bizartxo.newbakingapp.R;
@@ -33,6 +34,8 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
     private static Context mContext;
     private static Cursor mData=null;
     private static int recipenum = 1;
+    private static int mTotal = 0;
+    private static ArrayList<Recipe> mList;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -62,11 +65,16 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.empty, pendingIntent);*/
 
 
+
+
+
             Intent intentSync = new Intent (mContext, TestIntent.class);
 
 
 
             intentSync.putExtra("ing", String.valueOf(recipenum));
+            if (!mList.isEmpty())
+                Log.d("RECIPENUM", "Num:" + mList.get(recipenum).getTitle());
 
             //intentSync.putExtra("recipenum", recipenum);
 
@@ -119,13 +127,15 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
     }
 
 
-    public static void updateWidget(Cursor cursor, Context context){
+    public static void updateWidget(Cursor cursor, Context context, ArrayList<Recipe> zerrenda){
             mData = cursor;
+            mList = zerrenda;
             Log.d("---------------------",">>>>>>>>>> " + mData.getCount());
             Intent intent = new Intent(context, BakingAppWidgetProvider.class);
             intent.setAction(APP_UPD);
             context.sendBroadcast(intent);
-
+            mTotal = zerrenda.size();
+            Log.d("TOTAL RECIPES", "----------------->>>>>>>" + mTotal);
         }
 
         public static Cursor getData(){

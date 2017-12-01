@@ -9,7 +9,10 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import newbaking.code.develop.bizartxo.newbakingapp.data.RecipeProvider;
+import newbaking.code.develop.bizartxo.newbakingapp.model.Recipe;
 
 /**
  * Created by izartxo on 11/13/17.
@@ -85,7 +88,22 @@ public class TestIntent extends IntentService {
                 null);
 
 
+        Uri weatherForLocationUri2 = RecipeProvider.Recipes.RECIPES;
+        Cursor cursor2 = getContentResolver().query(weatherForLocationUri2,
+                null,
+                null,
+                null,
+                null);
 
+
+        ArrayList<Recipe> mList = new ArrayList<>();
+        cursor2.moveToFirst();
+        while (!cursor2.isAfterLast())
+        {
+            Recipe r = new Recipe(cursor2.getString(0), 0, cursor2.getString(1), cursor2.getString(2));
+            mList.add(r);
+            cursor2.moveToNext();
+        }
 
       /*  Cursor cursor = null;
         if (_ing==null){
@@ -106,6 +124,6 @@ public class TestIntent extends IntentService {
                     null,
                     null);
         }*/
-        BakingAppWidgetProvider.updateWidget(cursor, getApplicationContext());
+        BakingAppWidgetProvider.updateWidget(cursor, getApplicationContext(), mList);
     }
 }
