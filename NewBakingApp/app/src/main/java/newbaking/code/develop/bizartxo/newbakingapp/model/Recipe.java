@@ -32,7 +32,7 @@ public class Recipe{
         this.title = t;
         this.description = d;
 
-        Log.d(TAG, "Recipe berria sortua... " + p + " / " + t + " / " + d);
+        Log.d(TAG, "Recipe berria sortua... " + id + " / " + p + " / " + t + " / " + d);
     }
 
     public void setRecipeId(String i){

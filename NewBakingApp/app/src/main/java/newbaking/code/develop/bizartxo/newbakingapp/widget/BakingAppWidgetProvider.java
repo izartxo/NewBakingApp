@@ -16,6 +16,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import newbaking.code.develop.bizartxo.newbakingapp.R;
@@ -36,6 +37,7 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
     private static int recipenum = 1;
     private static int mTotal = 0;
     private static ArrayList<Recipe> mList;
+    private static HashMap<String, String> hm;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -73,10 +75,24 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
 
             intentSync.putExtra("ing", String.valueOf(recipenum));
-            if (!mList.isEmpty())
-                Log.d("RECIPENUM", "Num:" + mList.get(recipenum).getTitle());
 
+            if (mList!=null && !mList.isEmpty()) {
+                int local = recipenum;
+                if (recipenum==1)
+                    local = 1;
+                Log.d("RECIPENUM", "Num:" + mList.get(local).getTitle());
+                views.setTextViewText(R.id.header, mList.get(local).getTitle());
+
+            }
             //intentSync.putExtra("recipenum", recipenum);
+            if (hm!=null && !hm.isEmpty()) {
+                int local = recipenum;
+                if (recipenum==1)
+                    local = 1;
+                //Log.d("RECIPENUM", "Num:" + mList.get(local).getTitle());
+                views.setTextViewText(R.id.header, hm.get(String.valueOf(local)));
+
+            }
 
             PendingIntent pI = PendingIntent.getService(mContext, 0, intentSync, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -127,14 +143,15 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
     }
 
 
-    public static void updateWidget(Cursor cursor, Context context, ArrayList<Recipe> zerrenda){
+    public static void updateWidget(Cursor cursor, Context context, HashMap lhm/*ArrayList<Recipe> zerrenda*/){
             mData = cursor;
-            mList = zerrenda;
+            //mList = zerrenda;
+            hm = lhm;
             Log.d("---------------------",">>>>>>>>>> " + mData.getCount());
             Intent intent = new Intent(context, BakingAppWidgetProvider.class);
             intent.setAction(APP_UPD);
             context.sendBroadcast(intent);
-            mTotal = zerrenda.size();
+            mTotal = hm.size(); //zerrenda.size();
             Log.d("TOTAL RECIPES", "----------------->>>>>>>" + mTotal);
         }
 

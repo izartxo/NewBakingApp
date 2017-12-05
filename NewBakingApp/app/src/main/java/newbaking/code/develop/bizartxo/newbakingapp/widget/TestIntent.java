@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import newbaking.code.develop.bizartxo.newbakingapp.data.RecipeProvider;
 import newbaking.code.develop.bizartxo.newbakingapp.model.Recipe;
@@ -97,11 +98,17 @@ public class TestIntent extends IntentService {
 
 
         ArrayList<Recipe> mList = new ArrayList<>();
+        HashMap<String,String> hm = new HashMap<>();
+
+
         cursor2.moveToFirst();
+        int count = 0;
         while (!cursor2.isAfterLast())
         {
             Recipe r = new Recipe(cursor2.getString(0), 0, cursor2.getString(1), cursor2.getString(2));
-            mList.add(r);
+            //mList.add(r);
+            hm.put(r.getRecipeId(),r.getTitle());
+            count++;
             cursor2.moveToNext();
         }
 
@@ -124,6 +131,6 @@ public class TestIntent extends IntentService {
                     null,
                     null);
         }*/
-        BakingAppWidgetProvider.updateWidget(cursor, getApplicationContext(), mList);
+        BakingAppWidgetProvider.updateWidget(cursor, getApplicationContext(), hm);
     }
 }
