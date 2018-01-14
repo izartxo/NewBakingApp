@@ -102,12 +102,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         public void onClick(View view) {
             int pos = getAdapterPosition();
             String recipeid = recipeList.get(pos).getRecipeId();
-            mGorkaListener.onGorkaClick(pos, recipeid);
+            String recipeTitle = recipeList.get(pos).getTitle();
+            mGorkaListener.onGorkaClick(pos, recipeid, recipeTitle);
         }
     }
 
     public interface OnGorkaClick{
-        public void onGorkaClick(int position, String recipeid);
+        public void onGorkaClick(int position, String recipeid, String recipeTitle);
     }
 
     public void swapData(Cursor cursor/*List<Recipe> newList*/){

@@ -157,6 +157,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                     .setDuration(1000)
                     .rotation(0.0f)
                     .setListener(null);
+
             stepframe.animate()
                     .setDuration(1000)
                     .translationYBy(rving.getHeight())
@@ -167,12 +168,16 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                             terminatedAnimation = false;
 
 
+
                         }
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
                             terminatedAnimation = true;
                             rving.setVisibility(View.VISIBLE);
+                            ViewGroup.LayoutParams params=stepframe.getLayoutParams();
+                            params.height=(tIngredients.getHeight() + rvstep.getHeight()) - rving.getHeight();
+                            stepframe.setLayoutParams(params);
                         }
                     });
 
@@ -191,7 +196,9 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                             super.onAnimationStart(animation);
                             terminatedAnimation = false;
                             rving.setVisibility(View.INVISIBLE);
-
+                            ViewGroup.LayoutParams params=stepframe.getLayoutParams();
+                            params.height=tIngredients.getHeight() + rvstep.getHeight() + rving.getHeight();
+                            stepframe.setLayoutParams(params);
 
                         }
                         @Override

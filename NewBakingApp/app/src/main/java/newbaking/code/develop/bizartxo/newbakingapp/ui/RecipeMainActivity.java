@@ -36,6 +36,8 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
 
     private static final String TAG = "----------------------------";
 
+    public static final int REQUEST_CODE = 10;
+
     private static final int ID_BAKING_LOADER = 44;
     private static final int ID_INGREDIENT_LOADER = 55;
     private static final int ID_STEP_LOADER = 66;
@@ -44,6 +46,7 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
     List<Recipe> recipes;
     static RecipeAdapter adapter;
     Context context;
+    Activity activity;
 
 
     @Override
@@ -52,6 +55,7 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
 
         super.onCreate(savedInstanceState);
 
+        activity = this;
         //ActionBar toolbar = getActionBar();
         //toolbar.setBackgroundDrawable(getResources().getDrawable());
 
@@ -105,10 +109,11 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
     }
 
     @Override
-    public void onGorkaClick(int position, String recipeid) {
+    public void onGorkaClick(int position, String recipeid, String recipetitle) {
         Toast.makeText(this, "GORKA: " + position, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, RecipeDetailActivity.class);
         intent.putExtra("RID", recipeid);
+        intent.putExtra("TITLE", recipetitle);
         startActivity(intent);
 
     }
@@ -158,7 +163,7 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
                     Log.d(TAG, "ERROOOOOOOR");
                 }
             }else{
-                NetworksUtils.showMessage(RecipeMainActivity.this, "Internet not available.");
+                NetworksUtils.showMessage(activity/*RecipeMainActivity.this*/, "Internet not available.");
 
             }
         }
@@ -184,4 +189,21 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
 
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 10) {
+
+            if(resultCode == RESULT_OK){
+                //String result=data.getStringExtra("TYPE");
+                Toast.makeText(getApplicationContext(),"Your sim type iss POST paidddddddddd", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+        }
+    }
+
+
+
 }

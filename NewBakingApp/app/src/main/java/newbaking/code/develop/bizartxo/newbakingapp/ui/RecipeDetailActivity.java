@@ -26,6 +26,7 @@ import newbaking.code.develop.bizartxo.newbakingapp.R;
 public class RecipeDetailActivity extends AppCompatActivity {
 
     static boolean twoPane;
+    static String recipeTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,13 @@ public class RecipeDetailActivity extends AppCompatActivity {
         ActionBar toolbar = getSupportActionBar();
 
         toolbar.setDisplayHomeAsUpEnabled(true);
+
+
+        Intent intent = getIntent();
+
+        recipeTitle = intent.getStringExtra("TITLE");
+
+        toolbar.setTitle(recipeTitle);
 
         Log.d("--------------SIZE-------", "Size: " + getString(R.string.size));
 

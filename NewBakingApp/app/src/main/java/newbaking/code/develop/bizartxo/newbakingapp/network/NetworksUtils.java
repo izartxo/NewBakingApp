@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -20,6 +21,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 import newbaking.code.develop.bizartxo.newbakingapp.R;
+import newbaking.code.develop.bizartxo.newbakingapp.ui.AlertDialogTest;
 import newbaking.code.develop.bizartxo.newbakingapp.ui.RecipeMainActivity;
 
 /**
@@ -57,19 +59,21 @@ public class NetworksUtils {
         }
     }
 
-    public static void showMessage(Context context, String msg){
+    public static void showMessage(Activity a/*Context context*/, String msg){
 
-
-        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        Intent intent = new Intent(a.getApplicationContext(), AlertDialogTest.class);
+        a.startActivityForResult(intent, RecipeMainActivity.REQUEST_CODE);
+        /*AlertDialog alertDialog = new AlertDialog.Builder(context).create();
         alertDialog.setTitle("BakingApp");
         alertDialog.setMessage(msg);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+
                     }
                 });
-        alertDialog.show();
+        alertDialog.show();*/
 
     }
 

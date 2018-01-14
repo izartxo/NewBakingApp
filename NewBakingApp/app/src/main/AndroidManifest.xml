@@ -21,6 +21,9 @@
         </activity>
         <activity android:name=".ui.RecipeDetailActivity" />
         <activity android:name=".ui.AuxActivity" />
+
+        <activity android:name=".ui.AlertDialogTest" />
+
         <provider
             android:authorities="newbaking.code.develop.bizartxo.newbakingapp"
             android:name="newbaking.code.develop.bizartxo.newbakingapp.data.generated.RecipeProvider"
