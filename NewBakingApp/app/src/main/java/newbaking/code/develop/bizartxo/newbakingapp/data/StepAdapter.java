@@ -22,21 +22,13 @@ import newbaking.code.develop.bizartxo.newbakingapp.model.Step;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder>{
 
-    String[] datos = new String[3];
+
     ArrayList<Step> stepList;
     final private OnStepClick mStepListener;
 
     LinearLayout lrow;
 
     Cursor mStepDataCursor;
-
-    public StepAdapter(ArrayList<Step> data,OnStepClick listener){
-        datos[0] = "first";
-        datos[1] = "second";
-        datos[2] = "third";
-        stepList = data;
-        mStepListener = listener;
-    }
 
     public StepAdapter(OnStepClick listener){
 
@@ -53,10 +45,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
     @Override
     public void onBindViewHolder(StepAdapter.StepViewHolder recipeViewHolder, int i) {
-        //recipeViewHolder.tnum.setText(String.valueOf(stepList.get(i).get_id()+1));
-        //recipeViewHolder.ting.setText(stepList.get(i).getShortDescription());
-
-
         if (!mStepDataCursor.isClosed()){
         mStepDataCursor.moveToPosition(i);
 
@@ -89,10 +77,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
     @Override
     public int getItemCount() {
-       /* if (stepList==null)
-            return 0;
-        else
-            return stepList.size();*/
+
         if (mStepDataCursor==null)
             return 0;
         else
@@ -120,9 +105,9 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         @Override
         public void onClick(View view) {
             int pos = getAdapterPosition();
-            Log.d("PPPPPPPPPPPPPPPPPPPPPPPPP", "Position: " + pos);
-            String recipeid = mStepDataCursor.getString(0);   //stepList.get(pos).getRid();
-            mStepListener.onStepClick(pos, recipeid);
+
+            String recipeId = mStepDataCursor.getString(0);
+            mStepListener.onStepClick(pos, recipeId);
         }
 
         void bind(Step step, int pos){
@@ -131,18 +116,14 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
             ting.setText(step.getShortDescription());
             url = step.getVideoURL();
 
-            Log.d("ADAPTER----------------------", "------POS: " + pos + " // " + (pos % 2));
+
 
             if (((pos+1) % 2) != 0) {
                 lrow.setBackgroundColor(Color.argb(255, 255, 153, 255));
-                /*ting.setBackgroundColor(Color.argb(255, 255, 153, 255));
-                tnum.setBackgroundColor(Color.argb(255, 255, 153, 255));
-                cam.setBackgroundColor(Color.argb(255, 255, 153, 255));*/
+
             }else {
                 lrow.setBackgroundColor(Color.argb(255, 204, 153, 255));
-                /*ting.setBackgroundColor(Color.argb(255, 204, 153, 255));
-                tnum.setBackgroundColor(Color.argb(255, 204, 153, 255));
-                cam.setBackgroundColor(Color.argb(255, 204, 153, 255));*/
+
             }
 
             if (url.equals(""))
@@ -152,47 +133,15 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
         }
 
-        public String getUrl(){
-            return url;
-        }
+
 
     }
 
     public interface OnStepClick{
-        public void onStepClick(int position, String recipeid);
+        void onStepClick(int position, String recipeid);
     }
 
-    public void swapData(ArrayList<Step> stepa){
-        stepList = stepa;
-    }
-
-    public void swapDataStep(Cursor cursor/*, Recipe recipe*/){
-
-       /* while (cursor.moveToNext()){
-            Step newstep = new Step();
-            int columnCount = cursor.getColumnCount();
-            for (int i = 0; i < columnCount; i++){
-
-                Log.d("Logging.............", "Steps: " + cursor.getString(i));
-
-            }
-            // Log.d("RiiD", "Rid: " + cursor3.getString(0));
-            newstep.setRid(cursor.getString(0));
-            newstep.set_id(cursor.getInt(1));
-            newstep.setShortDescription(cursor.getString(2));
-            newstep.setDescription(cursor.getString(3));
-            newstep.setVideoURL(cursor.getString(4));
-            newstep.setThumbnailURL(cursor.getString(5));
-            Log.d("-------------step-----" , ":::::::> " + newstep.getRid() + "-" + newstep.get_id() +
-                    "-" + newstep.getThumbnailURL() +
-                    "-" + newstep.getVideoURL());
-            recipe.setStep(newstep);
-        }
-
-        mStepDataCursor =
-        */
-
-
+    public void swapDataStep(Cursor cursor){
 
         mStepDataCursor = cursor;
 
@@ -204,8 +153,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
         mStepDataCursor.moveToPosition(position);
         /// FILL DATA
-       // md.set_id(1);
-        //md.setShortDescription("froga");
         md.set_id(mStepDataCursor.getInt(1));
         md.setRid(mStepDataCursor.getString(0));
         md.setShortDescription(mStepDataCursor.getString(2));

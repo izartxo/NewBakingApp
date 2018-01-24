@@ -53,9 +53,7 @@ public class JsonWorker {
                 recipe.setDescription(jo.getString("name"));
                 recipe.setTitle(jo.getString("name"));
 
-                //
-                Log.d(TAG, recipe.getDescription());
-                //
+
 
                 JSONArray jing = jo.getJSONArray("ingredients");
 
@@ -66,14 +64,12 @@ public class JsonWorker {
                     io.setIngredient(ing.getString("ingredient"));
                     io.setQuantity(ing.getString("quantity"));
                     io.setRid(recipe.getRecipeId());
-                    //recipe.setIngredient(io);
+
                     ingredientsValues.put("_id", io.getRid());
                     ingredientsValues.put("ingredient", io.getIngredient());
                     ingredientsValues.put("quantity", io.getQuantity());
                     contentResolver.insert(RecipeProvider.Ingredients.INGREDIENTS, ingredientsValues);
-                    //
-                    Log.d(TAG, io.getIngredient());
-                    //
+
                 }
 
                 JSONArray jste = jo.getJSONArray("steps");
@@ -88,16 +84,14 @@ public class JsonWorker {
                     s.setShortDescription(ste.getString("shortDescription"));
                     s.setVideoURL(ste.getString("videoURL"));
                     s.setThumbnailURL(ste.getString("thumbnailURL"));
-                    //recipe.setStep(s);
+
                     stepsValues.put("_id", s.getRid());
                     stepsValues.put("step", String.valueOf(s.get_id()));
                     stepsValues.put("short", s.getShortDescription());
                     stepsValues.put("description", s.getDescription());
                     stepsValues.put("video", s.getVideoURL());
                     stepsValues.put("thumbvideo", s.getThumbnailURL());
-                    //
-                    Log.d(TAG, s.get_id() + s.getDescription());
-                    //
+
                     contentResolver.insert(RecipeProvider.Steps.STEPS, stepsValues);
 
                 }
@@ -125,16 +119,11 @@ public class JsonWorker {
                 contentResolver.insert(RecipeProvider.Recipes.RECIPES, contentValues);
             }
         }catch (JSONException je){
-            Log.d("ERRROR JSON","Error: " + je.getMessage());
+            Log.d("ERROR JSON","Error: " + je.getMessage());
         }
 
-        //RecipeSelectionActivity.refreshData(rec);
-
     }
 
-    public List<Recipe> getList(){
-        return rec;
-    }
 
 }
 

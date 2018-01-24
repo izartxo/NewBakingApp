@@ -32,22 +32,17 @@ public class RecipeDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         setContentView(R.layout.activity_recipe_detail);
 
         ActionBar toolbar = getSupportActionBar();
 
         toolbar.setDisplayHomeAsUpEnabled(true);
 
-
         Intent intent = getIntent();
 
         recipeTitle = intent.getStringExtra("TITLE");
 
         toolbar.setTitle(recipeTitle);
-
-        Log.d("--------------SIZE-------", "Size: " + getString(R.string.size));
 
         if (getString(R.string.size).equals("large")){
             twoPane = true;
@@ -56,7 +51,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         else{
             twoPane = false;
         }
-
 
     }
 
@@ -75,31 +69,31 @@ public class RecipeDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //setContentView(R.layout.activity_recipe_detail);
+
         if (twoPane){
-            Fragment fragment = new RecipeListFragment();
+            Fragment fragmentList = new RecipeListFragment();
 
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction transactionList = getSupportFragmentManager().beginTransaction();
 
-            transaction.add(R.id.master_list_fragment, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+            transactionList.add(R.id.master_list_fragment, fragmentList);
+            transactionList.addToBackStack(null);
+            transactionList.commit();
 
-            Fragment fragment2 = new RecipeDetailFragment();
+            Fragment fragmentDetail = new RecipeDetailFragment();
 
-            FragmentTransaction transaction2 = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction transactionDetail = getSupportFragmentManager().beginTransaction();
 
-            transaction2.add(R.id.video_frame, fragment2);
-            transaction2.addToBackStack(null);
-            transaction2.commit();
+            transactionDetail.add(R.id.video_frame, fragmentDetail);
+            transactionDetail.addToBackStack(null);
+            transactionDetail.commit();
         }
         else{
-            Fragment fragment = new RecipeListFragment();
+            Fragment fragmentList = new RecipeListFragment();
 
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            transaction.add(R.id.master_list_fragment, fragment);
+            transaction.add(R.id.master_list_fragment, fragmentList);
             transaction.addToBackStack("master_list_fragment");
             transaction.commit();
         }
@@ -108,8 +102,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
     public static boolean getTwoPane(){
         return twoPane;
     }
-
-
 
     @Override
     public void onBackPressed() {

@@ -39,7 +39,7 @@
         <service android:name=".widget.BakingAppWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS"
             android:exported="false"/>
-        <service android:name="newbaking.code.develop.bizartxo.newbakingapp.widget.TestIntent"
+        <service android:name="newbaking.code.develop.bizartxo.newbakingapp.widget.WidgetIntentService"
             android:enabled="true"/>
     </application>
 

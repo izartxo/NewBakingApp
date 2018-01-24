@@ -53,8 +53,6 @@ public class AuxActivity extends AppCompatActivity {
 
         toolbar.setTitle(sd);
 
-        Log.d("aaaaaaaaaaaaaaaa","lllll: " + link + "-" + sd + "-" + d);
-
         if (link.equals(""))
             novideo = true;
 

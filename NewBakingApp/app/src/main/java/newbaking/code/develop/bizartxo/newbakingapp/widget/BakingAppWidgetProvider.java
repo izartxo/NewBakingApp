@@ -17,16 +17,9 @@ import android.widget.RemoteViews;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 import newbaking.code.develop.bizartxo.newbakingapp.R;
-import newbaking.code.develop.bizartxo.newbakingapp.data.IngredientAdapter;
-import newbaking.code.develop.bizartxo.newbakingapp.data.RecipeProvider;
-import newbaking.code.develop.bizartxo.newbakingapp.model.IngredientColumns;
 import newbaking.code.develop.bizartxo.newbakingapp.model.Recipe;
-import newbaking.code.develop.bizartxo.newbakingapp.model.RecipeColumns;
-import newbaking.code.develop.bizartxo.newbakingapp.ui.AuxActivity;
-import newbaking.code.develop.bizartxo.newbakingapp.ui.RecipeMainActivity;
 
 public class BakingAppWidgetProvider extends AppWidgetProvider {
 
@@ -70,7 +63,7 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
 
 
-            Intent intentSync = new Intent (mContext, TestIntent.class);
+            Intent intentSync = new Intent (mContext, WidgetIntentService.class);
 
 
 

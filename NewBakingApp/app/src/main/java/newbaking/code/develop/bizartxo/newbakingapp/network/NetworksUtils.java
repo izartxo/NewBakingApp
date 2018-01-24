@@ -40,7 +40,7 @@ public class NetworksUtils {
      * @throws IOException Related to network and stream reading
      */
     public static String getResponseFromHttpUrl(URL url) throws IOException {
-        Log.d("xxxxxxxxxxxxxxxx","URL: " + url.toString());
+
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = urlConnection.getInputStream();
@@ -59,21 +59,10 @@ public class NetworksUtils {
         }
     }
 
-    public static void showMessage(Activity a/*Context context*/, String msg){
+    public static void showMessage(Activity a, String msg){
 
         Intent intent = new Intent(a.getApplicationContext(), AlertDialogTest.class);
         a.startActivityForResult(intent, RecipeMainActivity.REQUEST_CODE);
-        /*AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-        alertDialog.setTitle("BakingApp");
-        alertDialog.setMessage(msg);
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-
-                    }
-                });
-        alertDialog.show();*/
 
     }
 
@@ -83,7 +72,6 @@ public class NetworksUtils {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-
 
 }
 

@@ -48,17 +48,18 @@ import newbaking.code.develop.bizartxo.newbakingapp.model.Recipe;
 
 public class RecipeDetailFragment extends Fragment {
 
+    static SimpleExoPlayer player;
+    static Context _context;
+    static boolean landscape = false;
 
     Intent intent;
-    //TextView tv;
+
     SimpleExoPlayerView simpleExoPlayerView;
-    static SimpleExoPlayer player;
-    //Button back;
+
     ArrayList<String> sl;
     String value="";
     int step=0;
-    static Context _context;
-    static boolean landscape = false;
+
 
     @Override
     public void onAttach(Context context) {
@@ -88,11 +89,11 @@ public class RecipeDetailFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
-        //String value = "";
+
         String stepText = "";
         String stepTextD = "";
-        if (!(getArguments()==null)) {
+
+        if ( getArguments()!=null ) {
             step = getArguments().getInt("step");
             value = getArguments().getString("video");
             stepText = getArguments().getString("sdesc");
@@ -101,28 +102,18 @@ public class RecipeDetailFragment extends Fragment {
             Log.d("vaaaaaaaaaaaa","luuuuuuuuuuuue: " + value);
         }
 
-        Toast.makeText(getContext(),"STEP: " + step, Toast.LENGTH_SHORT).show();
-
-
-
-
         View view = inflater.inflate(R.layout.detail_recipe_fragment, container, false);
 
 
-        // Begiratu IF hau ez dabilelako
+
         if (getString(R.string.size).equals("small") && !landscape){
 
             TextView tv = (TextView) view.findViewById(R.id.stei);
             tv.setText(stepText);
             TextView tvd = (TextView) view.findViewById(R.id.sted);
             tvd.setText(stepTextD);
-            /*Button back = (Button) view.findViewById(R.id.backButton);
-            back.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    getActivity().finish();
-                }
-            });*/
+
+
             Button next = (Button) view.findViewById(R.id.nextButton);
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -131,17 +122,11 @@ public class RecipeDetailFragment extends Fragment {
                     Bundle bundle = new Bundle();
 
 
-                  /*  for (int y = 0; y < sl.size(); y++){
-                        boolean flag = sl.get(y).equalsIgnoreCase(value);
-                        if (flag){
-                  */          bundle.putString("video", sl.get(step+1));
+                            bundle.putString("video", sl.get(step+1));
                             bundle.putInt("step", step+1);
                             bundle.putStringArrayList("videos",sl);
                             nextIntent.putParcelableArrayListExtra("stepO", intent.getParcelableArrayListExtra("stepO"));
                             nextIntent.putExtra("data", bundle);
-                   /*     }
-
-                    }*/
 
                     getActivity().finish();
                     startActivity(nextIntent);
@@ -166,8 +151,7 @@ public class RecipeDetailFragment extends Fragment {
 
 
 // 2. Create the player
-        player =
-                ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
+        player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
         
         simpleExoPlayerView.setPlayer(player);
 
@@ -203,9 +187,6 @@ public class RecipeDetailFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        /*tv = (TextView) getActivity().findViewById(R.id.textView);
-        tv.setText(intent.getExtras().getString("RID"));*/
-
     }
 
     public static void stopPlayer(){
@@ -220,25 +201,8 @@ public class RecipeDetailFragment extends Fragment {
         }
     }
 
-
-    private void updateNextVideo(String u){
-
-        DefaultBandwidthMeter dbandwidthMeter = new DefaultBandwidthMeter();
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(),
-        Util.getUserAgent(getContext(), "yourApplicationName"), dbandwidthMeter);
-// Produces Extractor instances for parsing the media data.
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        Uri uri = Uri.parse(u); //"https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4");
-        MediaSource videoSource = new ExtractorMediaSource(uri,
-                dataSourceFactory, extractorsFactory, null, null);
-// Prepare the player with the source.
-        player.prepare(videoSource);
-
-    }
-
-
     public void checkNextStep(Button next){
-        Log.d(">>>>>>>>>>>>>>>>","size: " + (sl.size()-1) + " - " + step);
+
         if (sl.size()-1==step)
 
             next.setVisibility(View.INVISIBLE);

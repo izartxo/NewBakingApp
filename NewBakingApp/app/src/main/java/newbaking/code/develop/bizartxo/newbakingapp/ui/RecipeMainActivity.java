@@ -1,16 +1,13 @@
 package newbaking.code.develop.bizartxo.newbakingapp.ui;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.content.pm.ActivityInfoCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -30,9 +27,9 @@ import newbaking.code.develop.bizartxo.newbakingapp.data.RecipeProvider;
 import newbaking.code.develop.bizartxo.newbakingapp.model.Recipe;
 import newbaking.code.develop.bizartxo.newbakingapp.network.HttpAsyncTask;
 import newbaking.code.develop.bizartxo.newbakingapp.network.NetworksUtils;
-import newbaking.code.develop.bizartxo.newbakingapp.widget.TestIntent;
+import newbaking.code.develop.bizartxo.newbakingapp.widget.WidgetIntentService;
 
-public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapter.OnGorkaClick, LoaderManager.LoaderCallbacks<Cursor>{
+public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapter.OnRecipeClick, LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final String TAG = "----------------------------";
 
@@ -56,19 +53,16 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
         super.onCreate(savedInstanceState);
 
         activity = this;
-        //ActionBar toolbar = getActionBar();
-        //toolbar.setBackgroundDrawable(getResources().getDrawable());
-
+        context = getApplicationContext();
 
         setContentView(R.layout.activity_recipe_main);
 
         if (findViewById(R.id.grid_normal) == null) // begiratu landscape tablet
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        context = getApplicationContext();
 
         boolean isLarge = getString(R.string.size).equals("small")?false:true;
-        //Log.d("-------------",":::---> " + getString(R.string.size) + "#" + isLarge);
+
         rv = (RecyclerView)findViewById(R.id.rv);
 
         int columns = isLarge?3:1;
@@ -83,22 +77,11 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
 
         adapter.notifyDataSetChanged();
 
-        // Cursor recipes = getContentResolver().query(MyContentProvider.Recipes.RECIPES, null, null, null, null);
-
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-          /*  case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-                return true;
-
-            case R.id.action_favorite:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
-                return true;*/
 
             default:
                 // If we got here, the user's action was not recognized.
@@ -109,8 +92,8 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
     }
 
     @Override
-    public void onGorkaClick(int position, String recipeid, String recipetitle) {
-        Toast.makeText(this, "GORKA: " + position, Toast.LENGTH_SHORT).show();
+    public void onRecipeClick(int position, String recipeid, String recipetitle) {
+
         Intent intent = new Intent(this, RecipeDetailActivity.class);
         intent.putExtra("RID", recipeid);
         intent.putExtra("TITLE", recipetitle);
@@ -118,9 +101,6 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
 
     }
 
-    public static void refreshData(List<Recipe> r){
-        //  adapter.swapData(r);
-    }
 
     //////////////////////////// LOADER LOGIC //////////////////////////
 
@@ -130,17 +110,13 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
 
             case ID_BAKING_LOADER:
 
-
-
                 return new CursorLoader(this, RecipeProvider.Recipes.RECIPES, null, null, null, null);
 
             case ID_INGREDIENT_LOADER:
 
-
                 return new CursorLoader(this, RecipeProvider.Ingredients.INGREDIENTS, null, args.getString("selection"), args.getStringArray("selectionargs"), null);
 
             case ID_STEP_LOADER:
-
 
                 return new CursorLoader(this, RecipeProvider.Steps.STEPS, null, args.getString("selection"), args.getStringArray("selectionArgs"), null);
 
@@ -153,22 +129,20 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data==null || data.getCount()==0){
-            Log.d("---------","Cargar datos...");
+
             if (NetworksUtils.isConnected(context)){
                 try {
                     HttpAsyncTask asyncMovieData = new HttpAsyncTask(getApplicationContext());
                     asyncMovieData.execute(new URL("https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json"));
                 }
                 catch(IOException ioe){
-                    Log.d(TAG, "ERROOOOOOOR");
+                    Log.d(TAG, "Load finished exception.....");
                 }
             }else{
                 NetworksUtils.showMessage(activity/*RecipeMainActivity.this*/, "Internet not available.");
-
             }
         }
         else {
-            Log.d("---------", "Zenbat: " + data.getCount());
             adapter.swapData(data);
         }
     }
@@ -183,27 +157,12 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
     @Override
     public void onResume(){
         super.onResume();
-        Intent intent = new Intent(getApplicationContext(), TestIntent.class);
+        Intent intent = new Intent(getApplicationContext(), WidgetIntentService.class);
         startService(intent);
         getSupportLoaderManager().initLoader(ID_BAKING_LOADER, null, this);
 
 
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == 10) {
-
-            if(resultCode == RESULT_OK){
-                //String result=data.getStringExtra("TYPE");
-                Toast.makeText(getApplicationContext(),"Your sim type iss POST paidddddddddd", Toast.LENGTH_LONG).show();
-                finish();
-            }
-
-        }
-    }
-
 
 
 }

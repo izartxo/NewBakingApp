@@ -24,6 +24,7 @@ import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
@@ -47,13 +48,14 @@ public class RecipeSelectionTest {
 
     @Test
     public void recipeSelection() throws Exception{
+            
         onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
         onView(withId(R.id.rvsteps)).perform(RecyclerViewActions.actionOnItemAtPosition(8, click()));
 
-        onView(allOf(first(withId(R.id.nextButton)))).check(matches(withText("Next Step"))).perform(click()); //(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+        //onView(allOf(first(withId(R.id.nextButton)))).check(matches(withText("Next Step"))).perform(click()); //(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
-        //onView(allOf(withText("Next Step"), isDescendantOfA(withId(R.id.video_frame)))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.nextButton))).check(matches(isCompletelyDisplayed()));
     }
 
     @Test

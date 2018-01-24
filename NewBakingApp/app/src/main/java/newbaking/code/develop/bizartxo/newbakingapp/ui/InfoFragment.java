@@ -44,24 +44,12 @@ public class InfoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.info_fragment, container, false);
         TextView tvsDesc = (TextView) view.findViewById(R.id.info_sdescription);
         TextView tvDesc = (TextView) view.findViewById(R.id.info_description);
-        //Button back = (Button) view.findViewById(R.id.backButton);
         sl = getArguments().getStringArrayList("videos");
 
-
-
-
-
-        /*back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().finish();
-            }
-        });*/
         Button next = (Button) view.findViewById(R.id.nextButton);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +85,6 @@ public class InfoFragment extends Fragment {
 
         }
 
-        //Toast.makeText(getContext(),"STEP: " + step, Toast.LENGTH_SHORT).show();
         return view;
 
     }
@@ -124,10 +111,6 @@ public class InfoFragment extends Fragment {
           }else{
               next.setVisibility(View.VISIBLE);
           }
-//        if (sl.size()-1==step)
-//            next.setEnabled(false);
-//        else
-//            next.setEnabled(true);
     }
 
 }

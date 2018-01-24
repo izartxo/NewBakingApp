@@ -19,15 +19,15 @@ import newbaking.code.develop.bizartxo.newbakingapp.model.Recipe;
  * Created by izartxo on 11/13/17.
  */
 
-public class TestIntent extends IntentService {
+public class WidgetIntentService extends IntentService {
 
     String _ing;
 
-    public TestIntent(String name) {
+    public WidgetIntentService(String name) {
         super(name);
     }
 
-    public TestIntent() {
+    public WidgetIntentService() {
         super("test");
     }
 

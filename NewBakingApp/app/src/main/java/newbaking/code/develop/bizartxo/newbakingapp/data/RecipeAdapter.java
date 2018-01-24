@@ -27,44 +27,39 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     private static final String TAG = ".....adapter......";
 
-    private static final int ID_KEY = 0x01;
 
-    List<Recipe> recipeList;
-    final private OnGorkaClick mGorkaListener;
+
+    List<Recipe> mRecipeList;
+    final private OnRecipeClick mRecipeListener;
     Context _context;
 
 
-    public RecipeAdapter(List<Recipe> recipes, OnGorkaClick listener, Context context){
-        recipeList = recipes;
-        mGorkaListener = listener;
+    public RecipeAdapter(List<Recipe> recipes, OnRecipeClick listener, Context context){
+        mRecipeList = recipes;
+        mRecipeListener = listener;
         _context = context;
     }
 
     @Override
     public int getItemCount() {
-        if (recipeList==null)
+        if (mRecipeList==null)
             return 0;
-        return recipeList.size();
+        return mRecipeList.size();
     }
 
     @Override
     public RecipeViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        Log.d(TAG, "ONCREATE------------");
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_item, viewGroup, false);
-        RecipeViewHolder rvh = new RecipeViewHolder(v);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_item, viewGroup, false);
+        RecipeViewHolder rvh = new RecipeViewHolder(view);
         return rvh;
     }
 
     @Override
-    public void onBindViewHolder(RecipeViewHolder recipeViewHolder, int i) {
-        Log.d(TAG, "ONBIND------------");
-        recipeViewHolder.recipeTitle.setText(recipeList.get(i).getTitle());
-
-        //recipeViewHolder.recipePhoto.setImageResource(recipeList.get(i).getPhotoId());
-
+    public void onBindViewHolder(RecipeViewHolder recipeViewHolder, int position) {
+        recipeViewHolder.recipeTitle.setText(mRecipeList.get(position).getTitle());
 
         Glide.with(_context)
-                .load(recipeList.get(i).getPhotoIdUrl())
+                .load(mRecipeList.get(position).getPhotoIdUrl())
                 .into(recipeViewHolder.recipePhoto)
                 .onLoadFailed(_context.getResources().getDrawable(R.mipmap.ic_launcher_round,null));
 
@@ -73,11 +68,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        Log.d(TAG, "ONATTACH------------");
+
         super.onAttachedToRecyclerView(recyclerView);
     }
-
-
 
 
     public  class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -89,7 +82,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         RecipeViewHolder(View itemView) {
 
             super(itemView);
-            Log.d(TAG, "ONRECIPE------------");
             cv = (CardView)itemView.findViewById(R.id.card_view);
 
             recipeTitle = (TextView)itemView.findViewById(R.id.recipe_title);
@@ -100,36 +92,38 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
         @Override
         public void onClick(View view) {
+
             int pos = getAdapterPosition();
-            String recipeid = recipeList.get(pos).getRecipeId();
-            String recipeTitle = recipeList.get(pos).getTitle();
-            mGorkaListener.onGorkaClick(pos, recipeid, recipeTitle);
+            String recipeId = mRecipeList.get(pos).getRecipeId();
+            String recipeTitle = mRecipeList.get(pos).getTitle();
+            mRecipeListener.onRecipeClick(pos, recipeId, recipeTitle);
         }
     }
 
-    public interface OnGorkaClick{
-        public void onGorkaClick(int position, String recipeid, String recipeTitle);
+    public interface OnRecipeClick{
+        void onRecipeClick(int position, String recipeId, String recipeTitle);
     }
 
-    public void swapData(Cursor cursor/*List<Recipe> newList*/){
-        //recipeList = newList;
-        Log.d(".............", "Swaping");
-        ArrayList<Recipe> rlist = new ArrayList<>();
+    public void swapData(Cursor cursor){
+
+        ArrayList<Recipe> recipeList = new ArrayList<>();
+
         int count = cursor.getCount();
         cursor.moveToFirst();
-        //while (!cursor.isLast()){
+
         while (count>0){
-            Log.d("xxxxxxxxxxxxxxxxxxx", "/////// " + cursor.getString(1));
-            Recipe r = new Recipe();
-            r.setRecipeId(String.valueOf(cursor.getString(0)));
-            r.setTitle(cursor.getString((1)));
-            r.setPhotoIdUrl(cursor.getString(2));
-            Log.d("-------------------","------->" + r.getRecipeId() + "#" + r.getTitle() + "IURL: " + r.getPhotoIdUrl());
-            rlist.add(r);
+
+            Recipe recipe = new Recipe();
+            recipe.setRecipeId(String.valueOf(cursor.getString(0)));
+            recipe.setTitle(cursor.getString((1)));
+            recipe.setPhotoIdUrl(cursor.getString(2));
+
+            recipeList.add(recipe);
             count--;
             cursor.moveToNext();
         }
-        recipeList = rlist;
+        mRecipeList = recipeList;
+
         this.notifyDataSetChanged();
     }
 
