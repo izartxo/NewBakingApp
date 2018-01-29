@@ -52,6 +52,8 @@ public class RecipeDetailFragment extends Fragment {
     static Context _context;
     static boolean landscape = false;
 
+    static Button next;
+
     Intent intent;
 
     SimpleExoPlayerView simpleExoPlayerView;
@@ -113,8 +115,29 @@ public class RecipeDetailFragment extends Fragment {
             TextView tvd = (TextView) view.findViewById(R.id.sted);
             tvd.setText(stepTextD);
 
+            /*for (int i = 0; i < container.getChildCount(); i++){
+                Log.d("CHIIIIIIIIIIIIIIIIIILD", "View: " + container.getChildAt(i).getClass().getName() + " Pos: " + i);
+                try{
+                    ViewGroup vg = (ViewGroup) container.getChildAt(i).getRootView();
+                    for (int j = 0; j < vg.getChildCount(); j++){
+                        Log.d("CHIIIIIIIIIIIIIIIIIILD", "View: " + container.getChildAt(j).getClass().getName() + " Pos: " + j);
+                        ViewGroup vg2 = (ViewGroup) container.getChildAt(j).getRootView();
+                        for (int m = 0; m < vg2.getChildCount(); m++){
+                            Log.d("CHIIIIIIIIIIIIIIIIIILD", "View: " + container.getChildAt(m).getClass().getName() + " Pos: " + m);
+                            ViewGroup vg3 = (ViewGroup) container.getChildAt(m).getRootView();
+                            for (int n = 0; n < vg3.getChildCount(); n++){
+                                Log.d("CHIIIIIIIIIIIIIIIIIILD", "View: " + container.getChildAt(n).getClass().getName() + " Pos: " + n);
 
-            Button next = (Button) view.findViewById(R.id.nextButton);
+                            }
+                        }
+                    }
+                }catch(Exception e){
+
+                }
+
+            }*/
+
+            next = (Button) view.findViewById(R.id.nextButton);
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view){

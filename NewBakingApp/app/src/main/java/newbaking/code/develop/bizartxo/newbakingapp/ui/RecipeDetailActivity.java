@@ -94,7 +94,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             transaction.add(R.id.master_list_fragment, fragmentList);
-            transaction.addToBackStack("master_list_fragment");
+            //transaction.addToBackStack("master_list_fragment");
+            transaction.addToBackStack(null);
             transaction.commit();
         }
     }

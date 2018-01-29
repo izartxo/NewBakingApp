@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -66,6 +67,13 @@ public class AuxActivity extends AppCompatActivity {
             InfoFragment fragment = new InfoFragment();
 
             fragment.setArguments(video);
+
+            //
+            ViewGroup vgparent = (ViewGroup) findViewById(R.id.d_r_f);
+            if (vgparent!=null)
+                vgparent.removeView(findViewById(R.id.nextButton));
+            //
+
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             transaction.add(R.id.info_novideo, fragment);
@@ -81,6 +89,13 @@ public class AuxActivity extends AppCompatActivity {
             video.putStringArrayList("videos",ss);
             RecipeDetailFragment fragment = new RecipeDetailFragment();
             fragment.setArguments(video);
+
+            //
+            ViewGroup vgparent = (ViewGroup) findViewById(R.id.d_r_f);
+            if (vgparent!=null)
+                vgparent.removeView(findViewById(R.id.nextButton));
+            //
+
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             transaction.add(R.id.video_frame, fragment);
