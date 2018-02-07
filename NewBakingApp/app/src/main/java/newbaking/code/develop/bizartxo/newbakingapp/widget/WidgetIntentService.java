@@ -21,14 +21,9 @@ import newbaking.code.develop.bizartxo.newbakingapp.model.Recipe;
 
 public class WidgetIntentService extends IntentService {
 
-    String _ing;
-
-    public WidgetIntentService(String name) {
-        super(name);
-    }
 
     public WidgetIntentService() {
-        super("test");
+        super("NewBakingAppWidget");
     }
 
 
@@ -66,71 +61,49 @@ public class WidgetIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        Log.d("------------------------",">>>>>>>>>>>>onHandleIntent");
 
         String ing = "1";
 
-        BakingAppWidgetProvider.setRecipenum();
+        BakingAppWidgetProvider.setRecipeNum();
 
         if (intent.hasExtra("ing"))
             ing = intent.getStringExtra("ing");
 
 
-        Log.d("ooooooooooooooooooo>>>>>>", "ING: " + ing);
-
         String columns = "_id = ?";
         String[] values = new String[]{ing};
 
-        Uri weatherForLocationUri = RecipeProvider.Ingredients.INGREDIENTS;
-        Cursor cursor = getContentResolver().query(weatherForLocationUri,
+        Uri ingredientUri = RecipeProvider.Ingredients.INGREDIENTS;
+        Cursor cursor = getContentResolver().query(ingredientUri,
                 null,
                 columns,
                 values,
                 null);
 
 
-        Uri weatherForLocationUri2 = RecipeProvider.Recipes.RECIPES;
-        Cursor cursor2 = getContentResolver().query(weatherForLocationUri2,
+        Uri recipeUri = RecipeProvider.Recipes.RECIPES;
+        Cursor cursor2 = getContentResolver().query(recipeUri,
                 null,
                 null,
                 null,
                 null);
 
 
-        ArrayList<Recipe> mList = new ArrayList<>();
         HashMap<String,String> hm = new HashMap<>();
 
 
         cursor2.moveToFirst();
-        int count = 0;
+
         while (!cursor2.isAfterLast())
         {
             Recipe r = new Recipe(cursor2.getString(0), 0, cursor2.getString(1), cursor2.getString(2));
-            //mList.add(r);
+
             hm.put(r.getRecipeId(),r.getTitle());
-            count++;
+
             cursor2.moveToNext();
         }
 
-      /*  Cursor cursor = null;
-        if (_ing==null){
-            String column = "_id = ?";
-            String[] values = new String[]{"1"};
-             cursor = getContentResolver().query(weatherForLocationUri,
-                    null,
-                    column,
-                    values,
-                    null);
-        }
 
-
-        else {
-             cursor = getContentResolver().query(weatherForLocationUri,
-                    null,
-                    null,
-                    null,
-                    null);
-        }*/
         BakingAppWidgetProvider.updateWidget(cursor, getApplicationContext(), hm);
     }
 }

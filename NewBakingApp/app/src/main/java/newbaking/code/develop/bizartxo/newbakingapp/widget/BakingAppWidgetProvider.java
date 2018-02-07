@@ -34,14 +34,13 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // Perform this loop procedure for each App Widget that belongs to this provider
+
         mContext = context;
         for (int appWidgetId : appWidgetIds) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.appwidget_layout);
 
-            // Create an Intent to launch MainActivity
             Intent intent = new Intent(context, BakingAppWidgetService.class);
-            //intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
             intent.putExtra(appWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
@@ -49,23 +48,7 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
             views.setEmptyView(R.id.rvW, R.id.empty);
 
-            /*Intent intentSync = new Intent (context, BakingAppWidgetService.class);
-
-            intentSync.setAction((AppWidgetManager.ACTION_APPWIDGET_UPDATE));
-
-            //intentSync.putExtra("recipenum", recipenum);
-
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intentSync, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            views.setOnClickPendingIntent(R.id.empty, pendingIntent);*/
-
-
-
-
-
             Intent intentSync = new Intent (mContext, WidgetIntentService.class);
-
-
 
             intentSync.putExtra("ing", String.valueOf(recipenum));
 
@@ -77,12 +60,11 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
                 views.setTextViewText(R.id.header, mList.get(local).getTitle());
 
             }
-            //intentSync.putExtra("recipenum", recipenum);
+
             if (hm!=null && !hm.isEmpty()) {
                 int local = recipenum;
                 if (recipenum==1)
                     local = 1;
-                //Log.d("RECIPENUM", "Num:" + mList.get(local).getTitle());
                 views.setTextViewText(R.id.header, hm.get(String.valueOf(local)));
 
             }
@@ -91,8 +73,6 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
             views.setOnClickPendingIntent(R.id.header, pI);
 
-
-            // Tell the AppWidgetManager to perform an update on the current app widget
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.rvW);
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
@@ -113,46 +93,38 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
     }
 
-    /**
-     * Sets the remote adapter used to fill in the list items
-     *
-     * @param views RemoteViews to set the RemoteAdapter
-     */
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+
+   /* @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private void setRemoteAdapter(Context context, @NonNull final RemoteViews views) {
         views.setRemoteAdapter(R.id.rvW,
                 new Intent(context, BakingAppWidgetService.class));
     }
 
-    /**
-     * Sets the remote adapter used to fill in the list items
-     *
-     * @param views RemoteViews to set the RemoteAdapter
-     */
+
     @SuppressWarnings("deprecation")
     private void setRemoteAdapterV11(Context context, @NonNull final RemoteViews views) {
         views.setRemoteAdapter(0, R.id.rvW,
                 new Intent(context, BakingAppWidgetService.class));
-    }
+    }*/
 
 
     public static void updateWidget(Cursor cursor, Context context, HashMap lhm/*ArrayList<Recipe> zerrenda*/){
             mData = cursor;
-            //mList = zerrenda;
+
             hm = lhm;
-            Log.d("---------------------",">>>>>>>>>> " + mData.getCount());
+            /*Log.d("---------------------",">>>>>>>>>> " + mData.getCount());*/
             Intent intent = new Intent(context, BakingAppWidgetProvider.class);
             intent.setAction(APP_UPD);
             context.sendBroadcast(intent);
             mTotal = hm.size(); //zerrenda.size();
-            Log.d("TOTAL RECIPES", "----------------->>>>>>>" + mTotal);
+            /*Log.d("TOTAL RECIPES", "----------------->>>>>>>" + mTotal);*/
         }
 
         public static Cursor getData(){
             return mData;
         }
 
-    public static void setRecipenum(){
+    public static void setRecipeNum(){
         if (recipenum>=4)
             recipenum = 1;
         else

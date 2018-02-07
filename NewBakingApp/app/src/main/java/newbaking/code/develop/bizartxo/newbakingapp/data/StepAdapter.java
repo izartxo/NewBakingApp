@@ -23,7 +23,7 @@ import newbaking.code.develop.bizartxo.newbakingapp.model.Step;
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder>{
 
 
-    ArrayList<Step> stepList;
+
     final private OnStepClick mStepListener;
 
     LinearLayout lrow;
@@ -88,14 +88,14 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
     class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView ting,tnum;
+        TextView tIng,tNum;
         ImageView cam;
         String url;
 
         StepViewHolder(View v){
             super(v);
-            ting = (TextView) v.findViewById(R.id.step);
-            tnum = (TextView) v.findViewById(R.id.step_number);
+            tIng = (TextView) v.findViewById(R.id.step);
+            tNum = (TextView) v.findViewById(R.id.step_number);
             cam = (ImageView) v.findViewById(R.id.camerapic);
             lrow = (LinearLayout) v.findViewById(R.id.lrow);
 
@@ -106,14 +106,16 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         public void onClick(View view) {
             int pos = getAdapterPosition();
 
-            String recipeId = mStepDataCursor.getString(0);
-            mStepListener.onStepClick(pos, recipeId);
+            // String recipeId = mStepDataCursor.getString(0);
+            mStepListener.onStepClick(pos);
         }
 
         void bind(Step step, int pos){
-
-            tnum.setText(String.valueOf(pos));
-            ting.setText(step.getShortDescription());
+            if (pos==0)
+                tNum.setText("R I");
+            else
+                tNum.setText(String.valueOf(pos));
+            tIng.setText(step.getShortDescription());
             url = step.getVideoURL();
 
 
@@ -138,7 +140,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     }
 
     public interface OnStepClick{
-        void onStepClick(int position, String recipeid);
+        void onStepClick(int position);
     }
 
     public void swapDataStep(Cursor cursor){

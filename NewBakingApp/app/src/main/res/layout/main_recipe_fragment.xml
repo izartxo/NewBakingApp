@@ -17,20 +17,26 @@
         android:textStyle="bold"
         android:textSize="20dp"
         />
-    <ImageView
+    <!--<ImageView
         android:id="@+id/arrow"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:src="@drawable/arrow"
 
 
-        />
+        />-->
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="2">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/ingframe"
+        android:layout_weight="1"
         >
 
 
@@ -39,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:height="100dp"
+        android:scrollbars="vertical"
 
         />
     </LinearLayout>
@@ -46,6 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_weight="1"
         android:id="@+id/stepframe">
     <TextView
         android:layout_width="match_parent"
@@ -59,6 +67,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
+        android:scrollbars="vertical"
         />
+    </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

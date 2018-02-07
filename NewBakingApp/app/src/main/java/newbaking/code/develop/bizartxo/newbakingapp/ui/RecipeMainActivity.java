@@ -15,7 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.Window;
-import android.widget.Toast;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,7 +31,7 @@ import newbaking.code.develop.bizartxo.newbakingapp.widget.WidgetIntentService;
 
 public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapter.OnRecipeClick, LoaderManager.LoaderCallbacks<Cursor>{
 
-    private static final String TAG = "----------------------------";
+    private static final String TAG = "-----------RECIPE MAIN ACTIVITY----------";
 
     public static final int REQUEST_CODE = 10;
 
@@ -57,15 +57,16 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
 
         setContentView(R.layout.activity_recipe_main);
 
-        if (findViewById(R.id.grid_normal) == null) // begiratu landscape tablet
+        if (findViewById(R.id.grid_normal) == null)
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 
         boolean isLarge = getString(R.string.size).equals("small")?false:true;
 
-        rv = (RecyclerView)findViewById(R.id.rv);
-
         int columns = isLarge?3:1;
+
+
+        rv = (RecyclerView)findViewById(R.id.rv);
 
         GridLayoutManager glm = new GridLayoutManager(getApplicationContext(), columns);
         rv.setLayoutManager(glm);
@@ -101,6 +102,15 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
 
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        Intent intent = new Intent(getApplicationContext(), WidgetIntentService.class);
+        startService(intent);
+        getSupportLoaderManager().initLoader(ID_BAKING_LOADER, null, this);
+
+
+    }
 
     //////////////////////////// LOADER LOGIC //////////////////////////
 
@@ -112,13 +122,6 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
 
                 return new CursorLoader(this, RecipeProvider.Recipes.RECIPES, null, null, null, null);
 
-            case ID_INGREDIENT_LOADER:
-
-                return new CursorLoader(this, RecipeProvider.Ingredients.INGREDIENTS, null, args.getString("selection"), args.getStringArray("selectionargs"), null);
-
-            case ID_STEP_LOADER:
-
-                return new CursorLoader(this, RecipeProvider.Steps.STEPS, null, args.getString("selection"), args.getStringArray("selectionArgs"), null);
 
             default:
                 throw new RuntimeException("Loader Not Implemented: " + id);
@@ -133,13 +136,13 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
             if (NetworksUtils.isConnected(context)){
                 try {
                     HttpAsyncTask asyncMovieData = new HttpAsyncTask(getApplicationContext());
-                    asyncMovieData.execute(new URL("https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json"));
+                    asyncMovieData.execute(new URL(NetworksUtils.RECIPES_URL));
                 }
                 catch(IOException ioe){
                     Log.d(TAG, "Load finished exception.....");
                 }
             }else{
-                NetworksUtils.showMessage(activity/*RecipeMainActivity.this*/, "Internet not available.");
+                NetworksUtils.showMessage(activity, "Internet not available.");
             }
         }
         else {
@@ -154,15 +157,7 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
 
     ///////////////////////// LOADER LOGIC END //////////////////////////
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        Intent intent = new Intent(getApplicationContext(), WidgetIntentService.class);
-        startService(intent);
-        getSupportLoaderManager().initLoader(ID_BAKING_LOADER, null, this);
 
-
-    }
 
 
 }

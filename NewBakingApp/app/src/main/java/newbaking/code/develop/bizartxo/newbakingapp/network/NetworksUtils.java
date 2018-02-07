@@ -30,7 +30,7 @@ import newbaking.code.develop.bizartxo.newbakingapp.ui.RecipeMainActivity;
 
 public class NetworksUtils {
 
-
+    public static String RECIPES_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
     /**
      * This method returns the entire result from the HTTP response.
@@ -59,10 +59,10 @@ public class NetworksUtils {
         }
     }
 
-    public static void showMessage(Activity a, String msg){
+    public static void showMessage(Activity activity, String msg){
 
-        Intent intent = new Intent(a.getApplicationContext(), AlertDialogTest.class);
-        a.startActivityForResult(intent, RecipeMainActivity.REQUEST_CODE);
+        Intent intent = new Intent(activity.getApplicationContext(), AlertDialogTest.class);
+        activity.startActivityForResult(intent, RecipeMainActivity.REQUEST_CODE);
 
     }
 

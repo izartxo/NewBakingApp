@@ -46,7 +46,7 @@ import newbaking.code.develop.bizartxo.newbakingapp.model.Recipe;
  * Created by izartxo on 9/13/17.
  */
 
-public class RecipeDetailFragment extends Fragment {
+public class RecipeDetailFragment extends Fragment{
 
     static SimpleExoPlayer player;
     static Context _context;
@@ -58,9 +58,11 @@ public class RecipeDetailFragment extends Fragment {
 
     SimpleExoPlayerView simpleExoPlayerView;
 
-    ArrayList<String> sl;
+    ArrayList<String> videoList;
     String value="";
     int step=0;
+
+
 
 
     @Override
@@ -100,8 +102,8 @@ public class RecipeDetailFragment extends Fragment {
             value = getArguments().getString("video");
             stepText = getArguments().getString("sdesc");
             stepTextD = getArguments().getString("desc");
-            sl = getArguments().getStringArrayList("videos");
-            Log.d("vaaaaaaaaaaaa","luuuuuuuuuuuue: " + value);
+            videoList = getArguments().getStringArrayList("videos");
+
         }
 
         View view = inflater.inflate(R.layout.detail_recipe_fragment, container, false);
@@ -115,28 +117,6 @@ public class RecipeDetailFragment extends Fragment {
             TextView tvd = (TextView) view.findViewById(R.id.sted);
             tvd.setText(stepTextD);
 
-            /*for (int i = 0; i < container.getChildCount(); i++){
-                Log.d("CHIIIIIIIIIIIIIIIIIILD", "View: " + container.getChildAt(i).getClass().getName() + " Pos: " + i);
-                try{
-                    ViewGroup vg = (ViewGroup) container.getChildAt(i).getRootView();
-                    for (int j = 0; j < vg.getChildCount(); j++){
-                        Log.d("CHIIIIIIIIIIIIIIIIIILD", "View: " + container.getChildAt(j).getClass().getName() + " Pos: " + j);
-                        ViewGroup vg2 = (ViewGroup) container.getChildAt(j).getRootView();
-                        for (int m = 0; m < vg2.getChildCount(); m++){
-                            Log.d("CHIIIIIIIIIIIIIIIIIILD", "View: " + container.getChildAt(m).getClass().getName() + " Pos: " + m);
-                            ViewGroup vg3 = (ViewGroup) container.getChildAt(m).getRootView();
-                            for (int n = 0; n < vg3.getChildCount(); n++){
-                                Log.d("CHIIIIIIIIIIIIIIIIIILD", "View: " + container.getChildAt(n).getClass().getName() + " Pos: " + n);
-
-                            }
-                        }
-                    }
-                }catch(Exception e){
-
-                }
-
-            }*/
-
             next = (Button) view.findViewById(R.id.nextButton);
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -145,9 +125,9 @@ public class RecipeDetailFragment extends Fragment {
                     Bundle bundle = new Bundle();
 
 
-                            bundle.putString("video", sl.get(step+1));
+                            bundle.putString("video", videoList.get(step+1));
                             bundle.putInt("step", step+1);
-                            bundle.putStringArrayList("videos",sl);
+                            bundle.putStringArrayList("videos", videoList);
                             nextIntent.putParcelableArrayListExtra("stepO", intent.getParcelableArrayListExtra("stepO"));
                             nextIntent.putExtra("data", bundle);
 
@@ -162,36 +142,29 @@ public class RecipeDetailFragment extends Fragment {
         }
 
         simpleExoPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.sepv);
-        // 1. Create a default TrackSelector
 
-        Handler mainHandler = new Handler();
+        //Handler mainHandler = new Handler();
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory =
                 new AdaptiveTrackSelection.Factory(bandwidthMeter);
         TrackSelector trackSelector =
                 new DefaultTrackSelector(videoTrackSelectionFactory);
 
-
-
-// 2. Create the player
         player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
         
         simpleExoPlayerView.setPlayer(player);
 
-
-
-        // Measures bandwidth during playback. Can be null if not required.
         DefaultBandwidthMeter dbandwidthMeter = new DefaultBandwidthMeter();
-// Produces DataSource instances through which media data is loaded.
+
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(),
-                Util.getUserAgent(getContext(), "yourApplicationName"), dbandwidthMeter);
-// Produces Extractor instances for parsing the media data.
+                Util.getUserAgent(getContext(), getString(R.string.app_name)), dbandwidthMeter);
+
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-// This is the MediaSource representing the media to be played.
-        Uri uri = Uri.parse(value); //"https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4");
+
+        Uri uri = Uri.parse(value);
         MediaSource videoSource = new ExtractorMediaSource(uri,
                 dataSourceFactory, extractorsFactory, null, null);
-// Prepare the player with the source.
+
         player.prepare(videoSource);
 
         return view;
@@ -214,9 +187,8 @@ public class RecipeDetailFragment extends Fragment {
 
     public static void stopPlayer(){
 
-
         if (player!=null) {
-            Toast.makeText(_context, "Releasing video...", Toast.LENGTH_SHORT).show();
+
             player.setPlayWhenReady(false);
             player.release();
             player = null;
@@ -226,7 +198,7 @@ public class RecipeDetailFragment extends Fragment {
 
     public void checkNextStep(Button next){
 
-        if (sl.size()-1==step)
+        if (videoList.size()-1==step)
 
             next.setVisibility(View.INVISIBLE);
         else

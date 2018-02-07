@@ -12,6 +12,6 @@
     <padding
         android:left="6dip"
         android:right="6dip"
-        android:top="5dip"
-        android:bottom="5dip" />
+        android:top="6dip"
+        android:bottom="6dip" />
 </shape>

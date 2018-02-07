@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.StaleDataException;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Binder;
@@ -31,7 +32,6 @@ import newbaking.code.develop.bizartxo.newbakingapp.model.RecipeColumns;
 
 public class BakingAppWidgetService extends RemoteViewsService {
 
-    //String[] STOCK_COLUMNS = {RecipeColumns._ID,RecipeColumns.TITLE, RecipeColumns.IMAGE};
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -52,6 +52,7 @@ public class BakingAppWidgetService extends RemoteViewsService {
             @Override
             public void onCreate() {
                 // Nothing to do
+
             }
 
             @Override
@@ -63,19 +64,6 @@ public class BakingAppWidgetService extends RemoteViewsService {
                 if (data == null) {
                     return;
                 }
-                // This method is called by the app hosting the widget (e.g., the launcher)
-                // However, our ContentProvider is not exported so it doesn't have access to the
-                // data. Therefore we need to clear (and finally restore) the calling identity so
-                // that calls use our process and permission
-                //final long identityToken = Binder.clearCallingIdentity();
-
-                //Uri weatherForLocationUri = RecipeProvider.Recipes.RECIPES;
-                /*data = getContentResolver().query(weatherForLocationUri,
-                        STOCK_COLUMNS,
-                        null,
-                        null,
-                        null);
-                Binder.restoreCallingIdentity(identityToken);*/
 
             }
 
@@ -94,41 +82,41 @@ public class BakingAppWidgetService extends RemoteViewsService {
 
             @Override
             public RemoteViews getViewAt(int position) {
-                if (position == AdapterView.INVALID_POSITION ||
-                        data == null || !data.moveToPosition(position)) {
-                    return null;
-                }
-                RemoteViews views = new RemoteViews(getPackageName(),
-                        R.layout.widget_item);
+                RemoteViews views = null;
+                try {
+                    if (position == AdapterView.INVALID_POSITION ||
+                            data == null || !data.moveToPosition(position)) {
+                        return null;
+                    }
+                    views = new RemoteViews(getPackageName(),
+                            R.layout.widget_item);
 
 
-                for (int u = 0; u < data.getColumnCount(); u++){
-                    Log.d("##################", "-->> " + data.getString(u));
-                    String title = data.getString(data.getColumnIndex(IngredientColumns.INGREDIENT));
+                    for (int u = 0; u < data.getColumnCount(); u++) {
+
+                        String title = data.getString(data.getColumnIndex(IngredientColumns.INGREDIENT));
+
+                        views.setTextViewText(R.id.ingredientW, title.toUpperCase());
+                    }
 
 
-                    views.setTextViewText(R.id.ingredientW, title.toUpperCase());
-                }
 
-
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+/*                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                     // setRemoteContentDescription(views, description);
-                }
-
+                }*/
 
 
                 final Intent fillInIntent = new Intent();
 
-                Uri weatherUri = RecipeProvider.Recipes.RECIPES;
-                fillInIntent.setData(weatherUri);
+                Uri recipeUri = RecipeProvider.Recipes.RECIPES;
+                fillInIntent.setData(recipeUri);
                 views.setOnClickFillInIntent(R.id.ingredientW, fillInIntent);
+                } catch (IllegalStateException ie){
+                    Log.d("Widget", "Error recreating widget");
+                } catch (StaleDataException sde){
+                    Log.d("Widget", "Error recreating widget");
+                }
                 return views;
-            }
-
-            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-            private void setRemoteContentDescription(RemoteViews views, String description) {
-                //      views.setContentDescription(R.id.widget_icon, description);
             }
 
             @Override
@@ -143,8 +131,15 @@ public class BakingAppWidgetService extends RemoteViewsService {
 
             @Override
             public long getItemId(int position) {
-                if (data.moveToPosition(position))
-                    return data.getLong(0);
+                try{
+                    if (data.moveToPosition(position))
+                        return data.getLong(0);
+                }catch(IllegalStateException ie){
+                    Log.d("Widget", "Error recreating widget");
+                }catch(StaleDataException ie){
+                    Log.d("Widget", "Error recreating widget");
+                }
+
                 return position;
             }
 

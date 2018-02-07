@@ -25,8 +25,8 @@ public class AuxActivity extends AppCompatActivity {
 
 
     Intent intent;
-    boolean novideo = false;
-    ArrayList<String> ss = new ArrayList<>();
+    boolean noVideo = false;
+    ArrayList<String> videosList = new ArrayList<>();
     static ArrayList<Step> actualStep;
     int step = 0;
 
@@ -46,32 +46,32 @@ public class AuxActivity extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra("data");
         step = bundle.getInt("step");
 
-        String link = actualStep.get(step).getVideoURL(); //bundle.getString("video");
-        String sd = actualStep.get(step).getShortDescription(); //bundle.getString("sdesc");
-        String d = actualStep.get(step).getDescription(); //bundle.getString("desc");
+        String link = actualStep.get(step).getVideoURL();
+        String sd = actualStep.get(step).getShortDescription();
+        String d = actualStep.get(step).getDescription();
 
-        ss = bundle.getStringArrayList("videos");
+        videosList = bundle.getStringArrayList("videos");
 
         toolbar.setTitle(sd);
 
         if (link.equals(""))
-            novideo = true;
+            noVideo = true;
 
-        if (novideo) {
+        if (noVideo) {
             setContentView(R.layout.info_fragment);
             Bundle video = new Bundle();
             video.putString("sdesc", sd);
             video.putString("desc", d);
-            video.putStringArrayList("videos",ss);
+            video.putStringArrayList("videos", videosList);
             video.putInt("step",step);
             InfoFragment fragment = new InfoFragment();
 
             fragment.setArguments(video);
 
-            //
-            ViewGroup vgparent = (ViewGroup) findViewById(R.id.d_r_f);
-            if (vgparent!=null)
-                vgparent.removeView(findViewById(R.id.nextButton));
+            // To avoid Espresso ambiguous problem
+            ViewGroup vgParent = (ViewGroup) findViewById(R.id.d_r_f);
+            if (vgParent!=null)
+                vgParent.removeView(findViewById(R.id.nextButton));
             //
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -86,14 +86,15 @@ public class AuxActivity extends AppCompatActivity {
             video.putString("sdesc", sd);
             video.putString("desc", d);
             video.putInt("step",step);
-            video.putStringArrayList("videos",ss);
+            video.putStringArrayList("videos", videosList);
+
             RecipeDetailFragment fragment = new RecipeDetailFragment();
             fragment.setArguments(video);
 
-            //
-            ViewGroup vgparent = (ViewGroup) findViewById(R.id.d_r_f);
-            if (vgparent!=null)
-                vgparent.removeView(findViewById(R.id.nextButton));
+            // To avoid Espresso ambiguous problem
+            ViewGroup vgParent = (ViewGroup) findViewById(R.id.d_r_f);
+            if (vgParent!=null)
+                vgParent.removeView(findViewById(R.id.nextButton));
             //
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -115,14 +116,13 @@ public class AuxActivity extends AppCompatActivity {
     protected void onPause(){
         RecipeDetailFragment.stopPlayer();
         super.onPause();
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // app icon in action bar clicked; goto parent activity.
+
                 this.finish();
                 return true;
             default:

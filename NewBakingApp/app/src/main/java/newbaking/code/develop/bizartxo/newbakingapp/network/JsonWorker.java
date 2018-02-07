@@ -26,13 +26,13 @@ public class JsonWorker {
     private static final String TAG = "WORKER";
 
     String process;
-    List<Recipe> rec;
+    List<Recipe> recipeList;
     Context _context;
 
     public JsonWorker(Context context, String result){
         _context = context;
         process = result;
-        rec = new ArrayList<Recipe>();
+        recipeList = new ArrayList<Recipe>();
 
         startProcess();
     }
@@ -44,6 +44,7 @@ public class JsonWorker {
         try{
             JSONArray jsonArray = new JSONArray(process);
             Recipe recipe;
+
             for (int z=0; z < jsonArray.length(); z++) {
 
                 JSONObject jo = jsonArray.getJSONObject(z);
@@ -52,8 +53,6 @@ public class JsonWorker {
                 recipe.setRecipeId(jo.getString("id"));
                 recipe.setDescription(jo.getString("name"));
                 recipe.setTitle(jo.getString("name"));
-
-
 
                 JSONArray jing = jo.getJSONArray("ingredients");
 
@@ -98,23 +97,25 @@ public class JsonWorker {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("_id", Integer.valueOf(recipe.getRecipeId()));
                 contentValues.put("title", recipe.getTitle());
+
+                // Hardcoded for this special case
                 switch (Integer.valueOf(recipe.getRecipeId())){
-                    case 2:
-                        contentValues.put("image", "https://www.twopeasandtheirpod.com/wp-content/uploads/2011/02/King-Arthur-Brownies.jpg");
-                        break;
-                    case 4:
-                        contentValues.put("image","http://food.fnr.sndimg.com/content/dam/images/food/fullset/2009/5/27/0/IGSP01_25282_s4x3.jpg.rend.hgtvcom.616.462.suffix/1485531666198.jpeg");
-                        break;
                     case 1:
                         contentValues.put("image","http://thehillcountrycook.com/wp-content/uploads/2012/03/nutella-pie09.jpg");
+                        break;
+                    case 2:
+                        contentValues.put("image", "https://www.twopeasandtheirpod.com/wp-content/uploads/2011/02/King-Arthur-Brownies.jpg");
                         break;
                     case 3:
                         contentValues.put("image","http://s3.amazonaws.com/studio-me/system/photos/photos/000/386/628/large/yellow-cake-recipe.jpg");
                         break;
+                    case 4:
+                        contentValues.put("image","http://food.fnr.sndimg.com/content/dam/images/food/fullset/2009/5/27/0/IGSP01_25282_s4x3.jpg.rend.hgtvcom.616.462.suffix/1485531666198.jpeg");
+                        break;
                 }
 
 
-                rec.add(recipe);
+                recipeList.add(recipe);
 
                 contentResolver.insert(RecipeProvider.Recipes.RECIPES, contentValues);
             }

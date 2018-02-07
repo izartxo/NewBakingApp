@@ -22,7 +22,7 @@ import newbaking.code.develop.bizartxo.newbakingapp.R;
 
 public class InfoFragment extends Fragment {
 
-    ArrayList<String> sl;
+    ArrayList<String> videoList;
     int step=0;
     Intent intent;
 
@@ -48,7 +48,7 @@ public class InfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.info_fragment, container, false);
         TextView tvsDesc = (TextView) view.findViewById(R.id.info_sdescription);
         TextView tvDesc = (TextView) view.findViewById(R.id.info_description);
-        sl = getArguments().getStringArrayList("videos");
+        videoList = getArguments().getStringArrayList("videos");
 
         Button next = (Button) view.findViewById(R.id.nextButton);
         next.setOnClickListener(new View.OnClickListener() {
@@ -57,17 +57,12 @@ public class InfoFragment extends Fragment {
                 Intent nextIntent = new Intent(getContext(), AuxActivity.class);
                 Bundle bundle = new Bundle();
 
+                bundle.putString("video", videoList.get(step + 1));
 
-
-                bundle.putString("video", sl.get(step+1));
-
-                bundle.putInt("step", step+1);
-                bundle.putStringArrayList("videos",sl);
+                bundle.putInt("step", step + 1);
+                bundle.putStringArrayList("videos", videoList);
                 nextIntent.putExtra("data", bundle);
                 nextIntent.putParcelableArrayListExtra("stepO", intent.getParcelableArrayListExtra("stepO"));
-
-
-
 
                 getActivity().finish();
                 startActivity(nextIntent);
@@ -76,7 +71,7 @@ public class InfoFragment extends Fragment {
 
         checkNextStep(next);
 
-        if (!(getArguments()==null)) {
+        if (getArguments()!=null) {
             String sd = getArguments().getString("sdesc");
             String d = getArguments().getString("desc");
             step = getArguments().getInt("step");
@@ -99,8 +94,6 @@ public class InfoFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
-
-
 
     }
 

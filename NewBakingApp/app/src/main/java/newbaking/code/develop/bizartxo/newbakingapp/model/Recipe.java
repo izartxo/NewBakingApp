@@ -39,9 +39,9 @@ public class Recipe{
         this._id = i;
     }
 
-    public void setPhotoId(int p){
+    /*public void setPhotoId(int p){
         this.photoId = p;
-    }
+    }*/
 
     public void setPhotoIdUrl(String url){
         this.photoIdUrl = url;
@@ -59,9 +59,9 @@ public class Recipe{
         return this._id;
     }
 
-    public int getPhotoId(){
+    /*public int getPhotoId(){
         return this.photoId;
-    }
+    }*/
 
     public String getPhotoIdUrl(){
         return this.photoIdUrl;

@@ -3,8 +3,7 @@ package newbaking.code.develop.bizartxo.newbakingapp.model;
 import net.simonvt.schematic.annotation.DataType;
 import net.simonvt.schematic.annotation.NotNull;
 
-import static android.provider.Telephony.Mms.Part.TEXT;
-import static java.sql.Types.INTEGER;
+
 
 /**
  * Created by izartxo on 9/12/17.

@@ -48,29 +48,31 @@ import newbaking.code.develop.bizartxo.newbakingapp.model.Step;
 
 public class RecipeListFragment extends Fragment implements StepAdapter.OnStepClick, LoaderManager.LoaderCallbacks<Cursor>{
 
-    private static final int ID_BAKING_LOADER = 44;
+
     private static final int ID_INGREDIENT_LOADER = 55;
     private static final int ID_STEP_LOADER = 66;
 
-    static boolean terminatedAnimation = true;
 
     Context _context;
     Intent intent;
     Recipe recipe;
-    RecyclerView rving, rvstep;
-    IngredientAdapter iadapter;
-    StepAdapter sadapter;
+    RecyclerView rvIng, rvStep;
+    IngredientAdapter ingredientAdapter;
+    StepAdapter stepAdapter;
     ArrayList<String> stepList = new ArrayList<>();
     ArrayList<Step> stepArray;
-    TextView tIngredients;
-    LinearLayout ingframe, stepframe;
-    ImageView arrow;
+    TextView textIngredients;
+    LinearLayout ingFrame, stepFrame;
 
+
+    int stepPos = 0;
+    int ingPos = 0;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         _context = context;
+
     }
 
     @Override
@@ -79,52 +81,34 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
         intent = getActivity().getIntent();
 
-
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
 
+        if ( getArguments()!=null ) {
+             stepPos = getArguments().getInt("stepPos");
+             ingPos = getArguments().getInt("ingPos");
+        }
+
         View view = inflater.inflate(R.layout.main_recipe_fragment, container, false);
 
-        rving = (RecyclerView) view.findViewById(R.id.rving);
-        rvstep = (RecyclerView) view.findViewById(R.id.rvsteps);
-        tIngredients = (TextView) view.findViewById(R.id.ting);
-        ingframe = (LinearLayout) view.findViewById(R.id.ingframe);
-        stepframe = (LinearLayout) view.findViewById(R.id.stepframe);
-        arrow = (ImageView) view.findViewById(R.id.arrow);
-
-        rving.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        rvstep.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        rvIng = (RecyclerView) view.findViewById(R.id.rving);
+        rvStep = (RecyclerView) view.findViewById(R.id.rvsteps);
+        textIngredients = (TextView) view.findViewById(R.id.ting);
+        ingFrame = (LinearLayout) view.findViewById(R.id.ingframe);
+        stepFrame = (LinearLayout) view.findViewById(R.id.stepframe);
 
 
+        rvIng.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        rvStep.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        iadapter = new IngredientAdapter();
-        rving.setAdapter(iadapter);
+        ingredientAdapter = new IngredientAdapter();
+        rvIng.setAdapter(ingredientAdapter);
 
-        sadapter = new StepAdapter(this);
-        rvstep.setAdapter(sadapter);
-
-        /*rvstep.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                sadapter.notifyDataSetChanged();
-            }
-        });
-*/
-        // Prepare the View for the animation
-        rving.setVisibility(View.VISIBLE);
-
-
-        tIngredients.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (terminatedAnimation)
-                    animateList();
-            }
-        });
+        stepAdapter = new StepAdapter(this);
+        rvStep.setAdapter(stepAdapter);
 
 
 
@@ -137,127 +121,53 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
     }
 
-    private void animateList(){
-        if (rving.getVisibility()==View.INVISIBLE || rving.getVisibility()==View.GONE){
-            arrow.animate()
-                    .setDuration(1000)
-                    .rotation(0.0f)
-                    .setListener(null);
-
-            stepframe.animate()
-                    .setDuration(1000)
-                    .translationYBy(rving.getHeight())
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-                            super.onAnimationStart(animation);
-                            terminatedAnimation = false;
-
-
-
-                        }
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            terminatedAnimation = true;
-                            rving.setVisibility(View.VISIBLE);
-                            ViewGroup.LayoutParams params=stepframe.getLayoutParams();
-                            params.height=(tIngredients.getHeight() + rvstep.getHeight()) - rving.getHeight();
-                            stepframe.setLayoutParams(params);
-                        }
-                    });
-
-        }else{
-            arrow.animate()
-                    .setDuration(1000)
-                    .rotation(90.f)
-                    .setListener(null);
-            stepframe.animate()
-                    .setDuration(300)
-                    .translationYBy(-rving.getHeight())
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-                            super.onAnimationStart(animation);
-                            terminatedAnimation = false;
-                            rving.setVisibility(View.INVISIBLE);
-                            ViewGroup.LayoutParams params=stepframe.getLayoutParams();
-                            params.height=tIngredients.getHeight() + rvstep.getHeight() + rving.getHeight();
-                            stepframe.setLayoutParams(params);
-
-                        }
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            terminatedAnimation = true;
-
-                        }
-                    });
-
-        }
-    }
-
     @Override
     public void onPause() {
         super.onPause();
 
-        //Fix static draw doubling data, i think another approach is better.
-        rvstep.setAdapter(null);
-        rvstep.setLayoutManager(null);
+        RecipeDetailActivity.setRvPositions(((LinearLayoutManager) rvIng.getLayoutManager()).findFirstCompletelyVisibleItemPosition(),((LinearLayoutManager) rvStep.getLayoutManager()).findFirstCompletelyVisibleItemPosition());
+
+        rvIng.setAdapter(null);
+        rvIng.setLayoutManager(null);
+        rvStep.setAdapter(null);
+        rvStep.setLayoutManager(null);
     }
-
-
-
 
     @Override
-    public void onStepClick(int position, String recipeid) {
-        Step step = sadapter.getItem(position);
-        if (step==null)
-            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxx null","nulllllll");
+    public void onStepClick(int position) {
 
-        int s = position;
+        updateVideo(position, stepArray);
 
-        updateVideo(s, stepArray);
     }
 
+    public void updateVideo(int step, ArrayList<Step> listStep) {
 
-    public void updateVideo(int step, ArrayList<Step> stepO) {
+        boolean noVideo = true;
 
+        if (!listStep.get(step).getVideoURL().equals(""))
+            noVideo = false;
 
-        boolean novideo = true;
-
-
-
-        if (!stepO.get(step).getVideoURL().equals(""))
-            novideo = false;
-
-
-
-        Toast.makeText(getContext(),"MAIN STEP: " + step, Toast.LENGTH_SHORT).show();
         Bundle args = new Bundle();
-        args.putString("video", stepO.get(step).getVideoURL());
-        args.putString("sdesc", stepO.get(step).getShortDescription());
+        args.putString("video", listStep.get(step).getVideoURL());
+        args.putString("sdesc", listStep.get(step).getShortDescription());
         args.putInt("step", step);
 
-        args.putString("desc", stepO.get(step).getDescription());
+        args.putString("desc", listStep.get(step).getDescription());
         args.putStringArrayList("videos", stepList);
 
 
         if (RecipeDetailActivity.getTwoPane()) {
 
-            if (novideo){
+            if (noVideo){
                 InfoFragment idf = new InfoFragment();
 
                 idf.setArguments(args);
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-// Replace whatever is in the fragment_container view with this fragment,
-// and add the transaction to the back stack so the user can navigate back
                 transaction.replace(R.id.video_frame, idf);
                 transaction.addToBackStack(null);
 
-// Commit the transaction
                 transaction.commit();
 
             }else {
@@ -269,28 +179,21 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-// Replace whatever is in the fragment_container view with this fragment,
-// and add the transaction to the back stack so the user can navigate back
                 transaction.replace(R.id.video_frame, rdf);
                 transaction.addToBackStack(null);
 
-// Commit the transaction
                 transaction.commit();
             }
-            //getFragmentManager().beginTransaction().add(R.id.detailf_fragment, rdf).commit();
+
         }else{
+
             Intent intent = new Intent(_context, AuxActivity.class);
-            intent.putExtra("stepO",stepO);
-            if (novideo){
-                Log.d("---------","novideo " + args.getString("sdesc"));
-                intent.putExtra("data", args);
+            intent.putExtra("stepO", listStep);
 
-            }else{
 
-                Log.d("TEST value", "value: " + args.getString("video"));
-                intent.putExtra("data", args);
+            intent.putExtra("data", args);
 
-            }
+
             startActivity(intent);
         }
     }
@@ -298,6 +201,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     @Override
     public void onResume() {
         super.onResume();
+
 
     }
 
@@ -309,10 +213,6 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         String[] values = new String[]{args.getString("RID")};
 
         switch (id) {
-
-            case ID_BAKING_LOADER:
-
-                return new CursorLoader(_context, RecipeProvider.Recipes.RECIPES, null, column, values, null);
 
             case ID_INGREDIENT_LOADER:
 
@@ -331,44 +231,50 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data==null || data.getCount()==0){
-            Log.d("---------","No datos...");
+            return;
 
         }
         else {
             switch (loader.getId()){
 
-                case ID_BAKING_LOADER:
-                    break;
-
                 case ID_INGREDIENT_LOADER:
-                    if (iadapter != null)
-                        iadapter.swapDataIngredient(data);
+                    if (ingredientAdapter != null)
+                        ingredientAdapter.swapDataIngredient(data);
                     else {
-                        iadapter = new IngredientAdapter();
-                        rving.setAdapter(iadapter);
-                        rving.setHasFixedSize(true);
+                        ingredientAdapter = new IngredientAdapter();
+                        rvIng.setAdapter(ingredientAdapter);
+                        rvIng.setHasFixedSize(true);
                     }
-                    iadapter.notifyDataSetChanged();
+                    ingredientAdapter.notifyDataSetChanged();
+
+                    rvIng.getLayoutManager().scrollToPosition(ingPos);
 
                     break;
 
                 case ID_STEP_LOADER:
-                    if (sadapter != null)
-                        sadapter.swapDataStep(data);
+                    if (stepAdapter != null)
+                        stepAdapter.swapDataStep(data);
                     else {
-                        sadapter = new StepAdapter(this);
-                        rving.setAdapter(sadapter);
-                        rving.setHasFixedSize(true);
+                        stepAdapter = new StepAdapter(this);
+                        rvIng.setAdapter(stepAdapter);
+                        rvIng.setHasFixedSize(true);
                     }
-                    sadapter.notifyDataSetChanged();
+                    stepAdapter.notifyDataSetChanged();
                     stepArray = new ArrayList<Step>();
-                    for (int u = 0; u < sadapter.getItemCount(); u++){
-                        stepList.add(sadapter.getItem(u).getVideoURL());
-                        stepArray.add(sadapter.getItem(u));
+                    for (int u = 0; u < stepAdapter.getItemCount(); u++){
+                        stepList.add(stepAdapter.getItem(u).getVideoURL());
+                        stepArray.add(stepAdapter.getItem(u));
                     }
+
+
+                    rvStep.getLayoutManager().scrollToPosition(stepPos);
+
 
                     break;
             }
+
+
+
         }
     }
 
@@ -396,7 +302,6 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
 
     }
-
 
 
 }

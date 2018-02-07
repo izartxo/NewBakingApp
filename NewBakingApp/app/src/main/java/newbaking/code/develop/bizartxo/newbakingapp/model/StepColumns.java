@@ -17,8 +17,7 @@ public interface StepColumns {
     @DataType(DataType.Type.TEXT) @NotNull String SDESC = "short";
     @DataType(DataType.Type.TEXT) @NotNull String DESC = "description";
     @DataType(DataType.Type.TEXT) @NotNull String VIDEO = "video";
-    @DataType(DataType.Type.TEXT) @NotNull
-    String TVIDEO = "thumbvideo";
+    @DataType(DataType.Type.TEXT) @NotNull String TVIDEO = "thumbvideo";
 
 }
 

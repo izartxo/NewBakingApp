@@ -28,16 +28,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     Cursor mIngredientCursor;
 
-    private Context ctx = null;
-    private int appWidgetId;
-
-   /* public IngredientAdapter(Context context, Intent intent){
-        ctx = context;
-        appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                AppWidgetManager.INVALID_APPWIDGET_ID);
-    }*/
     public IngredientAdapter(){
-
 
     }
 
@@ -65,7 +56,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             mIng.setIngredient(ingredient);
             mIng.setQuantity(quantity);
 
-            recipeViewHolder.ting.setText("\u2022  " + mIng.getIngredient());
+            recipeViewHolder.tIng.setText("\u2022  " + mIng.getIngredient());
         }
     }
 
@@ -87,11 +78,11 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     class IngredientViewHolder extends RecyclerView.ViewHolder{
 
-        TextView ting;
+        TextView tIng;
 
         IngredientViewHolder(View v){
             super(v);
-            ting = (TextView) v.findViewById(R.id.ingredient);
+            tIng = (TextView) v.findViewById(R.id.ingredient);
         }
     }
 

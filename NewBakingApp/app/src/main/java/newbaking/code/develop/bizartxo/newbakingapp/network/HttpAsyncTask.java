@@ -22,9 +22,6 @@ public class HttpAsyncTask extends AsyncTask<URL,Void,String> {
 
     public HttpAsyncTask(Context context) {
         _context = context;
-        // Retrieve the package manager for later use; note we don't
-        // use 'context' directly but instead the save global application
-        // context returned by getContext().
 
     }
 
@@ -32,13 +29,13 @@ public class HttpAsyncTask extends AsyncTask<URL,Void,String> {
     @Override
     protected String doInBackground(URL... params) {
         URL searchUrl = params[0];
-        String githubSearchResults = null;
+        String recipeResults = null;
         try {
-            githubSearchResults = NetworksUtils.getResponseFromHttpUrl(searchUrl);
+            recipeResults = NetworksUtils.getResponseFromHttpUrl(searchUrl);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return githubSearchResults;
+        return recipeResults;
     }
 
 

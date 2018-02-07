@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.widget.Toolbar;
 
@@ -27,6 +28,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     static boolean twoPane;
     static String recipeTitle;
+    static int stepPosition = 0;
+    static int ingPosition = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +59,25 @@ public class RecipeDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("ingPos", ingPosition);
+        outState.putInt("stepPos", stepPosition);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        ingPosition = savedInstanceState.getInt("ingPos");
+        stepPosition = savedInstanceState.getInt("stepPos");
+    }
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // app icon in action bar clicked; goto parent activity.
+
                 this.finish();
                 return true;
             default:
@@ -70,10 +89,17 @@ public class RecipeDetailActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        Bundle bundle = new Bundle();
+        bundle.putInt("ingPos", ingPosition);
+        bundle.putInt("stepPos", stepPosition);
+
+
         if (twoPane){
             Fragment fragmentList = new RecipeListFragment();
 
             FragmentTransaction transactionList = getSupportFragmentManager().beginTransaction();
+
+            fragmentList.setArguments(bundle);
 
             transactionList.add(R.id.master_list_fragment, fragmentList);
             transactionList.addToBackStack(null);
@@ -90,6 +116,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         else{
             Fragment fragmentList = new RecipeListFragment();
 
+            fragmentList.setArguments(bundle);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -108,6 +135,12 @@ public class RecipeDetailActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    public static void setRvPositions(int iPos, int sPos){
+        ingPosition = iPos;
+        stepPosition = sPos;
+
     }
 }
 
