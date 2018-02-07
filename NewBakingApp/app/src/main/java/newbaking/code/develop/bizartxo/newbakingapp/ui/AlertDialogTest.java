@@ -19,7 +19,7 @@ public class AlertDialogTest extends AppCompatActivity {
 
     final Context context = this;
 
-    private Button button;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class AlertDialogTest extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent returnIntent = new Intent();
-                        //returnIntent.putExtra("TYPE","POST Paid");
+
                         setResult(RESULT_OK, returnIntent);
                         finish();
 

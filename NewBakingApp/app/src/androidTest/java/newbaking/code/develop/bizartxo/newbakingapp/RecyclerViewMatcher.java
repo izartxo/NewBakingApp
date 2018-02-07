@@ -17,9 +17,6 @@ public class RecyclerViewMatcher {
             this.recyclerViewId = recyclerViewId;
         }
 
-        public Matcher<View> atPosition(final int position) {
-            return atPositionOnView(position, -1);
-        }
 
         public Matcher<View> atPositionOnView(final int position, final int targetViewId) {
 
@@ -28,18 +25,18 @@ public class RecyclerViewMatcher {
                 View childView;
 
                 public void describeTo(Description description) {
-                    String idDescription = Integer.toString(recyclerViewId);
+                    /*String idDescription = Integer.toString(recyclerViewId);
                     if (this.resources != null) {
                         try {
                             idDescription = this.resources.getResourceName(recyclerViewId);
-                        } catch (Resources.NotFoundException var4) {
+                        } catch (Resources.NotFoundException ne) {
                             idDescription = String.format("%s (resource name not found)",
                                     new Object[] { Integer.valueOf
                                             (recyclerViewId) });
                         }
                     }
 
-                    description.appendText("with id: " + idDescription);
+                    description.appendText("with id: " + idDescription);*/
                 }
 
                 public boolean matchesSafely(View view) {

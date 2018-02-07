@@ -63,8 +63,6 @@ public class RecipeDetailFragment extends Fragment{
     int step=0;
 
 
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

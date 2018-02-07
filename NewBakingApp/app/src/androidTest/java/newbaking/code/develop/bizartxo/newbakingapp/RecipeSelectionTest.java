@@ -54,15 +54,11 @@ public class RecipeSelectionTest {
 
         onView(withId(R.id.rvsteps)).perform(RecyclerViewActions.actionOnItemAtPosition(7, click()));
 
-        //onView(allOf(first(withId(R.id.nextButton)))).check(matches(withText("Next Step"))).perform(click()); //(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-
-
         onView(allOf(withId(R.id.nextButton))).perform(click());
     }
 
     @Test
     public void recipeSelectionExact() throws Exception{
-      //  onView(withId(R.id.rv)).check(RecyclerViewActions.scrollTo(matches(withText("Brownies"))));
 
         onView(withRecyclerView(R.id.rv).atPositionOnView(2, R.id.recipe_title)).check(matches(withText("Nutella Pie")));
 
@@ -76,28 +72,6 @@ public class RecipeSelectionTest {
 
         return new RecyclerViewMatcher(recyclerViewId);
     }
-
-    private <T> Matcher<T> first(final Matcher<T> matcher) {
-        return new BaseMatcher<T>() {
-            boolean isFirst = true;
-
-            @Override
-            public boolean matches(final Object item) {
-                if (isFirst && matcher.matches(item)) {
-                    isFirst = false;
-                    return true;
-                }
-
-                return false;
-            }
-
-            @Override
-            public void describeTo(final Description description) {
-                description.appendText("should return first matching item");
-            }
-        };
-    }
-
 
 
 }
