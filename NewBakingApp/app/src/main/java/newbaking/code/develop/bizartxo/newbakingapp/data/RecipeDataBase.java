@@ -14,7 +14,7 @@ import newbaking.code.develop.bizartxo.newbakingapp.model.StepColumns;
 @Database(version = RecipeDataBase.VERSION)
 public final class RecipeDataBase {
 
-    public static final int VERSION = 2;
+    public static final int VERSION = 1;
 
     @Table(RecipeColumns.class) public static final String RECIPES = "recipes";
     @Table(IngredientColumns.class) public static final String INGREDIENTS = "ingredients";
