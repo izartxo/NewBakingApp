@@ -56,7 +56,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     Context _context;
     Intent intent;
     Recipe recipe;
-    RecyclerView rvIng, rvStep;
+    static RecyclerView rvIng, rvStep;
     IngredientAdapter ingredientAdapter;
     StepAdapter stepAdapter;
     ArrayList<String> stepList = new ArrayList<>();
@@ -125,17 +125,20 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     public void onPause() {
         super.onPause();
 
-        RecipeDetailActivity.setRvPositions(((LinearLayoutManager) rvIng.getLayoutManager()).findFirstCompletelyVisibleItemPosition(),((LinearLayoutManager) rvStep.getLayoutManager()).findFirstCompletelyVisibleItemPosition());
+        if (rvIng.getLayoutManager()!=null || rvStep.getLayoutManager()!=null)
+            RecipeDetailActivity.setRvPositions(((LinearLayoutManager) rvIng.getLayoutManager()).findFirstCompletelyVisibleItemPosition(), ((LinearLayoutManager) rvStep.getLayoutManager()).findFirstCompletelyVisibleItemPosition());
+
 
         rvIng.setAdapter(null);
         rvIng.setLayoutManager(null);
         rvStep.setAdapter(null);
         rvStep.setLayoutManager(null);
+
     }
 
     @Override
     public void onStepClick(int position) {
-
+        RecipeDetailFragment.stopPlayer();
         updateVideo(position, stepArray);
 
     }

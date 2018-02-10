@@ -76,6 +76,8 @@ public class RecipeDetailFragment extends Fragment{
 
         intent = getActivity().getIntent();
 
+
+
         int currentOrientation = getResources().getConfiguration().orientation;
         if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
             // Landscape
@@ -147,6 +149,7 @@ public class RecipeDetailFragment extends Fragment{
                 new AdaptiveTrackSelection.Factory(bandwidthMeter);
         TrackSelector trackSelector =
                 new DefaultTrackSelector(videoTrackSelectionFactory);
+
 
         player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
         

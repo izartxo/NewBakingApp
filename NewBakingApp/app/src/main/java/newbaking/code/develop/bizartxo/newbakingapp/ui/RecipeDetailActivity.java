@@ -4,6 +4,7 @@ package newbaking.code.develop.bizartxo.newbakingapp.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
@@ -141,6 +142,16 @@ public class RecipeDetailActivity extends AppCompatActivity {
         ingPosition = iPos;
         stepPosition = sPos;
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 }
 
