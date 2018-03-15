@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import com.google.android.exoplayer2.util.Util;
+
 import java.util.ArrayList;
 
 import newbaking.code.develop.bizartxo.newbakingapp.R;
@@ -76,7 +78,7 @@ public class AuxActivity extends AppCompatActivity {
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            transaction.add(R.id.info_novideo, fragment);
+            transaction.replace(R.id.info_novideo, fragment);
             transaction.addToBackStack(null);
             transaction.commit();
         }else{
@@ -99,7 +101,7 @@ public class AuxActivity extends AppCompatActivity {
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            transaction.add(R.id.video_frame, fragment);
+            transaction.replace(R.id.video_frame, fragment);
             transaction.addToBackStack(null);
             transaction.commit();
         }
@@ -114,8 +116,28 @@ public class AuxActivity extends AppCompatActivity {
 
     @Override
     protected void onPause(){
-        RecipeDetailFragment.stopPlayer();
         super.onPause();
+
+    }
+
+    @Override
+    protected void onResume(){
+
+        super.onResume();
+        RecipeDetailActivity.setIsVideoActivity(true);
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+    }
+
+    @Override
+    protected void onDestroy(){
+        RecipeDetailActivity.setIsVideoActivity(false);
+        super.onDestroy();
+
     }
 
     @Override

@@ -2,6 +2,7 @@ package newbaking.code.develop.bizartxo.newbakingapp.ui;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.media.session.PlaybackState;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -20,15 +21,21 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
@@ -38,6 +45,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 
 import newbaking.code.develop.bizartxo.newbakingapp.R;
 import newbaking.code.develop.bizartxo.newbakingapp.model.Recipe;
@@ -57,7 +65,11 @@ public class RecipeDetailFragment extends Fragment{
     Intent intent;
 
     SimpleExoPlayerView simpleExoPlayerView;
+    static boolean playbackState = false;
+    static long playbackPos = 0;
 
+
+    static View mView;
     ArrayList<String> videoList;
     String value="";
     int step=0;
@@ -106,8 +118,13 @@ public class RecipeDetailFragment extends Fragment{
 
         }
 
-        View view = inflater.inflate(R.layout.detail_recipe_fragment, container, false);
+        if (savedInstanceState!=null){
+            playbackState = savedInstanceState.getInt("videoState")== PlaybackState.STATE_PLAYING ? true : false;
+            playbackPos = savedInstanceState.getLong("videoPosition");
+        }
 
+        View view = inflater.inflate(R.layout.detail_recipe_fragment, container, false);
+        mView = view;
 
 
         if (getString(R.string.size).equals("small") && !landscape){
@@ -123,7 +140,8 @@ public class RecipeDetailFragment extends Fragment{
                 public void onClick(View view){
                     Intent nextIntent = new Intent(getContext(), AuxActivity.class);
                     Bundle bundle = new Bundle();
-
+                            playbackPos = 0;
+                            playbackState = false;
 
                             bundle.putString("video", videoList.get(step+1));
                             bundle.putInt("step", step+1);
@@ -138,35 +156,11 @@ public class RecipeDetailFragment extends Fragment{
 
             checkNextStep(next);
 
-
         }
 
-        simpleExoPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.sepv);
+        createVideoPlayer(view);
 
-        //Handler mainHandler = new Handler();
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory =
-                new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector =
-                new DefaultTrackSelector(videoTrackSelectionFactory);
-
-
-        player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
-        
-        simpleExoPlayerView.setPlayer(player);
-
-        DefaultBandwidthMeter dbandwidthMeter = new DefaultBandwidthMeter();
-
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(),
-                Util.getUserAgent(getContext(), getString(R.string.app_name)), dbandwidthMeter);
-
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-
-        Uri uri = Uri.parse(value);
-        MediaSource videoSource = new ExtractorMediaSource(uri,
-                dataSourceFactory, extractorsFactory, null, null);
-
-        player.prepare(videoSource);
+        loadVideo();
 
         return view;
 
@@ -177,12 +171,18 @@ public class RecipeDetailFragment extends Fragment{
 
         super.onPause();
 
+
     }
 
     @Override
 
     public void onResume() {
+
         super.onResume();
+        if (player==null){
+            createVideoPlayer(mView);
+
+        }
 
     }
 
@@ -206,5 +206,48 @@ public class RecipeDetailFragment extends Fragment{
             next.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("videoState", simpleExoPlayerView.getPlayer().getPlaybackState());
+        outState.putLong("videoPosition", simpleExoPlayerView.getPlayer().getCurrentPosition());
+
+    }
+
+    private void createVideoPlayer(View view){
+        simpleExoPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.sepv);
+
+
+        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        TrackSelection.Factory videoTrackSelectionFactory =
+                new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        TrackSelector trackSelector =
+                new DefaultTrackSelector(videoTrackSelectionFactory);
+
+
+        player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
+
+
+        simpleExoPlayerView.setPlayer(player);
+
+        DefaultBandwidthMeter dbandwidthMeter = new DefaultBandwidthMeter();
+
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(),
+                Util.getUserAgent(getContext(), getString(R.string.app_name)), dbandwidthMeter);
+
+        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+
+        Uri uri = Uri.parse(value);
+        MediaSource videoSource = new ExtractorMediaSource(uri,
+                dataSourceFactory, extractorsFactory, null, null);
+
+        player.prepare(videoSource);
+    }
+
+    private void loadVideo(){
+        player.seekTo(playbackPos);
+        player.setPlayWhenReady(playbackState);
+    }
 }
 

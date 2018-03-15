@@ -19,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.widget.Toolbar;
 
+import com.google.android.exoplayer2.util.Util;
+
 import newbaking.code.develop.bizartxo.newbakingapp.R;
 
 /**
@@ -31,6 +33,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     static String recipeTitle;
     static int stepPosition = 0;
     static int ingPosition = 0;
+    static boolean isVideoActivity = false;
 
 
     @Override
@@ -147,11 +150,27 @@ public class RecipeDetailActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        if (Util.SDK_INT <= 23 && !isVideoActivity){
+            RecipeDetailFragment.stopPlayer();
+        }
+
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        if (Util.SDK_INT > 23 && !isVideoActivity){
+            RecipeDetailFragment.stopPlayer();
+        }
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+    }
+
+    public static void setIsVideoActivity(boolean state){
+        isVideoActivity = state;
     }
 }
 
