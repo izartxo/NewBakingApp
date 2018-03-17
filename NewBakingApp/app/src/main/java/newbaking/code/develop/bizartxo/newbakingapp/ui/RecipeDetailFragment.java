@@ -119,7 +119,7 @@ public class RecipeDetailFragment extends Fragment{
         }
 
         if (savedInstanceState!=null){
-            playbackState = savedInstanceState.getInt("videoState")== PlaybackState.STATE_PLAYING ? true : false;
+            playbackState = savedInstanceState.getBoolean("videoState");
             playbackPos = savedInstanceState.getLong("videoPosition");
         }
 
@@ -210,8 +210,8 @@ public class RecipeDetailFragment extends Fragment{
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt("videoState", simpleExoPlayerView.getPlayer().getPlaybackState());
-        outState.putLong("videoPosition", simpleExoPlayerView.getPlayer().getCurrentPosition());
+        outState.putBoolean("videoState", player.getPlayWhenReady());
+        outState.putLong("videoPosition", player.getCurrentPosition());
 
     }
 

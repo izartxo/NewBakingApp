@@ -4,6 +4,7 @@ package newbaking.code.develop.bizartxo.newbakingapp.ui;
 import android.content.Intent;
 import android.content.ReceiverCallNotAllowedException;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -66,9 +67,19 @@ public class AuxActivity extends AppCompatActivity {
             video.putString("desc", d);
             video.putStringArrayList("videos", videosList);
             video.putInt("step",step);
-            InfoFragment fragment = new InfoFragment();
 
-            fragment.setArguments(video);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            InfoFragment fragment = null;
+
+            if (fragmentManager.findFragmentById(R.id.info_novideo) == null){
+                fragment = new InfoFragment();
+                fragment.setArguments(video);
+            }else{
+                fragment = (InfoFragment) fragmentManager.findFragmentById(R.id.info_novideo);
+            }
+
+
 
             // To avoid Espresso ambiguous problem
             ViewGroup vgParent = (ViewGroup) findViewById(R.id.d_r_f);
@@ -90,8 +101,23 @@ public class AuxActivity extends AppCompatActivity {
             video.putInt("step",step);
             video.putStringArrayList("videos", videosList);
 
-            RecipeDetailFragment fragment = new RecipeDetailFragment();
-            fragment.setArguments(video);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            RecipeDetailFragment fragment = null;
+
+            if (fragmentManager.findFragmentById(R.id.video_frame) == null){
+                fragment = new RecipeDetailFragment();
+                fragment.setArguments(video);
+            }else{
+                fragment = (RecipeDetailFragment) fragmentManager.findFragmentById(R.id.video_frame);
+            }
+
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+            transaction.replace(R.id.video_frame, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
 
             // To avoid Espresso ambiguous problem
             ViewGroup vgParent = (ViewGroup) findViewById(R.id.d_r_f);
@@ -99,11 +125,7 @@ public class AuxActivity extends AppCompatActivity {
                 vgParent.removeView(findViewById(R.id.nextButton));
             //
 
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            transaction.replace(R.id.video_frame, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
         }
 
     }
