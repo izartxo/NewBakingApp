@@ -19,6 +19,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -147,7 +148,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
         boolean noVideo = true;
 
-        if (!listStep.get(step).getVideoURL().equals(""))
+        if (!TextUtils.isEmpty(listStep.get(step).getVideoURL()))
             noVideo = false;
 
         Bundle args = new Bundle();

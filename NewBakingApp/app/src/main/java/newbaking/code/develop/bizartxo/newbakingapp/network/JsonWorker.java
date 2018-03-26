@@ -53,6 +53,7 @@ public class JsonWorker {
                 recipe.setRecipeId(jo.getString("id"));
                 recipe.setDescription(jo.getString("name"));
                 recipe.setTitle(jo.getString("name"));
+                recipe.setPhotoIdUrl(jo.getString("image"));
 
                 JSONArray jing = jo.getJSONArray("ingredients");
 
@@ -98,8 +99,10 @@ public class JsonWorker {
                 contentValues.put("_id", Integer.valueOf(recipe.getRecipeId()));
                 contentValues.put("title", recipe.getTitle());
 
+                contentValues.put("image", recipe.getPhotoIdUrl());
+
                 // Hardcoded for this special case
-                switch (Integer.valueOf(recipe.getRecipeId())){
+                /*switch (Integer.valueOf(recipe.getRecipeId())){
                     case 1:
                         contentValues.put("image","http://thehillcountrycook.com/wp-content/uploads/2012/03/nutella-pie09.jpg");
                         break;
@@ -112,7 +115,7 @@ public class JsonWorker {
                     case 4:
                         contentValues.put("image","http://food.fnr.sndimg.com/content/dam/images/food/fullset/2009/5/27/0/IGSP01_25282_s4x3.jpg.rend.hgtvcom.616.462.suffix/1485531666198.jpeg");
                         break;
-                }
+                }*/
 
 
                 recipeList.add(recipe);

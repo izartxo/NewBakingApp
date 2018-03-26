@@ -54,7 +54,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         if (getString(R.string.size).equals("large")){
             twoPane = true;
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
         else{
             twoPane = false;
@@ -99,32 +99,67 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
 
         if (twoPane){
-            Fragment fragmentList = new RecipeListFragment();
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            RecipeListFragment fragmentList = null;
+
+            if (fragmentManager.findFragmentById(R.id.master_list_fragment) == null){
+                fragmentList = new RecipeListFragment();
+                fragmentList.setArguments(bundle);
+            }else{
+                fragmentList = (RecipeListFragment) fragmentManager.findFragmentById(R.id.master_list_fragment);
+            }
+
+            //Fragment fragmentList = new RecipeListFragment();
 
             FragmentTransaction transactionList = getSupportFragmentManager().beginTransaction();
 
-            fragmentList.setArguments(bundle);
 
-            transactionList.add(R.id.master_list_fragment, fragmentList);
+
+            transactionList.replace(R.id.master_list_fragment, fragmentList);
             transactionList.addToBackStack(null);
             transactionList.commit();
 
-            Fragment fragmentDetail = new RecipeDetailFragment();
+
+            RecipeDetailFragment fragmentDetail = null;
+
+            if (fragmentManager.findFragmentById(R.id.video_frame) == null){
+                fragmentDetail = new RecipeDetailFragment();
+
+            }else{
+                fragmentDetail = (RecipeDetailFragment) fragmentManager.findFragmentById(R.id.video_frame);
+            }
+
+            //Fragment fragmentDetail = new RecipeDetailFragment();
 
             FragmentTransaction transactionDetail = getSupportFragmentManager().beginTransaction();
 
-            transactionDetail.add(R.id.video_frame, fragmentDetail);
+            transactionDetail.replace(R.id.video_frame, fragmentDetail);
             transactionDetail.addToBackStack(null);
             transactionDetail.commit();
         }
         else{
-            Fragment fragmentList = new RecipeListFragment();
 
-            fragmentList.setArguments(bundle);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            RecipeListFragment fragmentList = null;
+
+            if (fragmentManager.findFragmentById(R.id.master_list_fragment) == null){
+                fragmentList = new RecipeListFragment();
+                fragmentList.setArguments(bundle);
+
+            }else{
+                fragmentList = (RecipeListFragment) fragmentManager.findFragmentById(R.id.master_list_fragment);
+            }
+
+            //Fragment fragmentList = new RecipeListFragment();
+
+
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            transaction.add(R.id.master_list_fragment, fragmentList);
+            transaction.replace(R.id.master_list_fragment, fragmentList);
 
             transaction.addToBackStack(null);
             transaction.commit();

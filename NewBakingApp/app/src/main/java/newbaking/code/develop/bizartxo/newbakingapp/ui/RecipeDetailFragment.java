@@ -209,10 +209,11 @@ public class RecipeDetailFragment extends Fragment{
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        outState.putBoolean("videoState", player.getPlayWhenReady());
-        outState.putLong("videoPosition", player.getCurrentPosition());
-
+        if (player!=null)
+        {
+            outState.putBoolean("videoState", player.getPlayWhenReady());
+            outState.putLong("videoPosition", player.getCurrentPosition());
+        }
     }
 
     private void createVideoPlayer(View view){

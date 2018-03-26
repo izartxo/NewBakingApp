@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,10 +59,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public void onBindViewHolder(RecipeViewHolder recipeViewHolder, int position) {
         recipeViewHolder.recipeTitle.setText(mRecipeList.get(position).getTitle());
 
+        String imageUrl = mRecipeList.get(position).getPhotoIdUrl();
+
         Glide.with(_context)
-                .load(mRecipeList.get(position).getPhotoIdUrl())
+                .load(TextUtils.isEmpty(imageUrl)?null:imageUrl)
                 .into(recipeViewHolder.recipePhoto)
-                .onLoadFailed(_context.getResources().getDrawable(R.mipmap.ic_launcher_round,null));
+                .onLoadFailed(_context.getResources().getDrawable(R.drawable.cake,null));
 
 
     }

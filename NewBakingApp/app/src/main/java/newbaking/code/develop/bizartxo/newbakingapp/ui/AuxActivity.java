@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ public class AuxActivity extends AppCompatActivity {
 
         toolbar.setTitle(sd);
 
-        if (link.equals(""))
+        if (TextUtils.isEmpty(link))
             noVideo = true;
 
         if (noVideo) {
