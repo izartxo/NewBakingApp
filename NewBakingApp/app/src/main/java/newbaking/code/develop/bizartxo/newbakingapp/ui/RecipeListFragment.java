@@ -65,9 +65,10 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     TextView textIngredients;
     LinearLayout ingFrame, stepFrame;
 
+    static int stepPosition = 0;
+    static int ingPosition = 0;
 
-    int stepPos = 0;
-    int ingPos = 0;
+
 
     @Override
     public void onAttach(Context context) {
@@ -88,10 +89,10 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
 
-        if ( getArguments()!=null ) {
+        /*if ( getArguments()!=null ) {
              stepPos = getArguments().getInt("stepPos");
              ingPos = getArguments().getInt("ingPos");
-        }
+        }*/
 
         View view = inflater.inflate(R.layout.main_recipe_fragment, container, false);
 
@@ -126,15 +127,17 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     public void onPause() {
         super.onPause();
 
-        if (rvIng.getLayoutManager()!=null || rvStep.getLayoutManager()!=null)
-            RecipeDetailActivity.setRvPositions(((LinearLayoutManager) rvIng.getLayoutManager()).findFirstCompletelyVisibleItemPosition(), ((LinearLayoutManager) rvStep.getLayoutManager()).findFirstCompletelyVisibleItemPosition());
+        if (rvIng.getLayoutManager()!=null || rvStep.getLayoutManager()!=null){
+            //RecipeDetailActivity.setRvPositions(((LinearLayoutManager) rvIng.getLayoutManager()).findFirstCompletelyVisibleItemPosition(), ((LinearLayoutManager) rvStep.getLayoutManager()).findFirstCompletelyVisibleItemPosition());
+            ingPosition =  ((LinearLayoutManager) rvIng.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+            stepPosition = ((LinearLayoutManager) rvStep.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        }
 
-
-        rvIng.setAdapter(null);
+       /* rvIng.setAdapter(null);
         rvIng.setLayoutManager(null);
         rvStep.setAdapter(null);
         rvStep.setLayoutManager(null);
-
+*/
     }
 
     @Override
@@ -251,7 +254,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                     }
                     ingredientAdapter.notifyDataSetChanged();
 
-                    rvIng.getLayoutManager().scrollToPosition(ingPos);
+                    rvIng.getLayoutManager().scrollToPosition(ingPosition);
 
                     break;
 
@@ -271,7 +274,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                     }
 
 
-                    rvStep.getLayoutManager().scrollToPosition(stepPos);
+                    rvStep.getLayoutManager().scrollToPosition(stepPosition);
 
 
                     break;
@@ -305,6 +308,28 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         getLoaderManager().restartLoader(ID_STEP_LOADER, bundle, this);
 
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("ingPos", ingPosition);
+        outState.putInt("stepPos", stepPosition);
+
+
+
+    }
+
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if(savedInstanceState!=null){
+            ingPosition = savedInstanceState.getInt("ingPos");
+            stepPosition = savedInstanceState.getInt("stepPos");
+        }
     }
 
 

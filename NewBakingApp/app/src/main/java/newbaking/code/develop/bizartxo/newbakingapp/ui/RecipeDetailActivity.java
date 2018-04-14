@@ -31,8 +31,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     static boolean twoPane;
     static String recipeTitle;
-    static int stepPosition = 0;
-    static int ingPosition = 0;
+    /*static int stepPosition = 0;
+    static int ingPosition = 0;*/
     static boolean isVideoActivity = false;
 
 
@@ -65,15 +65,15 @@ public class RecipeDetailActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("ingPos", ingPosition);
-        outState.putInt("stepPos", stepPosition);
+       /* outState.putInt("ingPos", ingPosition);
+        outState.putInt("stepPos", stepPosition);*/
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        ingPosition = savedInstanceState.getInt("ingPos");
-        stepPosition = savedInstanceState.getInt("stepPos");
+        /*ingPosition = savedInstanceState.getInt("ingPos");
+        stepPosition = savedInstanceState.getInt("stepPos");*/
     }
 
 
@@ -94,8 +94,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
         super.onResume();
 
         Bundle bundle = new Bundle();
-        bundle.putInt("ingPos", ingPosition);
-        bundle.putInt("stepPos", stepPosition);
+        /*bundle.putInt("ingPos", ingPosition);
+        bundle.putInt("stepPos", stepPosition);*/
 
 
         if (twoPane){
@@ -176,11 +176,11 @@ public class RecipeDetailActivity extends AppCompatActivity {
         finish();
     }
 
-    public static void setRvPositions(int iPos, int sPos){
+    /*public static void setRvPositions(int iPos, int sPos){
         ingPosition = iPos;
         stepPosition = sPos;
 
-    }
+    }*/
 
     @Override
     protected void onPause() {
@@ -207,5 +207,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     public static void setIsVideoActivity(boolean state){
         isVideoActivity = state;
     }
+
+
 }
 

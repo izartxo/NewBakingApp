@@ -3,6 +3,8 @@ package newbaking.code.develop.bizartxo.newbakingapp.ui;
 
 import android.content.Intent;
 import android.content.ReceiverCallNotAllowedException;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -33,6 +35,10 @@ public class AuxActivity extends AppCompatActivity {
     ArrayList<String> videosList = new ArrayList<>();
     static ArrayList<Step> actualStep;
     int step = 0;
+
+    static boolean changed;
+    static long pos;
+    static boolean state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,5 +180,50 @@ public class AuxActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration config){
+        super.onConfigurationChanged(config);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (getResources().getConfiguration().orientation != savedInstanceState.getInt("orientation"))
+            changed = true;
+        else
+            changed = false;
+        Log.d(".........................", ">>>>>>>>> " + savedInstanceState.getInt("orientation"));
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("orientation", getResources().getConfiguration().orientation);
+    }
+
+    public static boolean getChanged(){
+        return changed;
+    }
+
+    public static void setPos(long p){
+        pos = p;
+    }
+
+    public static void setState(boolean s){
+        state = s;
+    }
+
+    public static boolean getState(){
+        return state;
+    }
+
+    public static long getPos(){
+        return pos;
+    }
 }
+
+
 

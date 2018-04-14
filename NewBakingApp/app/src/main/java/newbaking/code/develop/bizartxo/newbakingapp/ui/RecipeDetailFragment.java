@@ -121,6 +121,9 @@ public class RecipeDetailFragment extends Fragment{
         if (savedInstanceState!=null){
             playbackState = savedInstanceState.getBoolean("videoState");
             playbackPos = savedInstanceState.getLong("videoPosition");
+        }else{
+            playbackState = false;
+            playbackPos = 0;
         }
 
         View view = inflater.inflate(R.layout.detail_recipe_fragment, container, false);
@@ -171,6 +174,15 @@ public class RecipeDetailFragment extends Fragment{
 
         super.onPause();
 
+//        Log.d("---------------","player " + player.getCurrentPosition() + "--" + player.getPlaybackState());
+
+
+        /*if (AuxActivity.getChanged()){
+            AuxActivity.setPos(player.getCurrentPosition());
+            AuxActivity.setState(player.getPlaybackState()==2);
+        }*/
+
+//        stopPlayer();
 
     }
 
@@ -184,6 +196,8 @@ public class RecipeDetailFragment extends Fragment{
 
         }
 
+       // playbackState = AuxActivity.getState();
+       // playbackPos = AuxActivity.getPos();
     }
 
     public static void stopPlayer(){
@@ -209,10 +223,22 @@ public class RecipeDetailFragment extends Fragment{
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (player!=null)
-        {
+
+        if (player!=null){
             outState.putBoolean("videoState", player.getPlayWhenReady());
             outState.putLong("videoPosition", player.getCurrentPosition());
+            stopPlayer();
+
+        }
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if(savedInstanceState!=null){
+            playbackPos = savedInstanceState.getLong("videoPosition");
+            playbackState = savedInstanceState.getBoolean("videoState");
         }
     }
 
