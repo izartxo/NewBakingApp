@@ -89,10 +89,6 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
 
-        /*if ( getArguments()!=null ) {
-             stepPos = getArguments().getInt("stepPos");
-             ingPos = getArguments().getInt("ingPos");
-        }*/
 
         View view = inflater.inflate(R.layout.main_recipe_fragment, container, false);
 
@@ -113,8 +109,6 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         rvStep.setAdapter(stepAdapter);
 
 
-
-
         recipe = new Recipe();
 
         getRecipeData();
@@ -128,16 +122,11 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         super.onPause();
 
         if (rvIng.getLayoutManager()!=null || rvStep.getLayoutManager()!=null){
-            //RecipeDetailActivity.setRvPositions(((LinearLayoutManager) rvIng.getLayoutManager()).findFirstCompletelyVisibleItemPosition(), ((LinearLayoutManager) rvStep.getLayoutManager()).findFirstCompletelyVisibleItemPosition());
+
             ingPosition =  ((LinearLayoutManager) rvIng.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
             stepPosition = ((LinearLayoutManager) rvStep.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
         }
 
-       /* rvIng.setAdapter(null);
-        rvIng.setLayoutManager(null);
-        rvStep.setAdapter(null);
-        rvStep.setLayoutManager(null);
-*/
     }
 
     @Override
@@ -317,10 +306,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         outState.putInt("ingPos", ingPosition);
         outState.putInt("stepPos", stepPosition);
 
-
-
     }
-
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
@@ -331,7 +317,5 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
             stepPosition = savedInstanceState.getInt("stepPos");
         }
     }
-
-
 }
 

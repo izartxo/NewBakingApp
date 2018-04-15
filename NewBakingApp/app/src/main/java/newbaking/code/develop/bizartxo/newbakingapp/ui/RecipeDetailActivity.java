@@ -22,6 +22,8 @@ import android.widget.Toolbar;
 import com.google.android.exoplayer2.util.Util;
 
 import newbaking.code.develop.bizartxo.newbakingapp.R;
+import newbaking.code.develop.bizartxo.newbakingapp.ui.RecipeDetailFragment;
+import newbaking.code.develop.bizartxo.newbakingapp.ui.RecipeListFragment;
 
 /**
  * Created by izartxo on 9/13/17.
@@ -31,8 +33,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     static boolean twoPane;
     static String recipeTitle;
-    /*static int stepPosition = 0;
-    static int ingPosition = 0;*/
+
     static boolean isVideoActivity = false;
 
 
@@ -54,7 +55,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         if (getString(R.string.size).equals("large")){
             twoPane = true;
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
         }
         else{
             twoPane = false;
@@ -65,15 +66,13 @@ public class RecipeDetailActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-       /* outState.putInt("ingPos", ingPosition);
-        outState.putInt("stepPos", stepPosition);*/
+
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        /*ingPosition = savedInstanceState.getInt("ingPos");
-        stepPosition = savedInstanceState.getInt("stepPos");*/
+
     }
 
 
@@ -93,9 +92,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Bundle bundle = new Bundle();
-        /*bundle.putInt("ingPos", ingPosition);
-        bundle.putInt("stepPos", stepPosition);*/
+
 
 
         if (twoPane){
@@ -106,12 +103,12 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
             if (fragmentManager.findFragmentById(R.id.master_list_fragment) == null){
                 fragmentList = new RecipeListFragment();
-                fragmentList.setArguments(bundle);
+
             }else{
                 fragmentList = (RecipeListFragment) fragmentManager.findFragmentById(R.id.master_list_fragment);
             }
 
-            //Fragment fragmentList = new RecipeListFragment();
+
 
             FragmentTransaction transactionList = getSupportFragmentManager().beginTransaction();
 
@@ -131,7 +128,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
                 fragmentDetail = (RecipeDetailFragment) fragmentManager.findFragmentById(R.id.video_frame);
             }
 
-            //Fragment fragmentDetail = new RecipeDetailFragment();
+
 
             FragmentTransaction transactionDetail = getSupportFragmentManager().beginTransaction();
 
@@ -147,14 +144,11 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
             if (fragmentManager.findFragmentById(R.id.master_list_fragment) == null){
                 fragmentList = new RecipeListFragment();
-                fragmentList.setArguments(bundle);
+
 
             }else{
                 fragmentList = (RecipeListFragment) fragmentManager.findFragmentById(R.id.master_list_fragment);
             }
-
-            //Fragment fragmentList = new RecipeListFragment();
-
 
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -176,11 +170,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         finish();
     }
 
-    /*public static void setRvPositions(int iPos, int sPos){
-        ingPosition = iPos;
-        stepPosition = sPos;
 
-    }*/
 
     @Override
     protected void onPause() {

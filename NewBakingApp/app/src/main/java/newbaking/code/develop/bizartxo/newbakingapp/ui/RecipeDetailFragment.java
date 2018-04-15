@@ -174,16 +174,6 @@ public class RecipeDetailFragment extends Fragment{
 
         super.onPause();
 
-//        Log.d("---------------","player " + player.getCurrentPosition() + "--" + player.getPlaybackState());
-
-
-        /*if (AuxActivity.getChanged()){
-            AuxActivity.setPos(player.getCurrentPosition());
-            AuxActivity.setState(player.getPlaybackState()==2);
-        }*/
-
-//        stopPlayer();
-
     }
 
     @Override
@@ -196,8 +186,6 @@ public class RecipeDetailFragment extends Fragment{
 
         }
 
-       // playbackState = AuxActivity.getState();
-       // playbackPos = AuxActivity.getPos();
     }
 
     public static void stopPlayer(){

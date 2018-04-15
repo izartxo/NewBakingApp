@@ -37,8 +37,7 @@ public class AuxActivity extends AppCompatActivity {
     int step = 0;
 
     static boolean changed;
-    static long pos;
-    static boolean state;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,25 +203,7 @@ public class AuxActivity extends AppCompatActivity {
         outState.putInt("orientation", getResources().getConfiguration().orientation);
     }
 
-    public static boolean getChanged(){
-        return changed;
-    }
 
-    public static void setPos(long p){
-        pos = p;
-    }
-
-    public static void setState(boolean s){
-        state = s;
-    }
-
-    public static boolean getState(){
-        return state;
-    }
-
-    public static long getPos(){
-        return pos;
-    }
 }
 
 
