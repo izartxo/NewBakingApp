@@ -35,7 +35,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     static String recipeTitle;
 
     static boolean isVideoActivity = false;
-
+    //RecipeDetailFragment fragmentDetail = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,41 +61,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
             twoPane = false;
         }
 
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-
-
-
         if (twoPane){
+
 
             FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -119,22 +86,32 @@ public class RecipeDetailActivity extends AppCompatActivity {
             transactionList.commit();
 
 
-            RecipeDetailFragment fragmentDetail = null;
+            /*RecipeDetailFragment fragmentDetail = null;
 
-            if (fragmentManager.findFragmentById(R.id.video_frame) == null){
+            if (fragmentManager.findFragmentByTag("RDF") == null){ //findFragmentById(R.id.video_frame) == null){
                 fragmentDetail = new RecipeDetailFragment();
 
             }else{
                 fragmentDetail = (RecipeDetailFragment) fragmentManager.findFragmentById(R.id.video_frame);
+            }*/
+            /*FragmentTransaction transactionDetail = getSupportFragmentManager().beginTransaction();
+            RecipeDetailFragment fragmentDetail = (RecipeDetailFragment) fragmentManager.findFragmentByTag("RDF");
+
+            if (fragmentDetail==null){
+                fragmentDetail = new RecipeDetailFragment();
+                transactionDetail.add(R.id.video_frame, fragmentDetail, "RDF");
+
+            }
+            else {
+                transactionDetail.replace(R.id.video_frame, fragmentDetail, "RDF");
+
             }
 
 
 
-            FragmentTransaction transactionDetail = getSupportFragmentManager().beginTransaction();
-
-            transactionDetail.replace(R.id.video_frame, fragmentDetail);
+            //transactionDetail.replace(R.id.video_frame, fragmentDetail, "RDF");
             transactionDetail.addToBackStack(null);
-            transactionDetail.commit();
+            transactionDetail.commit();*/
         }
         else{
 
@@ -158,6 +135,42 @@ public class RecipeDetailActivity extends AppCompatActivity {
             transaction.addToBackStack(null);
             transaction.commit();
         }
+
+    }
+
+    /*@Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+    }*/
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+
+
+
     }
 
     public static boolean getTwoPane(){
@@ -182,6 +195,11 @@ public class RecipeDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+    }
+
+    @Override
     protected void onStop(){
         super.onStop();
         if (Util.SDK_INT > 23 && !isVideoActivity){
@@ -197,6 +215,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     public static void setIsVideoActivity(boolean state){
         isVideoActivity = state;
     }
+
 
 
 }

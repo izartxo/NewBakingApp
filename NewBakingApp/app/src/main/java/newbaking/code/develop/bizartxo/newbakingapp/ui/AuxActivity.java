@@ -36,7 +36,7 @@ public class AuxActivity extends AppCompatActivity {
     static ArrayList<Step> actualStep;
     int step = 0;
 
-    static boolean changed;
+
 
 
     @Override
@@ -183,15 +183,17 @@ public class AuxActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration config){
         super.onConfigurationChanged(config);
+
+
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (getResources().getConfiguration().orientation != savedInstanceState.getInt("orientation"))
+        /*if (getResources().getConfiguration().orientation != savedInstanceState.getInt("orientation"))
             changed = true;
         else
-            changed = false;
+            changed = false;*/
         Log.d(".........................", ">>>>>>>>> " + savedInstanceState.getInt("orientation"));
 
     }
@@ -201,6 +203,13 @@ public class AuxActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
 
         outState.putInt("orientation", getResources().getConfiguration().orientation);
+
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+
     }
 
 

@@ -3,6 +3,8 @@ package newbaking.code.develop.bizartxo.newbakingapp.ui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.graphics.Canvas;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
@@ -67,6 +69,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
     static int stepPosition = 0;
     static int ingPosition = 0;
+    static String firstVideo = "";
 
 
 
@@ -83,6 +86,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
         intent = getActivity().getIntent();
 
+        //firstVideo = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4";
     }
 
     @Nullable
@@ -113,6 +117,8 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
         getRecipeData();
 
+
+
         return view;
 
     }
@@ -131,6 +137,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
     @Override
     public void onStepClick(int position) {
+
         RecipeDetailFragment.stopPlayer();
         updateVideo(position, stepArray);
 
@@ -168,14 +175,38 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
             }else {
 
+               /* if (!TextUtils.isEmpty(args.getString("video")))
+                    firstVideo = args.getString("video");*/
+               RecipeDetailFragment rdf = null;
 
-                RecipeDetailFragment rdf = new RecipeDetailFragment();
 
-                rdf.setArguments(args);
+               FragmentManager fm = getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();//getFragmentManager().beginTransaction();
+               rdf = (RecipeDetailFragment) fm.findFragmentByTag("RDF");
 
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                //if (fm.findFragmentById(R.id.video_frame) == null){
+                  if (rdf == null) {
+                      rdf = new RecipeDetailFragment();
+                      transaction.add(R.id.video_frame, rdf, "RDF");
+                      rdf.setArguments(args);
+                  }
+                  else{
+                      transaction.remove(rdf);
+                      rdf = new RecipeDetailFragment();
+                      transaction.add(R.id.video_frame, rdf, "RDF");
+                      rdf.setArguments(args);
+                      //transaction.replace(R.id.video_frame, rdf, "RDF");
 
-                transaction.replace(R.id.video_frame, rdf);
+//                      rdf.setArguments(args);
+                  }
+                    //fm.putFragment(args,"detailfragment",rdf);
+               // }else{
+               //     rdf = (RecipeDetailFragment) fm.findFragmentById(R.id.video_frame);
+                    //fm.putFragment(args,"detailfragment",rdf);
+               // }
+
+
+                //transaction.replace(R.id.video_frame, rdf);
                 transaction.addToBackStack(null);
 
                 transaction.commit();
@@ -200,6 +231,17 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
 
     }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+    }
+
 
     //////////////////////////// LOADER LOGIC //////////////////////////
 
@@ -262,13 +304,17 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                         stepArray.add(stepAdapter.getItem(u));
                     }
 
+                   /* Log.d("------------oooo-----------", "" + firstVideo);
+                    if (TextUtils.isEmpty(firstVideo))
+                        refreshFragment();*/
+
+
 
                     rvStep.getLayoutManager().scrollToPosition(stepPosition);
 
 
                     break;
             }
-
 
 
         }
@@ -317,5 +363,22 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
             stepPosition = savedInstanceState.getInt("stepPos");
         }
     }
+
+    public static String getFirstVideo(){
+        return firstVideo;
+    }
+
+   /* private Handler handler = new Handler()  { // handler for commiting fragment after data is loaded
+        @Override
+        public void handleMessage(Message msg) {
+            if(msg.what == 2) {
+               // commit the fragment
+
+            }
+        }
+    };
+*/
+
+
 }
 

@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +60,8 @@ public class RecipeDetailFragment extends Fragment{
     static SimpleExoPlayer player;
     static Context _context;
     static boolean landscape = false;
+    boolean pushed = false;
+
 
     static Button next;
 
@@ -94,6 +97,7 @@ public class RecipeDetailFragment extends Fragment{
         if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
             // Landscape
             landscape = true;
+
         }
         else {
             // Portrait
@@ -141,8 +145,10 @@ public class RecipeDetailFragment extends Fragment{
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view){
+                    pushed = true;
                     Intent nextIntent = new Intent(getContext(), AuxActivity.class);
                     Bundle bundle = new Bundle();
+                           stopPlayer();
                             playbackPos = 0;
                             playbackState = false;
 
@@ -173,17 +179,43 @@ public class RecipeDetailFragment extends Fragment{
     public void onPause() {
 
         super.onPause();
+        if (pushed)
+            stopPlayer();
+
+
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        if (!pushed)
+            stopPlayer();
 
     }
 
     @Override
 
     public void onResume() {
-
         super.onResume();
         if (player==null){
             createVideoPlayer(mView);
+            loadVideo();
+        }
 
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if(savedInstanceState!=null){
+            playbackPos = savedInstanceState.getLong("videoPosition");
+            playbackState = savedInstanceState.getBoolean("videoState");
         }
 
     }
@@ -191,6 +223,8 @@ public class RecipeDetailFragment extends Fragment{
     public static void stopPlayer(){
 
         if (player!=null) {
+            playbackPos = player.getCurrentPosition();
+            playbackState = player.getPlayWhenReady();
 
             player.setPlayWhenReady(false);
             player.release();
@@ -215,7 +249,9 @@ public class RecipeDetailFragment extends Fragment{
         if (player!=null){
             outState.putBoolean("videoState", player.getPlayWhenReady());
             outState.putLong("videoPosition", player.getCurrentPosition());
+
             stopPlayer();
+
 
         }
     }
@@ -224,10 +260,10 @@ public class RecipeDetailFragment extends Fragment{
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
 
-        if(savedInstanceState!=null){
+       /* if(savedInstanceState!=null){
             playbackPos = savedInstanceState.getLong("videoPosition");
             playbackState = savedInstanceState.getBoolean("videoState");
-        }
+        }*/
     }
 
     private void createVideoPlayer(View view){
@@ -253,7 +289,17 @@ public class RecipeDetailFragment extends Fragment{
 
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
-        Uri uri = Uri.parse(value);
+        Uri uri = null;
+
+        /*if (RecipeDetailActivity.getTwoPane() && !TextUtils.isEmpty(RecipeListFragment.getFirstVideo())){
+            value = RecipeListFragment.getFirstVideo();
+        }*/
+
+
+        uri = Uri.parse(value);
+
+
+
         MediaSource videoSource = new ExtractorMediaSource(uri,
                 dataSourceFactory, extractorsFactory, null, null);
 
@@ -264,5 +310,11 @@ public class RecipeDetailFragment extends Fragment{
         player.seekTo(playbackPos);
         player.setPlayWhenReady(playbackState);
     }
+
+    public void setVideo(String vid){
+        value = vid;
+    }
+
+
 }
 
