@@ -57,8 +57,7 @@ public class RecipeMainActivity extends AppCompatActivity implements RecipeAdapt
 
         setContentView(R.layout.activity_recipe_main);
 
-        if (findViewById(R.id.grid_normal) == null)
-        ;//    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
 
 
         boolean isLarge = getString(R.string.size).equals("small")?false:true;

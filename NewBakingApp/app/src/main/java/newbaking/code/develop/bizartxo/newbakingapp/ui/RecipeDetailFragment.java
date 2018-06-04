@@ -260,10 +260,7 @@ public class RecipeDetailFragment extends Fragment{
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
 
-       /* if(savedInstanceState!=null){
-            playbackPos = savedInstanceState.getLong("videoPosition");
-            playbackState = savedInstanceState.getBoolean("videoState");
-        }*/
+
     }
 
     private void createVideoPlayer(View view){
@@ -290,10 +287,6 @@ public class RecipeDetailFragment extends Fragment{
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
         Uri uri = null;
-
-        /*if (RecipeDetailActivity.getTwoPane() && !TextUtils.isEmpty(RecipeListFragment.getFirstVideo())){
-            value = RecipeListFragment.getFirstVideo();
-        }*/
 
 
         uri = Uri.parse(value);

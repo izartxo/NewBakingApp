@@ -35,7 +35,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     static String recipeTitle;
 
     static boolean isVideoActivity = false;
-    //RecipeDetailFragment fragmentDetail = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,32 +86,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
             transactionList.commit();
 
 
-            /*RecipeDetailFragment fragmentDetail = null;
 
-            if (fragmentManager.findFragmentByTag("RDF") == null){ //findFragmentById(R.id.video_frame) == null){
-                fragmentDetail = new RecipeDetailFragment();
-
-            }else{
-                fragmentDetail = (RecipeDetailFragment) fragmentManager.findFragmentById(R.id.video_frame);
-            }*/
-            /*FragmentTransaction transactionDetail = getSupportFragmentManager().beginTransaction();
-            RecipeDetailFragment fragmentDetail = (RecipeDetailFragment) fragmentManager.findFragmentByTag("RDF");
-
-            if (fragmentDetail==null){
-                fragmentDetail = new RecipeDetailFragment();
-                transactionDetail.add(R.id.video_frame, fragmentDetail, "RDF");
-
-            }
-            else {
-                transactionDetail.replace(R.id.video_frame, fragmentDetail, "RDF");
-
-            }
-
-
-
-            //transactionDetail.replace(R.id.video_frame, fragmentDetail, "RDF");
-            transactionDetail.addToBackStack(null);
-            transactionDetail.commit();*/
         }
         else{
 
@@ -138,17 +113,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     }
 
-    /*@Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
 
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-    }*/
 
 
     @Override

@@ -69,7 +69,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
     static int stepPosition = 0;
     static int ingPosition = 0;
-    static String firstVideo = "";
+
 
 
 
@@ -86,7 +86,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
         intent = getActivity().getIntent();
 
-        //firstVideo = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4";
+
     }
 
     @Nullable
@@ -175,8 +175,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
 
             }else {
 
-               /* if (!TextUtils.isEmpty(args.getString("video")))
-                    firstVideo = args.getString("video");*/
+
                RecipeDetailFragment rdf = null;
 
 
@@ -184,7 +183,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                 FragmentTransaction transaction = fm.beginTransaction();//getFragmentManager().beginTransaction();
                rdf = (RecipeDetailFragment) fm.findFragmentByTag("RDF");
 
-                //if (fm.findFragmentById(R.id.video_frame) == null){
+
                   if (rdf == null) {
                       rdf = new RecipeDetailFragment();
                       transaction.add(R.id.video_frame, rdf, "RDF");
@@ -195,18 +194,9 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                       rdf = new RecipeDetailFragment();
                       transaction.add(R.id.video_frame, rdf, "RDF");
                       rdf.setArguments(args);
-                      //transaction.replace(R.id.video_frame, rdf, "RDF");
 
-//                      rdf.setArguments(args);
                   }
-                    //fm.putFragment(args,"detailfragment",rdf);
-               // }else{
-               //     rdf = (RecipeDetailFragment) fm.findFragmentById(R.id.video_frame);
-                    //fm.putFragment(args,"detailfragment",rdf);
-               // }
 
-
-                //transaction.replace(R.id.video_frame, rdf);
                 transaction.addToBackStack(null);
 
                 transaction.commit();
@@ -304,9 +294,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
                         stepArray.add(stepAdapter.getItem(u));
                     }
 
-                   /* Log.d("------------oooo-----------", "" + firstVideo);
-                    if (TextUtils.isEmpty(firstVideo))
-                        refreshFragment();*/
+
 
 
 
@@ -364,20 +352,7 @@ public class RecipeListFragment extends Fragment implements StepAdapter.OnStepCl
         }
     }
 
-    public static String getFirstVideo(){
-        return firstVideo;
-    }
 
-   /* private Handler handler = new Handler()  { // handler for commiting fragment after data is loaded
-        @Override
-        public void handleMessage(Message msg) {
-            if(msg.what == 2) {
-               // commit the fragment
-
-            }
-        }
-    };
-*/
 
 
 }

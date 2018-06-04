@@ -190,10 +190,7 @@ public class AuxActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        /*if (getResources().getConfiguration().orientation != savedInstanceState.getInt("orientation"))
-            changed = true;
-        else
-            changed = false;*/
+
         Log.d(".........................", ">>>>>>>>> " + savedInstanceState.getInt("orientation"));
 
     }
